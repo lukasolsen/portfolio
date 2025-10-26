@@ -14,17 +14,19 @@ import type { BackrandParams } from "@/common/backrand/backrand";
 
 type BackrandContextType = {
   params: BackrandParams;
-  setParams: React.Dispatch<React.SetStateAction<BackrandParams>>;
   image: string | null;
   loading: boolean;
   models: BackrandModel[];
+
   currentModel: BackrandModel;
   setCurrentModel: (model: BackrandModel) => void;
+
   handleGenerate: () => Promise<void>;
   updateSetting: <K extends keyof BackrandParams>(
     key: K,
     value: BackrandParams[K]
   ) => void;
+  updateModelOption: (key: string, value: string | number) => void;
 };
 
 const BackrandContext = createContext<BackrandContextType | undefined>(
@@ -36,9 +38,11 @@ export const BackrandProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [params, setParams] = useState<BackrandParams>({
+  const defaultModel = BackrandModels[BackrandModelType.Mesh];
+
+  const [settings, setParams] = useState<BackrandParams>({
     size: "512x512",
-    model: BackrandModels[BackrandModelType.Mesh],
+    model: defaultModel,
     aspect_ratio: BackrandAspectRatio.Wide,
     quality: BackrandQuality.MEDIUM,
     colors: colorPresets[0].colors.join(","),
@@ -50,6 +54,12 @@ export const BackrandProvider = ({
     warp_amplitude: 15,
     warp_frequency: 0.05,
     grain: 0.02,
+    option_values: {
+      ...defaultModel.options.reduce((acc, option) => {
+        acc[option.key] = option.default;
+        return acc;
+      }, {} as Record<string, string | number>),
+    },
   });
 
   const [image, setImage] = useState<string | null>(null);
@@ -65,12 +75,19 @@ export const BackrandProvider = ({
     []
   );
 
+  const updateModelOption = (key: string, value: string | number) => {
+    setParams((prev) => ({
+      ...prev,
+      option_values: { ...prev.option_values, [key]: value },
+    }));
+  };
+
   const handleGenerate = useCallback(async () => {
     setLoading(true);
     toast.dismiss();
 
     try {
-      const result = await generateBackrandImage(params);
+      const result = await generateBackrandImage(settings);
       setImage(result);
     } catch (e) {
       console.error(e);
@@ -78,16 +95,16 @@ export const BackrandProvider = ({
     } finally {
       setLoading(false);
     }
-  }, [params]);
+  }, [settings]);
 
   const value: BackrandContextType = {
-    params,
-    setParams,
+    params: settings,
     image,
     loading,
     models,
     currentModel,
     setCurrentModel,
+    updateModelOption,
     handleGenerate,
     updateSetting,
   };

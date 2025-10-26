@@ -3,27 +3,31 @@ import type { BackrandModel } from "./models";
 import type { BackrandQuality } from "./quality";
 import type { WarpType } from "./warps";
 
-export type BackrandParams = {
-  size: string;
+/**
+ * Main parameters for Backrand image generation
+ */
+export interface BackrandParams {
+  size: `${number}x${number}`;
   aspect_ratio: BackrandAspectRatio;
   quality: BackrandQuality;
 
+  // ** Selected Backrand model */
   model: BackrandModel;
+  option_values?: Record<string, unknown>;
 
-  /**
-   * Warps is a model specific parameter, that changes the way the colors are distributed.
-   * Different models may support different warp types.
-   */
+  /** Warp-related parameters */
   warp: WarpType;
   warp_amplitude: number;
   warp_frequency: number;
   warp_octaves: number;
 
-  colors: string;
+  /** Color and generation settings */
+  colors: string; // comma-separated hex
   num_points: number;
   blur_radius: number;
-
+  border_colors: string; // optional comma-separated
   grain: number;
-  border_colors: string;
+
+  /** Optional seed for deterministic generation */
   seed?: number;
-};
+}

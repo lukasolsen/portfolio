@@ -1,15 +1,24 @@
 import axios from "axios";
 import type { BackrandParams } from "./backrand";
+import type { ModelOption } from "./models";
 
-export interface GenerateBackrandResponse {
+interface GenerateBackrandResponse {
   seed: string;
-  image_content: string; // base64
+  image_content: string;
 }
 
-export const generateBackrandImage = async (params: BackrandParams) => {
+function buildBackrandRequest(params: BackrandParams) {
   const [width, height] = params.size.split("x").map(Number);
 
-  const body = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const model_options: Record<string, any>[] = [];
+  params.model.options?.forEach((opt: ModelOption) => {
+    if (params.option_values?.[opt.key] != null) {
+      model_options.push({ ...opt, value: params.option_values[opt.key] });
+    }
+  });
+
+  return {
     size: [width, height],
     model: params.model.id,
     colors: params.colors.split(","),
@@ -18,7 +27,9 @@ export const generateBackrandImage = async (params: BackrandParams) => {
     grain: params.grain,
     seed: params.seed,
     border_colors:
-      params.border_colors?.length > 0 ? params.border_colors.split(",") : null,
+      !params.border_colors || params.border_colors === "none"
+        ? null
+        : params.border_colors.split(","),
     response_type: "base64",
     warp: {
       type: params.warp,
@@ -26,8 +37,12 @@ export const generateBackrandImage = async (params: BackrandParams) => {
       frequency: params.warp_frequency,
       octaves: params.warp_octaves,
     },
-    model_options: params.option_values ?? {},
+    model_options,
   };
+}
+
+export async function generateBackrandImage(params: BackrandParams) {
+  const body = buildBackrandRequest(params);
 
   try {
     const res = await axios.post<GenerateBackrandResponse>(
@@ -37,7 +52,7 @@ export const generateBackrandImage = async (params: BackrandParams) => {
 
     return `data:image/png;base64,${res.data.image_content}`;
   } catch (err) {
-    console.error("Failed to generate Backrand image", err);
+    console.error("Backrand generation failed", err);
     throw new Error("Kunne ikke generere bildet, prøv igjen senere.");
   }
-};
+}

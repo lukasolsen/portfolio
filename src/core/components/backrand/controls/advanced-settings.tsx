@@ -1,20 +1,20 @@
-import type { BackrandParams } from "@/common/backrand/backrand";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { useBackrand } from "@/context/backrand-context";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState, type FC } from "react";
 
 type Props = {
   showOption: (key: string) => boolean;
-  params: BackrandParams;
-  setParams: (params: BackrandParams) => void;
 };
 
 export const AdvancedSettings: FC<Props> = (props) => {
+  const { params, updateSetting } = useBackrand();
+
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const { showOption, params, setParams } = props;
+  const { showOption } = props;
 
   return (
     <div className="border-t border-border/40 pt-5">
@@ -46,9 +46,7 @@ export const AdvancedSettings: FC<Props> = (props) => {
                   min={0}
                   max={50}
                   step={1}
-                  onValueChange={([v]) =>
-                    setParams({ ...params, blur_radius: v })
-                  }
+                  onValueChange={([v]) => updateSetting("blur_radius", v)}
                 />
               </div>
             )}
@@ -61,7 +59,7 @@ export const AdvancedSettings: FC<Props> = (props) => {
                   min={0}
                   max={0.2}
                   step={0.01}
-                  onValueChange={([v]) => setParams({ ...params, grain: v })}
+                  onValueChange={([v]) => updateSetting("grain", v)}
                 />
               </div>
             )}
@@ -74,9 +72,7 @@ export const AdvancedSettings: FC<Props> = (props) => {
                   min={3}
                   max={20}
                   step={1}
-                  onValueChange={([v]) =>
-                    setParams({ ...params, num_points: v })
-                  }
+                  onValueChange={([v]) => updateSetting("num_points", v)}
                 />
               </div>
             )}
@@ -88,7 +84,7 @@ export const AdvancedSettings: FC<Props> = (props) => {
                   type="number"
                   value={params.seed || ""}
                   onChange={(e) =>
-                    setParams({ ...params, seed: Number(e.target.value) })
+                    updateSetting("seed", Number(e.target.value))
                   }
                   placeholder="La stå tom for tilfeldig"
                 />

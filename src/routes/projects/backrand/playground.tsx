@@ -18,7 +18,7 @@ export default function BackrandPlayground() {
   const { image, loading } = useBackrand();
 
   return (
-    <div className="min-h-screen bg-background text-foreground px-6 py-10">
+    <div className="bg-background text-foreground px-6 py-10">
       <motion.section
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -34,17 +34,17 @@ export default function BackrandPlayground() {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8"
+        className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start max-h-[80vh]"
       >
         {/* Preview */}
-        <div className="lg:col-span-2 space-y-8">
-          <Card className="overflow-hidden">
+        <div className="lg:col-span-3 space-y-8 max-h-[80vh] ">
+          <Card className="overflow-hidden min-h-[520px]">
             <CardHeader>
               <CardTitle className="text-xl font-semibold">
                 Forhåndsvisning
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex items-center justify-center bg-muted/10 aspect-square">
+            <CardContent className="flex items-center justify-center max-h-[512px]">
               {loading ? (
                 <Loader2 className="w-10 h-10 animate-spin text-muted-foreground" />
               ) : image ? (
@@ -59,7 +59,8 @@ export default function BackrandPlayground() {
                 />
               ) : (
                 <p className="text-muted-foreground text-sm">
-                  Ingen bilde generert ennå
+                  Ingen bakgrunn generert enda. Juster innstillingene og klikk
+                  på "Generer" for å lage en ny bakgrunn.
                 </p>
               )}
             </CardContent>

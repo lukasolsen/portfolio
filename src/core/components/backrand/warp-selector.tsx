@@ -1,5 +1,4 @@
-import type { BackrandModel } from "@/common/backrand/models";
-import { Warps } from "@/common/backrand/warps";
+import { Warps, WarpType } from "@/common/backrand/warps";
 import { Paragraph } from "@/components/typography";
 import { Label } from "@/components/ui/label";
 import {
@@ -13,21 +12,12 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useBackrand } from "@/context/backrand-context";
 import { InfoIcon } from "lucide-react";
 
-type WarpSelectorProps = {
-  model: BackrandModel;
-  params: {
-    warp: string;
-  };
-  setParams: (params: WarpSelectorProps["params"]) => void;
-};
+export const WarpSelector = () => {
+  const { currentModel: model, params, updateSetting } = useBackrand();
 
-export const WarpSelector = ({
-  model,
-  params,
-  setParams,
-}: WarpSelectorProps) => {
   if (!model.supportsWarp) return null;
 
   const availableWarps = model.allowedWarps ?? [];
@@ -50,7 +40,7 @@ export const WarpSelector = ({
       </div>
       <Select
         value={params.warp ?? "none"}
-        onValueChange={(warp) => setParams({ ...params, warp })}
+        onValueChange={(warp) => updateSetting("warp", warp as WarpType)}
       >
         <SelectTrigger className="w-full">
           {Warps[(params.warp || "none") as keyof typeof Warps]?.icon}{" "}

@@ -14,13 +14,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useBackrand } from "@/context/backrand-context";
 
 export const PlaygroundControls: FC = () => {
-  const {
-    params,
-    setParams,
-    loading,
-    handleGenerate,
-    currentModel: model,
-  } = useBackrand();
+  const { loading, handleGenerate, currentModel: model } = useBackrand();
 
   const [tab, setTab] = useState("general");
 
@@ -35,7 +29,7 @@ export const PlaygroundControls: FC = () => {
   ];
 
   return (
-    <div className="relative flex flex-col h-full border rounded-xl backdrop-blur-sm shadow-lg">
+    <div className="flex flex-col h-full border rounded-xl backdrop-blur-sm shadow-lg col-span-2">
       {/* === Sticky top bar === */}
       <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/40 backdrop-blur-sm p-3">
         <Header5>Innstillinger</Header5>
@@ -85,16 +79,12 @@ export const PlaygroundControls: FC = () => {
           </TabsContent>
 
           <TabsContent value="colors">
-            <ColorSettings params={params} setParams={setParams} />
+            <ColorSettings />
           </TabsContent>
 
           <TabsContent value="model">
             {model.options ? (
-              <ModelOptions
-                params={params}
-                setParams={setParams}
-                model={model}
-              />
+              <ModelOptions />
             ) : (
               <p className="text-sm text-muted-foreground">
                 Denne modellen har ingen egne innstillinger.
@@ -104,11 +94,7 @@ export const PlaygroundControls: FC = () => {
 
           <TabsContent value="warp">
             {model.allowedWarps && model.allowedWarps.length > 0 ? (
-              <WarpSelector
-                model={model}
-                params={{ warp: params.warp || "none" }}
-                setParams={(p) => setParams({ ...params, ...p })}
-              />
+              <WarpSelector />
             ) : (
               <p className="text-sm text-muted-foreground">
                 Warp ikke tilgjengelig for denne modellen.
@@ -117,11 +103,7 @@ export const PlaygroundControls: FC = () => {
           </TabsContent>
 
           <TabsContent value="advanced">
-            <AdvancedSettings
-              showOption={showOption}
-              params={params}
-              setParams={setParams}
-            />
+            <AdvancedSettings showOption={showOption} />
           </TabsContent>
         </div>
       </Tabs>

@@ -5,32 +5,29 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PlusIcon, Trash2Icon } from "lucide-react";
-import type { BackrandParams } from "@/common/backrand/backrand";
 import { cn } from "@/lib/utils";
+import { useBackrand } from "@/context/backrand-context";
 
-type Props = {
-  params: BackrandParams;
-  setParams: (params: BackrandParams) => void;
-};
+export const ColorSettings: FC = () => {
+  const { params, updateSetting } = useBackrand();
 
-export const ColorSettings: FC<Props> = ({ params, setParams }) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const colors = params.colors ? params.colors.split(",") : [];
 
   const updateColor = (index: number, value: string) => {
     const updated = [...colors];
     updated[index] = value;
-    setParams({ ...params, colors: updated.join(",") });
+    updateSetting("colors", updated.join(","));
   };
 
   const addColor = () => {
     const updated = [...colors, "#ffffff"];
-    setParams({ ...params, colors: updated.join(",") });
+    updateSetting("colors", updated.join(","));
   };
 
   const removeColor = (index: number) => {
     const updated = colors.filter((_, i) => i !== index);
-    setParams({ ...params, colors: updated.join(",") });
+    updateSetting("colors", updated.join(","));
   };
 
   return (
@@ -41,9 +38,7 @@ export const ColorSettings: FC<Props> = ({ params, setParams }) => {
 
       {/* Preset Selector */}
       <ColorPresetSelector
-        onChange={(newColors) =>
-          setParams({ ...params, colors: newColors.join(",") })
-        }
+        onChange={(newColors) => updateSetting("colors", newColors.join(","))}
       />
 
       {/* Editable Color List */}

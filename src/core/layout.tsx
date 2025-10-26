@@ -1,11 +1,23 @@
-import type { FC } from "react";
+import { useMemo, type FC } from "react";
 import { Toaster } from "../components/ui/sonner";
 import { InstanceHeader } from "./header";
-import { Outlet } from "@tanstack/react-router";
+import { Outlet, useRouterState } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
 
 export const Layout: FC = () => {
+  const { location } = useRouterState();
+
+  const isPlayground = useMemo(() => {
+    return location.pathname.includes("/playground");
+  }, [location.pathname]);
+
   return (
-    <div className="flex flex-col min-h-screen w-full max-w-6xl mx-auto px-8">
+    <div
+      className={cn(
+        "flex flex-col min-h-screen w-full mx-auto px-8",
+        isPlayground ? "max-w-full" : "max-w-6xl"
+      )}
+    >
       <InstanceHeader />
       <Toaster closeButton richColors />
 
