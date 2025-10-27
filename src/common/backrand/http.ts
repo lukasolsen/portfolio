@@ -11,22 +11,29 @@ export const generateBackrandImage = async (params: BackrandParams) => {
 
   const body = {
     size: [width, height],
+    quality: params.quality,
+    aspect_ratio: params.aspect_ratio,
+
     model: params.model.id,
+    model_options: params.model_options ?? {},
+
     colors: params.colors.split(","),
-    num_points: params.num_points,
-    blur_radius: params.blur_radius,
-    grain: params.grain,
-    seed: params.seed,
-    border_colors:
-      params.border_colors?.length > 0 ? params.border_colors.split(",") : null,
-    response_type: "base64",
+
     warp: {
       type: params.warp,
       amplitude: params.warp_amplitude,
       frequency: params.warp_frequency,
       octaves: params.warp_octaves,
     },
-    model_options: params.option_values ?? {},
+
+    num_points: params.num_points,
+    blur_radius: params.blur_radius,
+    grain: params.grain,
+    border_colors:
+      params.border_colors?.length > 0 ? params.border_colors.split(",") : null,
+
+    seed: params.seed,
+    response_type: "base64",
   };
 
   try {

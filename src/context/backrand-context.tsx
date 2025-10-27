@@ -44,7 +44,7 @@ export const BackrandProvider = ({
     size: "512x512",
     model: defaultModel,
     aspect_ratio: BackrandAspectRatio.Wide,
-    quality: BackrandQuality.MEDIUM,
+    quality: BackrandQuality.ULTRA,
     colors: colorPresets[0].colors.join(","),
     num_points: 4,
     blur_radius: 10,
@@ -54,7 +54,7 @@ export const BackrandProvider = ({
     warp_amplitude: 15,
     warp_frequency: 0.05,
     grain: 0.02,
-    option_values: {
+    model_options: {
       ...defaultModel.options.reduce((acc, option) => {
         acc[option.key] = option.default;
         return acc;
@@ -78,7 +78,7 @@ export const BackrandProvider = ({
   const updateModelOption = (key: string, value: string | number) => {
     setParams((prev) => ({
       ...prev,
-      option_values: { ...prev.option_values, [key]: value },
+      model_options: { ...prev.model_options, [key]: value },
     }));
   };
 

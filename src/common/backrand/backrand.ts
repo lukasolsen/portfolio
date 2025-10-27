@@ -13,10 +13,12 @@ export interface BackrandParams {
 
   // ** Selected Backrand model */
   model: BackrandModel;
-  option_values?: Record<string, unknown>;
+  model_options?: Record<string, unknown>;
 
   /** Warp-related parameters */
   warp: WarpType;
+  warp_options?: Record<string, unknown>;
+
   warp_amplitude: number;
   warp_frequency: number;
   warp_octaves: number;

@@ -60,10 +60,10 @@ export const PlaygroundControls: FC = () => {
       <Tabs
         value={tab}
         onValueChange={setTab}
-        className="flex-1 flex flex-col overflow-hidden w-full mt-4"
+        className="flex-1 flex flex-col w-full"
       >
         <ScrollArea>
-          <TabsList className="mb-3">
+          <TabsList className="mb-3 w-full rounded-none">
             {tabs.map((tab) => (
               <TabsTrigger key={tab.key} value={tab.key}>
                 {tab.label}

@@ -257,7 +257,8 @@ function RouteComponent() {
         {/* --- Tech Section --- */}
         <ProjectSection
           title="Teknologier"
-          content="Backrand er bygget med Node.js, Express og moderne bildebehandlingsteknikker. API-et kjører på en høyytelses backend og CLI-verktøyet er tilgjengelig via npm for enkel installasjon og bruk."
+          content="Backrand er bygget med moderne teknologier for å sikre ytelse og brukervennlighet. Den benytter Python for backend-logikk, FastAPI for API-endepunkter, og React for frontend-grensesnittet."
+          highlights={["Python", "FastAPI", "React", "TypeScript"]}
         />
       </div>
     </div>

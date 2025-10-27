@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Projects, type ProjectItem } from "@/core/components/projects";
+import { Projects } from "@/core/components/projects";
 import {
   WorkExperience,
   type ExperienceItem,
@@ -22,7 +22,7 @@ function RouteComponent() {
       details: "Fulltid • Hamar",
       period: "August 2024 - Pågående",
       company: "Dyplink",
-      logo: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/claude-icon.svg",
+      logo: "https://dyplink.no/wp-content/uploads/2022/06/dyplink-top-white-text-outlined.svg",
       description:
         "Utvikler og vedlikeholder tjenester ved hjelp av moderne teknologier som React, Node.js og PHP. Fokuserer på å forbedre eksisterende løsninger og levere verdi til kundene gjennom god kode og struktur.",
       seeMoreLabel: "Les mer om min tid hos Dyplink",

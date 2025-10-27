@@ -13,8 +13,8 @@ function buildBackrandRequest(params: BackrandParams) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const model_options: Record<string, any>[] = [];
   params.model.options?.forEach((opt: ModelOption) => {
-    if (params.option_values?.[opt.key] != null) {
-      model_options.push({ ...opt, value: params.option_values[opt.key] });
+    if (params.model_options?.[opt.key] != null) {
+      model_options.push({ ...opt, value: params.model_options[opt.key] });
     }
   });
 
