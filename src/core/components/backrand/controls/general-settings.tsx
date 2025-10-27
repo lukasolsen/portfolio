@@ -138,10 +138,7 @@ export const GeneralSettings: FC<Props> = ({ showOption }) => {
           </Label>
           <div className="flex flex-wrap gap-2">
             {Object.values(BackrandQuality).map((q) => {
-              const isLocked = [
-                BackrandQuality.HIGH,
-                BackrandQuality.ULTRA,
-              ].includes(q);
+              const isLocked = [].includes(q);
               const isSelected = params.quality === q;
 
               return (

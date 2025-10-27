@@ -3,6 +3,7 @@ export enum BackrandQuality {
   MEDIUM = "medium",
   HIGH = "high",
   ULTRA = "ultra",
+  ENTERPRISE = "enterprise",
 }
 
 export const BackrandQualityLabels: Record<BackrandQuality, string> = {
@@ -10,6 +11,7 @@ export const BackrandQualityLabels: Record<BackrandQuality, string> = {
   [BackrandQuality.MEDIUM]: "Middels",
   [BackrandQuality.HIGH]: "Høy",
   [BackrandQuality.ULTRA]: "Ultra",
+  [BackrandQuality.ENTERPRISE]: "Enterprise",
 };
 
 export const BackrandQualityDescriptions: Record<BackrandQuality, string> = {
@@ -21,9 +23,12 @@ export const BackrandQualityDescriptions: Record<BackrandQuality, string> = {
     "Høy kvalitet med god detaljrikdom. Krever mer tid og ressurser.",
   [BackrandQuality.ULTRA]:
     "Beste kvalitet med maksimal detaljrikdom. Anbefales for sluttprodukter.",
+  [BackrandQuality.ENTERPRISE]:
+    "Topp kvalitet med avanserte funksjoner for bedriftsbrukere.",
 };
 
 export const sortedBackrandQualities: BackrandQuality[] = [
+  BackrandQuality.ENTERPRISE,
   BackrandQuality.ULTRA,
   BackrandQuality.HIGH,
   BackrandQuality.MEDIUM,
