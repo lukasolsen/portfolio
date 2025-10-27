@@ -19,7 +19,7 @@ type BackrandContextType = {
   models: BackrandModel[];
 
   currentModel: BackrandModel;
-  setCurrentModel: (model: BackrandModel) => void;
+  setModel: (model_id: string) => void;
 
   handleGenerate: () => Promise<void>;
   updateSetting: <K extends keyof BackrandParams>(
@@ -68,6 +68,22 @@ export const BackrandProvider = ({
   const models = Object.values(BackrandModels);
   const [currentModel, setCurrentModel] = useState(models[0]);
 
+  const setModel = (model_id: string) => {
+    const model = BackrandModels[model_id as BackrandModelType];
+
+    setCurrentModel(model);
+    setParams((prev) => ({
+      ...prev,
+      model: model,
+      model_options: {
+        ...model.options?.reduce((acc, option) => {
+          acc[option.key] = option.default;
+          return acc;
+        }, {} as Record<string, string | number>),
+      },
+    }));
+  };
+
   const updateSetting = useCallback(
     <K extends keyof BackrandParams>(key: K, value: BackrandParams[K]) => {
       setParams((prev) => ({ ...prev, [key]: value }));
@@ -103,7 +119,7 @@ export const BackrandProvider = ({
     loading,
     models,
     currentModel,
-    setCurrentModel,
+    setModel,
     updateModelOption,
     handleGenerate,
     updateSetting,

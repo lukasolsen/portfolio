@@ -15,7 +15,7 @@ export const Layout: FC = () => {
     <div
       className={cn(
         "flex flex-col min-h-screen w-full mx-auto px-8",
-        isPlayground ? "max-w-full" : "max-w-6xl"
+        isPlayground ? "max-w-344" : "max-w-6xl"
       )}
     >
       <InstanceHeader />

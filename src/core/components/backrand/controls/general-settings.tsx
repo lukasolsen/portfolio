@@ -39,7 +39,7 @@ import { useBackrand } from "@/context/backrand-context";
 type Props = { showOption: (key: string) => boolean };
 
 export const GeneralSettings: FC<Props> = ({ showOption }) => {
-  const { params, updateSetting, setCurrentModel } = useBackrand();
+  const { params, updateSetting, setModel } = useBackrand();
 
   return (
     <div className="space-y-6">
@@ -55,8 +55,7 @@ export const GeneralSettings: FC<Props> = ({ showOption }) => {
           value={params.model.id}
           onValueChange={(v) => {
             const model = BackrandModels[v as BackrandModelType];
-            setCurrentModel(model);
-            updateSetting("model", model);
+            setModel(model.id);
           }}
         >
           <SelectTrigger>

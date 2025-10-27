@@ -30,9 +30,17 @@ export const ModelOptions: FC = () => {
       <Header6>Modellspesifikke innstillinger</Header6>
       {currentModel.options.map((opt) => {
         if (!opt.type) return null;
-        const modelOption = params.model.options?.[opt.key as number];
+        const modelOption = params.model.options?.[Number(opt.key)];
         const value =
-          params.option_values?.[opt.key] ?? modelOption?.default ?? null;
+          params.model_options?.[opt.key] ?? modelOption?.default ?? null;
+
+        console.log(
+          "Rendering option:",
+          opt.key,
+          "with value:",
+          value,
+          params.model_options?.[opt.key]
+        );
 
         return (
           <div key={opt.key} className="space-y-2">
@@ -58,8 +66,8 @@ export const ModelOptions: FC = () => {
             {opt.type === "slider" && (
               <Slider
                 value={[
-                  typeof params.option_values?.[opt.key] === "number"
-                    ? (params.option_values[opt.key] as number)
+                  typeof params.model_options?.[opt.key] === "number"
+                    ? (params.model_options[opt.key] as number)
                     : typeof opt.default === "number"
                     ? (opt.default as number)
                     : 0,
@@ -74,7 +82,9 @@ export const ModelOptions: FC = () => {
             {opt.type === "number" && (
               <Input
                 type="number"
-                value={[params.option_values[opt.key] ?? opt.default ?? 0]}
+                value={String(
+                  params.model_options?.[opt.key] ?? opt.default ?? 0
+                )}
                 onChange={(e) =>
                   updateModelOption(opt.key, Number(e.target.value))
                 }
@@ -84,7 +94,9 @@ export const ModelOptions: FC = () => {
             {opt.type === "select" && (
               <Select
                 onValueChange={(v) => updateModelOption(opt.key, v)}
-                value={[params.option_values[opt.key] ?? opt.default ?? 0]}
+                value={String(
+                  params.model_options?.[opt.key] ?? opt.default ?? 0
+                )}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Velg alternativ" />
