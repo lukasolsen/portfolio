@@ -38,7 +38,7 @@ export const BackrandProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const defaultModel = BackrandModels[BackrandModelType.Mesh];
+  const defaultModel = BackrandModels[BackrandModelType.MeshGradient];
 
   const [settings, setParams] = useState<BackrandParams>({
     size: "512x512",

@@ -1,8 +1,7 @@
 import { WarpType } from "./warps";
 
 export enum BackrandModelType {
-  Mesh = "mesh_v2",
-  AnchoredDelaunayMesh = "anchored_delaunay_mesh",
+  MeshGradient = "mesh_gradient",
   Ocean = "ocean",
 }
 
@@ -33,50 +32,13 @@ export type BackrandModel = {
 };
 
 export const BackrandModels: Record<BackrandModelType, BackrandModel> = {
-  [BackrandModelType.Mesh]: {
-    id: BackrandModelType.Mesh,
-    name: "🪶 Mesh Gradient – Myke overganger",
-    description:
-      "Genererer organiske, flytende gradienter ved å blande farger på et trekantet mesh.",
-    technical_description: `
-Mesh-v2-modellen bruker Delaunay-triangulering og smooth color interpolation for å produsere rike, naturlige overganger mellom fargepunkter.`,
-    tags: ["gradient", "smooth", "artistic"],
-    supportsWarp: false,
-    blacklistedOptions: ["warp_amplitude", "warp_frequency"],
-    options: [
-      {
-        key: "blur_radius",
-        label: "Uskarphet",
-        type: "slider",
-        min: 0,
-        max: 50,
-        step: 1,
-        default: 15,
-        description: "Kontrollerer hvor myke overgangene mellom fargene blir.",
-        advanced: true,
-      },
-      {
-        key: "grain",
-        label: "Korn",
-        type: "slider",
-        min: 0,
-        max: 0.2,
-        step: 0.01,
-        default: 0.02,
-        description:
-          "Legger til et subtilt kornete lag for en mer organisk følelse.",
-        advanced: true,
-      },
-    ],
-  },
-
-  [BackrandModelType.AnchoredDelaunayMesh]: {
-    id: BackrandModelType.AnchoredDelaunayMesh,
-    name: "🪶 Anchored Delaunay Mesh – Forankret Mesh",
+  [BackrandModelType.MeshGradient]: {
+    id: BackrandModelType.MeshGradient,
+    name: "🪶 Mesh Gradient - Myke overganger",
     description:
       "Et avansert gradientmesh som holder fargeankere i kantene for stabilitet og struktur.",
-    technical_description: `
-Denne modellen kombinerer Delaunay-triangulering med forankringspunkter for å forhindre ekstreme deformasjoner.`,
+    technical_description:
+      "Denne modellen kombinerer Delaunay-triangulering med forankringspunkter for å forhindre ekstreme deformasjoner.",
     tags: ["mesh", "anchored"],
     supportsWarp: true,
     allowedWarps: [WarpType.None, WarpType.Wave, WarpType.Turbulence],
