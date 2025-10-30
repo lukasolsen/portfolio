@@ -90,6 +90,46 @@ export const BackrandModels: Record<BackrandModelType, BackrandModel> = {
         description:
           "Velg hvordan kantfargene skal behandles for å påvirke mesh-strukturen.",
       },
+      {
+        key: "border_softening_radius",
+        label: "Kantmykning radius",
+        type: "number",
+        default: 8.0,
+        description:
+          "Radiusen for å myke opp kantfargene. Øker overgangen mellom kant og hovedfarger.",
+      },
+      {
+        key: "border_smoothing_strength",
+        label: "Kantmykning styrke",
+        type: "slider",
+        min: 0,
+        max: 1,
+        step: 0.05,
+        default: 0.5,
+        description:
+          "Styrken på kantmykningen. Høyere verdier gir en jevnere overgang.",
+      },
+      {
+        key: "use_bilateral_smoothing",
+        label: "Bruk bilateral utjevning",
+        type: "select",
+        options: [
+          {
+            label: "Ja",
+            value: "true",
+            description:
+              "Aktiverer bilateral utjevning for å bevare kanter mens støy reduseres.",
+          },
+          {
+            label: "Nei",
+            value: "false",
+            description: "Deaktiverer bilateral utjevning.",
+          },
+        ],
+        default: "false",
+        description:
+          "Velg om du vil bruke bilateral utjevning for bedre kantbevaring.",
+      },
     ],
   },
 
