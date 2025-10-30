@@ -3,6 +3,8 @@ import { WarpType } from "./warps";
 export enum BackrandModelType {
   MeshGradient = "mesh_gradient",
   Ocean = "ocean",
+  ConicGradient = "conic_gradient",
+  SKY = "sky",
 }
 
 export type ModelOption = {
@@ -174,5 +176,71 @@ Ocean-modellen bruker fraktal støy og harmonisk bølgesimulering for realistisk
         description: "Styrken på glans og lysrefleksjoner.",
       },
     ],
+  },
+
+  [BackrandModelType.ConicGradient]: {
+    id: BackrandModelType.ConicGradient,
+    name: "🌀 Conic Gradient – Sirkulær overgang",
+    description:
+      "En sirkulær gradientmodell som skaper en jevn overgang mellom farger rundt et sentralt punkt.",
+    technical_description:
+      "Denne modellen bruker polarkoordinater for å generere en konisk gradient som roterer rundt et definert sentrum.",
+    tags: ["gradient", "circular"],
+    supportsWarp: false,
+    options: [
+      {
+        key: "rotation_angle",
+        label: "Rotasjonsvinkel",
+        type: "slider",
+        min: 0,
+        max: 360,
+        step: 1,
+        default: 0,
+        description: "Vinkelen for å rotere gradienten rundt sentrumspunktet.",
+      },
+      //swirl_factor, smoothness, center_bias
+      {
+        key: "swirl_factor",
+        label: "Virvelfaktor",
+        type: "slider",
+        min: 0,
+        max: 5,
+        step: 0.1,
+        default: 1,
+        description:
+          "Kontrollerer graden av virvling i gradienten for en mer dynamisk effekt.",
+      },
+      {
+        key: "smoothness",
+        label: "Mykhet",
+        type: "slider",
+        min: 0,
+        max: 1,
+        step: 0.05,
+        default: 0.5,
+        description:
+          "Justere hvor jevn overgangen mellom fargene i gradienten er.",
+      },
+      {
+        key: "center_bias",
+        label: "Senterbias",
+        type: "slider",
+        min: 0,
+        max: 1,
+        step: 0.05,
+        default: 0.5,
+      },
+    ],
+  },
+
+  [BackrandModelType.SKY]: {
+    id: BackrandModelType.SKY,
+    name: "☁️ Sky – Himmel og skyer",
+    description:
+      "Genererer realistiske himmellandskap med dynamiske skyer og atmosfæriske effekter.",
+    technical_description:
+      "SKY-modellen bruker volumetrisk sky-simulering og atmosfærisk spredning for å skape levende himmellandskap.",
+    tags: ["sky", "clouds"],
+    supportsWarp: false,
   },
 };
