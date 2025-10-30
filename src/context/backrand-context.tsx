@@ -26,7 +26,7 @@ type BackrandContextType = {
     key: K,
     value: BackrandParams[K]
   ) => void;
-  updateModelOption: (key: string, value: string | number) => void;
+  updateModelOption: (key: string, value: string | number | boolean) => void;
 };
 
 const BackrandContext = createContext<BackrandContextType | undefined>(
@@ -91,7 +91,7 @@ export const BackrandProvider = ({
     []
   );
 
-  const updateModelOption = (key: string, value: string | number) => {
+  const updateModelOption = (key: string, value: string | number | boolean) => {
     setParams((prev) => ({
       ...prev,
       model_options: { ...prev.model_options, [key]: value },

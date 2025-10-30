@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
 import {
   Tooltip,
   TooltipContent,
@@ -33,14 +34,6 @@ export const ModelOptions: FC = () => {
         const modelOption = params.model.options?.[Number(opt.key)];
         const value =
           params.model_options?.[opt.key] ?? modelOption?.default ?? null;
-
-        console.log(
-          "Rendering option:",
-          opt.key,
-          "with value:",
-          value,
-          params.model_options?.[opt.key]
-        );
 
         return (
           <div key={opt.key} className="space-y-2">
@@ -116,6 +109,27 @@ export const ModelOptions: FC = () => {
                   ))}
                 </SelectContent>
               </Select>
+            )}
+
+            {opt.type === "colorlist" && (
+              <Input
+                type="text"
+                placeholder="F.eks. #ff0000,#00ff00,#0000ff"
+                value={String(
+                  params.model_options?.[opt.key] ?? opt.default ?? ""
+                )}
+              />
+            )}
+
+            {opt.type === "boolean" && (
+              <Switch
+                checked={Boolean(
+                  params.model_options?.[opt.key] ?? opt.default
+                )}
+                onCheckedChange={(checked) =>
+                  updateModelOption(opt.key, checked)
+                }
+              />
             )}
           </div>
         );

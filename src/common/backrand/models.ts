@@ -10,13 +10,13 @@ export enum BackrandModelType {
 export type ModelOption = {
   key: string;
   label: string;
-  type: "slider" | "number" | "select";
+  type: "slider" | "number" | "select" | "colorlist" | "boolean";
   min?: number;
   max?: number;
   step?: number;
   default?: number | string;
   description?: string;
-  options?: { label: string; value: string; description: string }[];
+  options?: { label: string; value: string; description?: string }[];
   advanced?: boolean;
   category?: string;
 };
@@ -242,5 +242,120 @@ Ocean-modellen bruker fraktal støy og harmonisk bølgesimulering for realistisk
       "SKY-modellen bruker volumetrisk sky-simulering og atmosfærisk spredning for å skape levende himmellandskap.",
     tags: ["sky", "clouds"],
     supportsWarp: false,
+    options: [
+      {
+        key: "mode",
+        label: "Modus",
+        type: "select",
+        options: [
+          { value: "night", label: "Natt" },
+          { value: "day", label: "Dag" },
+          { value: "dawn", label: "Morgen" },
+          { value: "dusk", label: "Kveld" },
+        ],
+        default: "night",
+      },
+      {
+        key: "palette",
+        label: "Egendefinert palett",
+        type: "colorlist",
+        description:
+          "Velg en egendefinert fargepalett for himmelen (liste av hex-farger).",
+      },
+      {
+        key: "cloud_density",
+        label: "Sky tetthet",
+        type: "slider",
+        min: 0,
+        max: 1,
+        step: 0.05,
+        default: 0.35,
+        description: "Kontrollerer hvor tette skyene er i himmelen.",
+      },
+      {
+        key: "cloud_coverage",
+        label: "Skydekke",
+        type: "slider",
+        min: 0,
+        max: 1,
+        step: 0.05,
+        default: 0.5,
+        description: "Hvor mye av himmelen som er dekket av skyer.",
+      },
+      {
+        key: "cloud_softness",
+        label: "Sky mykhet",
+        type: "slider",
+        min: 0,
+        max: 1,
+        step: 0.05,
+        default: 0.6,
+        description: "Justere hvor myke og diffuse skyene ser ut.",
+      },
+      {
+        key: "star_density",
+        label: "Stjernetetthet",
+        type: "slider",
+        min: 0,
+        max: 0.01,
+        step: 0.0005,
+        default: 0.002,
+        description:
+          "Kontrollerer hvor mange stjerner som vises på nattehimmelen.",
+      },
+      {
+        key: "moon_enabled",
+        label: "Måne aktivert",
+        type: "boolean",
+        default: true,
+        description: "Velg om månen skal vises på himmelen.",
+      },
+      {
+        key: "moon_phase",
+        label: "Månefase",
+        type: "select",
+        options: [
+          { value: "new", label: "Nymåne" },
+          { value: "crescent", label: "Halvmåne" },
+          { value: "quarter", label: "Første kvartal" },
+          { value: "gibbous", label: "Gibbous" },
+          { value: "full", label: "Fullmåne" },
+        ],
+        default: "full",
+        description:
+          "Velg månefasen som skal vises. Mapper automatisk til riktig float verdi.",
+      },
+      {
+        key: "planet_count",
+        label: "Antall planeter",
+        type: "number",
+        min: 0,
+        max: 5,
+        step: 1,
+        default: 0,
+        description: "Antall synlige planeter på himmelen.",
+      },
+      {
+        key: "horizon_brightness",
+        label: "Horisont lysstyrke",
+        type: "slider",
+        min: 0,
+        max: 1,
+        step: 0.05,
+        default: 0.6,
+        description:
+          "Justere lysstyrken nær horisonten for soloppgang/solnedgangseffekter.",
+      },
+      {
+        key: "star_twinkle",
+        label: "Stjerneskinn",
+        type: "slider",
+        min: 0,
+        max: 0.2,
+        step: 0.01,
+        default: 0.08,
+        description: "Kontrollerer hvor mye stjernene skinner og blinker.",
+      },
+    ],
   },
 };
