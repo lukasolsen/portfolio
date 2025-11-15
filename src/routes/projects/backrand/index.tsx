@@ -3,8 +3,7 @@ import { ProjectHero } from "@/core/components/project-view/project-hero";
 import { ProjectMeta } from "@/core/components/project-view/project-meta";
 import { ProjectSection } from "@/core/components/project-view/project-section";
 import { ProjectGallery } from "@/core/components/project-view/project-gallery";
-import { backrandProject } from "@/data/backrand";
-import { Header3, Paragraph } from "@/components/typography";
+import { Header3, Paragraph } from "@/components/typography/typography";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Terminal } from "lucide-react";
@@ -30,6 +29,7 @@ import {
   SnippetTabsTrigger,
 } from "@/components/kibo-ui/snippet";
 import { useState } from "react";
+import { backrandProject } from "@/data/backrand/backrand";
 
 export const Route = createFileRoute("/projects/backrand/")({
   component: RouteComponent,

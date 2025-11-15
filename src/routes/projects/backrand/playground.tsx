@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
-import { LeadText, Paragraph, Title } from "@/components/typography";
+import { LeadText, Paragraph, Title } from "@/components/typography/typography";
 import { PlaygroundControls } from "@/core/components/backrand/playground-controls";
 import { BackrandProvider, useBackrand } from "@/context/backrand-context";
 

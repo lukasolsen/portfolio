@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsDyplinkAiRouteImport } from './routes/projects/dyplink-ai'
+import { Route as BlogsIdRouteImport } from './routes/blogs/$id'
 import { Route as ProjectsBackrandIndexRouteImport } from './routes/projects/backrand/index'
 import { Route as ProjectsBackrandPlaygroundRouteImport } from './routes/projects/backrand/playground'
 
@@ -22,6 +23,11 @@ const IndexRoute = IndexRouteImport.update({
 const ProjectsDyplinkAiRoute = ProjectsDyplinkAiRouteImport.update({
   id: '/projects/dyplink-ai',
   path: '/projects/dyplink-ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogsIdRoute = BlogsIdRouteImport.update({
+  id: '/blogs/$id',
+  path: '/blogs/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsBackrandIndexRoute = ProjectsBackrandIndexRouteImport.update({
@@ -38,12 +44,14 @@ const ProjectsBackrandPlaygroundRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/blogs/$id': typeof BlogsIdRoute
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
   '/projects/backrand': typeof ProjectsBackrandIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/blogs/$id': typeof BlogsIdRoute
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
   '/projects/backrand': typeof ProjectsBackrandIndexRoute
@@ -51,6 +59,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/blogs/$id': typeof BlogsIdRoute
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
   '/projects/backrand/': typeof ProjectsBackrandIndexRoute
@@ -59,18 +68,21 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/blogs/$id'
     | '/projects/dyplink-ai'
     | '/projects/backrand/playground'
     | '/projects/backrand'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/blogs/$id'
     | '/projects/dyplink-ai'
     | '/projects/backrand/playground'
     | '/projects/backrand'
   id:
     | '__root__'
     | '/'
+    | '/blogs/$id'
     | '/projects/dyplink-ai'
     | '/projects/backrand/playground'
     | '/projects/backrand/'
@@ -78,6 +90,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BlogsIdRoute: typeof BlogsIdRoute
   ProjectsDyplinkAiRoute: typeof ProjectsDyplinkAiRoute
   ProjectsBackrandPlaygroundRoute: typeof ProjectsBackrandPlaygroundRoute
   ProjectsBackrandIndexRoute: typeof ProjectsBackrandIndexRoute
@@ -99,6 +112,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsDyplinkAiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blogs/$id': {
+      id: '/blogs/$id'
+      path: '/blogs/$id'
+      fullPath: '/blogs/$id'
+      preLoaderRoute: typeof BlogsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects/backrand/': {
       id: '/projects/backrand/'
       path: '/projects/backrand'
@@ -118,6 +138,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BlogsIdRoute: BlogsIdRoute,
   ProjectsDyplinkAiRoute: ProjectsDyplinkAiRoute,
   ProjectsBackrandPlaygroundRoute: ProjectsBackrandPlaygroundRoute,
   ProjectsBackrandIndexRoute: ProjectsBackrandIndexRoute,

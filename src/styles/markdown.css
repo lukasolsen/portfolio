@@ -1,0 +1,253 @@
+.markdown-content {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: oklch(var(--muted-foreground));
+}
+
+@media (min-width: 768px) {
+  .markdown-content {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  color: oklch(var(--foreground));
+  font-weight: 600;
+  line-height: 1.25;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  scroll-margin-top: 6rem;
+}
+
+@media (min-width: 768px) {
+  .markdown-content h1,
+  .markdown-content h2,
+  .markdown-content h3,
+  .markdown-content h4,
+  .markdown-content h5,
+  .markdown-content h6 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.markdown-content h1 {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .markdown-content h1 {
+    font-size: 1.875rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.markdown-content h2 {
+  font-size: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .markdown-content h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1.25rem;
+  }
+}
+
+.markdown-content h3 {
+  font-size: 1.125rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .markdown-content h3 {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+.markdown-content h4 {
+  font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+  .markdown-content h4 {
+    font-size: 1.125rem;
+  }
+}
+
+.markdown-content p {
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .markdown-content p {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.markdown-content strong {
+  color: oklch(var(--foreground));
+  font-weight: 600;
+}
+
+.markdown-content a {
+  color: oklch(var(--primary));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.markdown-content a:hover {
+  color: oklch(var(--primary) / 0.8);
+}
+
+.markdown-content code {
+  background-color: oklch(var(--muted) / 0.3);
+  color: oklch(var(--primary));
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Inconsolata, "Roboto Mono", "Source Code Pro", monospace;
+}
+
+@media (min-width: 768px) {
+  .markdown-content code {
+    padding: 0.125rem 0.375rem;
+    font-size: 0.875rem;
+  }
+}
+
+.markdown-content pre {
+  background-color: oklch(var(--muted) / 0.5);
+  border: 1px solid oklch(var(--border));
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+  font-size: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .markdown-content pre {
+    padding: 1rem;
+    margin: 1.25rem 0;
+    font-size: 0.875rem;
+  }
+}
+
+.markdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid oklch(var(--primary) / 0.3);
+  padding-left: 0.75rem;
+  margin: 1.25rem 0;
+  font-style: italic;
+  color: oklch(var(--muted-foreground));
+}
+
+@media (min-width: 768px) {
+  .markdown-content blockquote {
+    border-left-width: 4px;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+  }
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin: 1.25rem 0;
+  padding-left: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .markdown-content ul,
+  .markdown-content ol {
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+  }
+}
+
+.markdown-content li {
+  margin-bottom: 0.375rem;
+}
+
+@media (min-width: 768px) {
+  .markdown-content li {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.markdown-content hr {
+  border: 0;
+  border-top: 1px solid oklch(var(--border));
+  margin: 1.5rem 0;
+}
+
+@media (min-width: 768px) {
+  .markdown-content hr {
+    margin: 2rem 0;
+  }
+}
+
+.markdown-content img {
+  border-radius: 0.375rem;
+  max-width: 100%;
+  height: auto;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .markdown-content img {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Responsive table handling */
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.8rem;
+  overflow-x: auto;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .markdown-content table {
+    font-size: 0.875rem;
+    display: table;
+  }
+}
+
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid oklch(var(--border));
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.markdown-content th {
+  background-color: oklch(var(--muted) / 0.3);
+  font-weight: 600;
+}

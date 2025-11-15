@@ -1,8 +1,8 @@
 import { Github, Link2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
-import { LeadText, SmallText, Title } from "@/components/typography";
-import type { Project } from "@/data";
+import { LeadText, SmallText, Title } from "@/components/typography/typography";
+import type { Project } from "@/common/project/project";
 
 export const ProjectHero = ({ project }: { project: Project }) => {
   return (

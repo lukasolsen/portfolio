@@ -6,10 +6,11 @@ import {
 } from "@/core/components/work-experience";
 import { createFileRoute } from "@tanstack/react-router";
 import { Separator } from "@/components/ui/separator";
-import { Header3, LeadText, Paragraph } from "@/components/typography";
-import { dyplinkAiProject } from "@/data/dyplink-ai";
-import type { Project } from "@/data";
-import { backrandProject } from "@/data/backrand";
+import {
+  Header3,
+  LeadText,
+  Paragraph,
+} from "@/components/typography/typography";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -29,8 +30,6 @@ function RouteComponent() {
       seeMoreLink: "https://dyplink.no",
     },
   ];
-
-  const projects: Array<Project> = [dyplinkAiProject, backrandProject];
 
   return (
     <div className="content mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
@@ -104,7 +103,7 @@ function RouteComponent() {
         viewport={{ once: true }}
       >
         <Header3 className="mb-1">Prosjekter</Header3>
-        <Projects projects={projects} />
+        <Projects />
       </motion.section>
 
       {/* --- Contact Section --- */}

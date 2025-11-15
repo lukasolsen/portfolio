@@ -1,4 +1,4 @@
-import { Header3 } from "@/components/typography";
+import { Header3 } from "@/components/typography/typography";
 import { motion } from "framer-motion";
 
 export const ProjectChangelog = ({

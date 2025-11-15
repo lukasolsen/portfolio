@@ -1,6 +1,8 @@
-import type { Project } from ".";
+import type { Project } from "@/common/project/project";
 
 export const backrandProject: Project = {
+  id: "backrand",
+
   title: "Backrand",
   description:
     "Backrand er et verktøy som lager gradientbakgrunner på sekunder. Perfekt for designere og utviklere som ønsker raske og vakre bakgrunner.",

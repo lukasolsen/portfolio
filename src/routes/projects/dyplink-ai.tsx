@@ -3,7 +3,9 @@ import { ProjectHero } from "@/core/components/project-view/project-hero";
 import { ProjectMeta } from "@/core/components/project-view/project-meta";
 import { ProjectSection } from "@/core/components/project-view/project-section";
 import { ProjectGallery } from "@/core/components/project-view/project-gallery";
-import { dyplinkAiProject } from "@/data/dyplink-ai";
+import { Resources } from "@/components/resources";
+import { dyplinkAiProject } from "@/data/dyplink-ai/dyplink-ai";
+import { InternalSiteCard } from "@/components/typography/card";
 
 export const Route = createFileRoute("/projects/dyplink-ai")({
   component: RouteComponent,
@@ -17,6 +19,11 @@ function RouteComponent() {
       <ProjectHero project={project} />
       <div className="max-w-6xl mx-auto px-4 md:px-8">
         {project.stats && <ProjectMeta project={project} />}
+
+        <InternalSiteCard
+          url="/blogs/planning-your-ai-integration"
+          children={<a href="/projects/dyplink-ai">Besøk Dyplink AI</a>}
+        />
 
         <ProjectSection
           title="Om prosjektet"
@@ -42,6 +49,10 @@ function RouteComponent() {
           content="Prosjektet er integrert mot flere nettaviser som bruker Wordpress. Dyplink AI støtter flere LLM-leverandører, inkludert Gemini."
         />
       </div>
+
+      {project.resources && project.resources.length > 0 && (
+        <Resources resources={project.resources} />
+      )}
     </div>
   );
 }

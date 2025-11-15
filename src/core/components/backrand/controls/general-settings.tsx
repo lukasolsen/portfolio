@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
-import { Header6, Paragraph } from "@/components/typography";
+import { Header6, Paragraph } from "@/components/typography/typography";
 import {
   CpuIcon,
   ImageIcon,

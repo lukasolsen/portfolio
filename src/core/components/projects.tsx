@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Link } from "@tanstack/react-router";
 import { isLinkExternal } from "@/lib/utils";
-import type { Project } from "@/data";
+import { projects } from "@/data";
 
 interface GithubData {
   stars: number;
@@ -33,11 +33,7 @@ export interface ProjectItem {
   like?: boolean;
 }
 
-interface ProjectListProps {
-  projects: Project[];
-}
-
-export const Projects: FC<ProjectListProps> = ({ projects }) => {
+export const Projects: FC = () => {
   const [githubInfo, setGithubInfo] = useState<Record<string, GithubData>>({});
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { Header3, SmallText } from "@/components/typography";
+import { Header3, SmallText } from "@/components/typography/typography";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import {

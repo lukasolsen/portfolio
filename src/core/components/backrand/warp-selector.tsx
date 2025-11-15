@@ -1,5 +1,5 @@
 import { Warps, WarpType } from "@/common/backrand/warps";
-import { Paragraph } from "@/components/typography";
+import { Paragraph } from "@/components/typography/typography";
 import { Label } from "@/components/ui/label";
 import {
   Select,

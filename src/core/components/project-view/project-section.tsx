@@ -1,4 +1,8 @@
-import { Header3, ListItem, Paragraph } from "@/components/typography";
+import {
+  Header3,
+  ListItem,
+  Paragraph,
+} from "@/components/typography/typography";
 import { motion } from "framer-motion";
 
 export const ProjectSection = ({

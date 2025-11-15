@@ -9,7 +9,7 @@ import { ColorSettings } from "./controls/color-settings";
 import { ModelOptions } from "./controls/model-options";
 import { WarpSelector } from "./warp-selector";
 import { AdvancedSettings } from "./controls/advanced-settings";
-import { Header5 } from "@/components/typography";
+import { Header5 } from "@/components/typography/typography";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useBackrand } from "@/context/backrand-context";
 
