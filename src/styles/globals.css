@@ -155,3 +155,19 @@ html {
   scroll-behavior: smooth;
 }
 
+::selection {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+::-moz-selection {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+a::selection {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+a::-moz-selection {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
