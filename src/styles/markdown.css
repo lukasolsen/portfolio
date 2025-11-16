@@ -111,7 +111,7 @@
 }
 
 .markdown-content a:hover {
-  color: oklch(var(--primary) / 0.8);
+  @apply text-blue-600;
 }
 
 .markdown-content code {

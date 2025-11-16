@@ -24,6 +24,7 @@ export interface Blog {
   subtitle?: string;
 
   content: string | React.ReactElement; // markdown content or MDX component
+  rawContent?: string; // raw content for heading extraction when using MDX
 
   tags: string[];
   type: "personal" | "work";

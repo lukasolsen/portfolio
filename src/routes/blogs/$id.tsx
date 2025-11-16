@@ -1,76 +1,147 @@
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { LeadText, SmallText, Title } from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
 import { blogs } from "@/data";
 import { createFileRoute, useParams } from "@tanstack/react-router";
-import { Share, BookOpen, List, ChevronRight, Briefcase } from "lucide-react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeSlug from "rehype-slug";
-import { useEffect, useState, useMemo } from "react";
+import { Share, BookOpen, Briefcase } from "lucide-react";
 import { Relations } from "@/components/relations";
 import { WorkDisclaimer } from "@/components/work-disclaimer";
+import { Markdown } from "@/core/components/markdown/markdown";
+import {
+  TableOfContents,
+  type HeadingItem,
+} from "@/core/components/markdown/table-of-contents";
+import { markdownToText } from "@/lib/markdown";
 
+const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "")
+    .replace(/-+/g, "-");
+
+/* Slight offset (in pixels) to account for sticky headers */
+const SCROLL_OFFSET = 84; // adjust to match header height
+
+/* --- Route definition --- */
 export const Route = createFileRoute("/blogs/$id")({
   component: RouteComponent,
 });
 
-function RouteComponent() {
+export function RouteComponent() {
   const params = useParams({ from: "/blogs/$id" });
   const blog = blogs.find((b) => b.id === params.id);
+
+  const articleRef = useRef<HTMLElement | null>(null);
+  const [headings, setHeadings] = useState<HeadingItem[]>([]);
   const [activeHeading, setActiveHeading] = useState<string>("");
+  const [contentMounted, setContentMounted] = useState(false);
 
-  const headings = useMemo(() => {
-    if (!blog) return [];
+  const words =
+    typeof blog?.content === "string" ? blog.content.split(/\s+/).length : 0;
+  const calculatedReadingTime = words > 0 ? Math.ceil(words / 200) : 5;
 
-    // For MDX content, we can't extract headings from the component
-    // Headings will be handled by rehype-slug in the MDX processing
-    if (typeof blog.content !== "string") return [];
+  console.log(markdownToText(blog?.rawContent));
 
-    return Array.from(blog.content.matchAll(/^(#{1,3})\s+(.+)/gm)).map((m) => ({
-      level: m[1].length,
-      text: m[2],
-      id: m[2].toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-    }));
-  }, [blog]);
+  useLayoutEffect(() => {
+    setHeadings([]);
+    setActiveHeading("");
+    setContentMounted(false);
+
+    let rafId: number | null = null;
+    rafId = requestAnimationFrame(() => {
+      const container = articleRef.current;
+      if (!container) {
+        setContentMounted(true);
+        return;
+      }
+
+      const headingNodes = Array.from(
+        container.querySelectorAll<HTMLElement>("h1, h2, h3")
+      );
+
+      const built: HeadingItem[] = headingNodes.map((node) => {
+        const text = node.textContent?.trim() || "heading";
+        let id = node.id || slugify(text);
+        let suffix = 1;
+
+        while (document.getElementById(id)) {
+          const existing = document.getElementById(id);
+          if (existing === node) break;
+          id = `${slugify(text)}-${suffix++}`;
+        }
+
+        if (!node.id) node.id = id;
+
+        node.style.scrollMarginTop = `${SCROLL_OFFSET + 8}px`;
+
+        return {
+          id,
+          text,
+          level: parseInt(node.tagName.replace("H", ""), 10) || 2,
+        };
+      });
+
+      setHeadings(built);
+      setContentMounted(true);
+    });
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [blog?.id, blog?.content]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const headingElements = headings
-        .map((h) => document.getElementById(h.id))
-        .filter(Boolean);
+    if (!contentMounted || headings.length === 0) return;
 
-      if (headingElements.length === 0) return;
+    const observerOptions: IntersectionObserverInit = {
+      root: null,
+      rootMargin: "-40% 0px -50% 0px",
+      threshold: [0, 0.25, 0.6, 1],
+    };
 
-      let bestHeading = "";
-      let bestScore = -Infinity;
+    let activeId = "";
 
-      headingElements.forEach((element, index) => {
-        if (!element) return;
-
-        const rect = element.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-
-        const visibleTop = Math.max(0, -rect.top);
-        const visibleBottom = Math.max(0, rect.bottom - viewportHeight);
-        const visibleHeight = rect.height - visibleTop - visibleBottom;
-        const visibilityRatio = visibleHeight / rect.height;
-
-        const positionScore = 1 - rect.top / viewportHeight;
-        const score = visibilityRatio * 0.7 + positionScore * 0.3;
-
-        if (score > bestScore && score > 0.1) {
-          bestScore = score;
-          bestHeading = headings[index].id;
+    const observer = new IntersectionObserver((entries) => {
+      let best: IntersectionObserverEntry | null = null;
+      entries.forEach((entry) => {
+        if (!best) {
+          best = entry;
+        } else {
+          if ((entry.intersectionRatio || 0) > (best.intersectionRatio || 0)) {
+            best = entry;
+          }
         }
       });
 
-      setActiveHeading(bestHeading);
-    };
+      if (best && best.target && (best.target as HTMLElement).id) {
+        const id = (best.target as HTMLElement).id;
+        if (id !== activeId) {
+          activeId = id;
+          setActiveHeading(id);
+        }
+      }
+    }, observerOptions);
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [headings]);
+    headings.forEach((h) => {
+      const el = document.getElementById(h.id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [contentMounted, headings]);
+
+  const [showContent, setShowContent] = useState(false);
+  useEffect(() => {
+    if (contentMounted) {
+      const t = setTimeout(() => setShowContent(true), 40);
+      return () => clearTimeout(t);
+    }
+    setShowContent(false);
+  }, [contentMounted, blog?.id]);
 
   if (!blog) {
     return (
@@ -79,10 +150,6 @@ function RouteComponent() {
       </div>
     );
   }
-
-  const words =
-    typeof blog.content === "string" ? blog.content.split(/\s+/).length : 0;
-  const calculatedReadingTime = words > 0 ? Math.ceil(words / 200) : 5; // Default 5 min for MDX content
 
   return (
     <div className="min-h-screen w-full bg-background text-foreground">
@@ -127,7 +194,7 @@ function RouteComponent() {
       <section className="max-w-6xl mx-auto px-4 md:px-8 py-4 md:py-6 flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center justify-between">
         <SmallText className="flex items-center gap-2 text-gray-50">
           <BookOpen className="h-4 w-4 shrink-0" />
-          <span className="text-sm md:text-base">
+          <span className="text-sm md:text-base text-gray-50">
             Estimer lesetid: {calculatedReadingTime} minutter
           </span>
         </SmallText>
@@ -152,103 +219,34 @@ function RouteComponent() {
       {/* Content layout */}
       <section className="max-w-6xl mx-auto px-4 md:px-8 py-8 md:py-14 grid grid-cols-1 md:grid-cols-[1fr_260px] gap-8 md:gap-14">
         {/* Main content */}
-        <div className="markdown-content max-w-none">
-          {typeof blog.content === "string" ? (
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeSlug]}
-            >
-              {blog.content}
-            </ReactMarkdown>
-          ) : (
-            blog.content
-          )}
-        </div>
+        <main
+          ref={articleRef}
+          className={`markdown-content max-w-none prose prose-invert transition-all duration-300 ease-out
+            ${
+              showContent
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 -translate-y-2"
+            }`}
+          aria-labelledby="article-title"
+        >
+          <Markdown
+            content={
+              blog.rawContent
+                ? markdownToText(blog.rawContent)
+                : (blog.content as string)
+            }
+          />
+        </main>
 
         {/* Table of contents */}
-        <aside className="hidden md:flex flex-col gap-6 sticky top-28 h-fit p-6 border border-border/60 rounded-2xl bg-background/60 backdrop-blur-xl shadow-lg">
-          <div className="flex items-center gap-3 pb-3 border-b border-border/40">
-            <List className="h-4 w-4 text-primary" />
-            <SmallText className="uppercase tracking-wider font-medium">
-              Innhold
-            </SmallText>
-          </div>
-
-          <nav className="flex flex-col gap-1">
-            {headings.map((heading, i) => {
-              const isActive = activeHeading === heading.id;
-              const indent =
-                heading.level === 1
-                  ? ""
-                  : heading.level === 2
-                  ? "ml-5"
-                  : "ml-10";
-
-              return (
-                <a
-                  key={i}
-                  href={`#${heading.id}`}
-                  className={`
-                    group flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200
-                    ${
-                      isActive
-                        ? "bg-primary/15 text-primary border border-primary/30"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
-                    }
-                    ${indent}
-                  `}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const el = document.getElementById(heading.id);
-                    if (el) {
-                      el.scrollIntoView({ behavior: "smooth", block: "start" });
-                    }
-                  }}
-                >
-                  <div
-                    className={`w-1.5 h-1.5 rounded-full transition-all ${
-                      isActive
-                        ? "bg-primary scale-125"
-                        : "bg-muted-foreground/60 group-hover:bg-primary/60"
-                    }`}
-                  />
-                  <span
-                    className={`
-                      text-sm transition-all
-                      ${
-                        heading.level === 1
-                          ? "font-semibold"
-                          : heading.level === 2
-                          ? "font-medium"
-                          : "font-normal opacity-80"
-                      }
-                      ${isActive ? "text-primary" : ""}
-                    `}
-                  >
-                    {heading.text}
-                  </span>
-
-                  {isActive && (
-                    <ChevronRight className="ml-auto h-3 w-3 text-primary" />
-                  )}
-                </a>
-              );
-            })}
-          </nav>
-
-          {headings.length === 0 && (
-            <div className="text-center py-6">
-              <SmallText className="text-muted-foreground">
-                Ingen overskrifter funnet
-              </SmallText>
-            </div>
-          )}
-        </aside>
+        <TableOfContents headings={headings} activeHeading={activeHeading} />
       </section>
 
       {/* Relations */}
       {blog.relations && blog.relations.length > 0 && (
-        <Relations relations={blog.relations} />
+        <section className="max-w-6xl mx-auto px-4 md:px-8 py-6">
+          <Relations relations={blog.relations} />
+        </section>
       )}
     </div>
   );
