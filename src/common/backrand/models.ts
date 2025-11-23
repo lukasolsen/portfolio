@@ -2,7 +2,7 @@ import { WarpType } from "./warps";
 
 export enum BackrandModelType {
   MeshGradient = "mesh_gradient",
-  Ocean = "ocean",
+  ReflectiveMesh = "reflective_mesh",
   ConicGradient = "conic_gradient",
   SKY = "sky",
 }
@@ -26,154 +26,110 @@ export type BackrandModel = {
   name: string;
   description: string;
   technical_description: string;
+  tags?: string[];
+
   supportsWarp?: boolean;
   allowedWarps?: WarpType[];
-  options?: ModelOption[];
   blacklistedOptions?: string[];
-  tags?: string[];
+
+  options?: ModelOption[];
 };
 
 export const BackrandModels: Record<BackrandModelType, BackrandModel> = {
   [BackrandModelType.MeshGradient]: {
     id: BackrandModelType.MeshGradient,
-    name: "🪶 Mesh Gradient - Myke overganger",
+    name: "Mesh Gradient",
     description:
       "Et avansert gradientmesh som holder fargeankere i kantene for stabilitet og struktur.",
     technical_description:
       "Denne modellen kombinerer Delaunay-triangulering med forankringspunkter for å forhindre ekstreme deformasjoner.",
     tags: ["mesh", "anchored"],
+    supportsWarp: false,
+    options: [
+      {
+        key: "distribution",
+        label: "Distribusjon",
+        description: "Bestemmer hvilken algoritme som brukes",
+        type: "select",
+        default: "random",
+        options: [
+          {
+            label: "Linear",
+            value: "linear",
+            description: "Fargene fordeles jevnt mellom punktene",
+          },
+          {
+            label: "Random",
+            value: "random",
+            description:
+              "Fargene fordeles tilfeldig mellom punktene for et mer organisk utseende",
+          },
+          {
+            label: "Radial",
+            value: "radial",
+            description:
+              "Fargene fordeles i en sirkulær mønster fra sentrum til kantene",
+          },
+        ],
+      },
+      {
+        key: "algorithm",
+        label: "Algoritme",
+        description: "Velg hvilken mesh-genereringsalgoritme som skal brukes",
+        type: "select",
+        default: "delaunay",
+        options: [
+          {
+            label: "Delaunay Triangulation",
+            value: "delaunay",
+            description:
+              "En klassisk algoritme som skaper et nettverk av trekanter basert på punktene",
+          },
+          {
+            label: "Radial Basis Function",
+            value: "rbf",
+            description:
+              "En mer avansert metode som bruker matematiske funksjoner for å interpolere fargene mellom punktene",
+          },
+          {
+            label: "Voronoi Diagram",
+            value: "voronoi",
+            description:
+              "Deler rommet i regioner basert på avstanden til punktene, noe som skaper et unikt mønster",
+          },
+        ],
+      },
+      {
+        key: "use_relaxation",
+        label: "Bruk avslapning",
+        type: "boolean",
+        description:
+          "Aktiverer en prosess som jevner ut mesh-strukturen for å redusere skarpe kanter og forbedre visuell kvalitet.",
+      },
+    ],
+  },
+
+  [BackrandModelType.ReflectiveMesh]: {
+    id: BackrandModelType.ReflectiveMesh,
+    name: "🪞 Reflective Mesh - Speilende overflater",
+    description:
+      "Et mesh-basert bakgrunnsmodell som simulerer speilende og reflekterende overflater.",
+    technical_description:
+      "Denne modellen bruker en kombinasjon av mesh-deformasjon og miljøkart for å skape realistiske refleksjonseffekter.",
+    tags: ["mesh", "reflective"],
     supportsWarp: true,
     allowedWarps: [WarpType.None, WarpType.Wave, WarpType.Turbulence],
     options: [
       {
-        key: "warp_amplitude",
-        label: "Warp amplitude",
-        type: "slider",
-        min: 0,
-        max: 100,
-        step: 1,
-        default: 20,
-        description:
-          "Hvor sterkt mesh'et bøyes og deformeres. Høyere verdier gir mer intens effekt.",
-      },
-      {
-        key: "warp_frequency",
-        label: "Warp frekvens",
-        type: "slider",
-        min: 0.01,
-        max: 0.2,
-        step: 0.01,
-        default: 0.05,
-        description:
-          "Antall bølger per bilde. Lavere verdier gir bredere, roligere bølger.",
-      },
-      {
-        key: "border_colors",
-        label: "Kantfarger",
-        type: "select",
-        options: [
-          {
-            label: "Ingen",
-            value: "none",
-            description: "Ingen spesielle kantfarger.",
-          },
-          {
-            label: "Matchende farger",
-            value: "match",
-            description: "Bruk farger fra hovedpaletten for kantene.",
-          },
-          {
-            label: "Kontrastfarger",
-            value: "contrast",
-            description: "Bruk kontrastfarger for kantene.",
-          },
-        ],
-        default: "none",
-        description:
-          "Velg hvordan kantfargene skal behandles for å påvirke mesh-strukturen.",
-      },
-      {
-        key: "border_softening_radius",
-        label: "Kantmykning radius",
-        type: "number",
-        default: 8.0,
-        description:
-          "Radiusen for å myke opp kantfargene. Øker overgangen mellom kant og hovedfarger.",
-      },
-      {
-        key: "border_smoothing_strength",
-        label: "Kantmykning styrke",
+        key: "reflection_amount",
+        label: "Refleksjonsmengde",
         type: "slider",
         min: 0,
         max: 1,
         step: 0.05,
         default: 0.5,
         description:
-          "Styrken på kantmykningen. Høyere verdier gir en jevnere overgang.",
-      },
-      {
-        key: "use_bilateral_smoothing",
-        label: "Bruk bilateral utjevning",
-        type: "select",
-        options: [
-          {
-            label: "Ja",
-            value: "true",
-            description:
-              "Aktiverer bilateral utjevning for å bevare kanter mens støy reduseres.",
-          },
-          {
-            label: "Nei",
-            value: "false",
-            description: "Deaktiverer bilateral utjevning.",
-          },
-        ],
-        default: "false",
-        description:
-          "Velg om du vil bruke bilateral utjevning for bedre kantbevaring.",
-      },
-    ],
-  },
-
-  [BackrandModelType.Ocean]: {
-    id: BackrandModelType.Ocean,
-    name: "🌊 Ocean – Bølgeeffekt",
-    description:
-      "Simulerer flytende, realistiske bølgebevegelser med refleksjon og lysrefleksjon.",
-    technical_description: `
-Ocean-modellen bruker fraktal støy og harmonisk bølgesimulering for realistiske væskelignende effekter.`,
-    tags: ["fluid", "wave"],
-    supportsWarp: true,
-    options: [
-      {
-        key: "wave_amplitude",
-        label: "Bølgehøyde",
-        type: "slider",
-        min: 0,
-        max: 2,
-        step: 0.1,
-        default: 1,
-        description: "Kontrollerer hvor kraftige bølgene er.",
-      },
-      {
-        key: "wave_frequency",
-        label: "Frekvens",
-        type: "slider",
-        min: 0,
-        max: 1,
-        step: 0.05,
-        default: 0.3,
-        description: "Hvor mange bølger som vises over bildet.",
-      },
-      {
-        key: "reflection_intensity",
-        label: "Refleksjon",
-        type: "slider",
-        min: 0,
-        max: 1,
-        step: 0.05,
-        default: 0.2,
-        description: "Styrken på glans og lysrefleksjoner.",
+          "Kontrollerer intensiteten av refleksjonene på overflaten. Høyere verdier gir sterkere refleksjoner.",
       },
     ],
   },
@@ -307,7 +263,6 @@ Ocean-modellen bruker fraktal støy og harmonisk bølgesimulering for realistisk
         key: "moon_enabled",
         label: "Måne aktivert",
         type: "boolean",
-        default: true,
         description: "Velg om månen skal vises på himmelen.",
       },
       {

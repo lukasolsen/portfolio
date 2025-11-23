@@ -22,18 +22,6 @@ export const colorPresets = [
     ],
   },
   {
-    id: "forest",
-    name: "Deep Forest",
-    colors: [
-      "#002D2D", // shadow green
-      "#004D40",
-      "#00796B",
-      "#379683",
-      "#80CBC4",
-      "#A8E6CF", // misty mint
-    ],
-  },
-  {
     id: "desert",
     name: "Desert Mirage",
     colors: [
@@ -55,6 +43,68 @@ export const colorPresets = [
       "#26C6DA",
       "#4FC3F7",
       "#A7FFEB", // seafoam highlight
+    ],
+  },
+  {
+    id: "deep-thought",
+    name: "Deep Thought",
+    colors: [
+      "#0F172A", // Slate 900 (Base)
+      "#1E293B", // Slate 800
+      "#334155", // Slate 700
+      "#3B82F6", // Electric Blue (Glow source)
+      "#6366F1", // Indigo (Secondary Glow)
+      "#0F172A", // Deep Anchor
+      "#1E1B4B", // Midnight Anchor
+    ],
+  },
+  {
+    id: "aurora-borealis",
+    name: "Aurora Borealis",
+    colors: [
+      "#020024", // Deep Void
+      "#090979", // Rich Blue
+      "#00D4FF", // Cyan Highlight
+      "#9D50BB", // Soft Purple
+      "#6E48AA", // Deep Purple
+      "#4facfe", // Sky Blue
+    ],
+  },
+  {
+    id: "ceramic-white",
+    name: "Ceramic White",
+    colors: [
+      "#FFFFFF", // Pure White
+      "#F3F4F6", // Cool Grey
+      "#E5E7EB", // Mid Grey
+      "#D1FAE5", // Very subtle Mint
+      "#E0F2FE", // Very subtle Sky
+      "#FAE8FF", // Very subtle Purple
+      "#FFFFFF", // Anchor White
+    ],
+  },
+  {
+    id: "sunset-glass",
+    name: "Sunset Glass",
+    colors: [
+      "#F4E4BA", // Sand
+      "#F2D698", // Gold
+      "#E79378", // Terracotta
+      "#D67B75", // Muted Rose
+      "#6B3641", // Deep Wine (Contrast)
+      "#2D1F28", // Dark Brown (Anchor)
+    ],
+  },
+  {
+    id: "cyber-mist",
+    name: "Cyber Mist",
+    colors: [
+      "#CDD1D4", // Metallic Grey
+      "#E8EAED", // Light Silver
+      "#00F5D4", // Neon Teal (The pop)
+      "#F15BB5", // Neon Pink (The pop)
+      "#9B5DE5", // Purple Haze
+      "#B5BDC4", // Shadow Grey
     ],
   },
   {
@@ -119,11 +169,6 @@ export const colorPresets = [
       "#FDA085",
       "#FFFFFF", // morning light
     ],
-  },
-  {
-    id: "ember",
-    name: "Burning Ember",
-    colors: ["#2C061F", "#642B36", "#A63A50", "#FF5F40", "#FFBA49", "#FFD580"],
   },
   {
     id: "polar",

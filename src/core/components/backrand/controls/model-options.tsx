@@ -27,7 +27,7 @@ export const ModelOptions: FC = () => {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 w-96">
       <Header6>Modellspesifikke innstillinger</Header6>
       {currentModel.options.map((opt) => {
         if (!opt.type) return null;
@@ -36,7 +36,7 @@ export const ModelOptions: FC = () => {
           params.model_options?.[opt.key] ?? modelOption?.default ?? null;
 
         return (
-          <div key={opt.key} className="space-y-2">
+          <div key={opt.key} className="space-y-2 w-52">
             <div className="flex items-center justify-between">
               <Label>
                 {opt.label}
@@ -90,14 +90,15 @@ export const ModelOptions: FC = () => {
                 value={String(
                   params.model_options?.[opt.key] ?? opt.default ?? 0
                 )}
+                defaultValue={String(opt.default ?? "")}
               >
-                <SelectTrigger>
+                <SelectTrigger className="w-56">
                   <SelectValue placeholder="Velg alternativ" />
                 </SelectTrigger>
                 <SelectContent>
                   {opt.options?.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
-                      <div className="flex flex-col">
+                      <div className="flex flex-col w-56">
                         <span>{option.label}</span>
                         {option.description && (
                           <span className="text-xs text-muted-foreground">
