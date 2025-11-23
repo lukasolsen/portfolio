@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
-import { LeadText, Paragraph, Title } from "@/components/typography/typography";
+import { LeadText, Title } from "@/components/typography/typography";
 import { PlaygroundControls } from "@/core/components/backrand/playground-controls";
 import { BackrandProvider, useBackrand } from "@/context/backrand-context";
 
@@ -15,7 +16,28 @@ export const Route = createFileRoute("/projects/backrand/playground")({
 });
 
 export default function BackrandPlayground() {
-  const { image, loading } = useBackrand();
+  const { image, loading, handleGenerate } = useBackrand();
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.code === "Space" && !loading) {
+        // Prevent default spacebar behavior (scrolling)
+        event.preventDefault();
+        // Check if the target is not an input or textarea
+        if (
+          !(event.target instanceof HTMLInputElement) &&
+          !(event.target instanceof HTMLTextAreaElement)
+        ) {
+          handleGenerate();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleGenerate, loading]);
 
   return (
     <div className="bg-background text-foreground px-6 py-10">
@@ -63,20 +85,6 @@ export default function BackrandPlayground() {
                   på "Generer" for å lage en ny bakgrunn.
                 </p>
               )}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold">
-                Generasjonshistorikk
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Paragraph className="text-sm text-muted-foreground">
-                Historikkfunksjonen er ikke tilgjengelig, vi anbefaler å lagre
-                bildene lokalt når de er generert.
-              </Paragraph>
             </CardContent>
           </Card>
         </div>

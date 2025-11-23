@@ -11,22 +11,27 @@ import {
   LeadText,
   Paragraph,
 } from "@/components/typography/typography";
+import { useTranslation } from "@/hooks/use-translation";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const { t } = useTranslation();
+
   const workExperiences: Array<ExperienceItem> = [
     {
-      title: "Lærling Fullstack Utvikler",
-      details: "Fulltid • Hamar",
-      period: "August 2024 - Pågående",
-      company: "Dyplink",
+      title: t("pages.experience.items.dyplink.position"),
+      details:
+        t("pages.experience.items.dyplink.time") +
+        " • " +
+        t("pages.experience.items.dyplink.location"),
+      period: t("pages.experience.items.dyplink.duration"),
+      company: t("pages.experience.items.dyplink.company"),
       logo: "https://dyplink.no/wp-content/uploads/2022/06/dyplink-top-white-text-outlined.svg",
-      description:
-        "Utvikler og vedlikeholder tjenester ved hjelp av moderne teknologier som React, Node.js og PHP. Fokuserer på å forbedre eksisterende løsninger og levere verdi til kundene gjennom god kode og struktur.",
-      seeMoreLabel: "Les mer om min tid hos Dyplink",
+      description: t("pages.experience.items.dyplink.description"),
+      seeMoreLabel: t("pages.experience.readMore"),
       seeMoreLink: "https://dyplink.no",
     },
   ];
@@ -43,13 +48,10 @@ function RouteComponent() {
         <h1 className="text-4xl sm:text-5xl xl:text-6xl font-semibold tracking-tight mb-3">
           Lukas Olsen <span className="text-primary">👋</span>
         </h1>
-        <LeadText>
-          Norsk utvikler som bygger produkter og tjenester — fra små idéer til
-          skalerbare systemer.
-        </LeadText>
+        <LeadText>{t("common.subtitle")}</LeadText>
       </motion.section>
       <Separator className="my-10 opacity-60" />
-      {/* --- About Section --- */}
+
       <motion.section
         id="about"
         initial={{ opacity: 0, y: 20 }}
@@ -57,7 +59,7 @@ function RouteComponent() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         viewport={{ once: true }}
       >
-        <Header3 className="mb-1">Om meg</Header3>
+        <Header3 className="mb-1">{t("pages.index.about.title")}</Header3>
         <Paragraph>
           Mitt navn er <strong>Lukas Moe Olsen</strong>, og jeg er en norsk
           utvikler som liker å bygge alt av produkter og tjenester. Jeg startet
@@ -82,7 +84,7 @@ function RouteComponent() {
         </Paragraph>
       </motion.section>
       <Separator className="my-10 opacity-60" />
-      {/* --- Work Experience --- */}
+
       <motion.section
         id="work-experience"
         initial={{ opacity: 0, y: 20 }}
@@ -90,11 +92,11 @@ function RouteComponent() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         viewport={{ once: true }}
       >
-        <Header3 className="mb-1">Jobberfaring</Header3>
+        <Header3 className="mb-1">{t("pages.experience.title")}</Header3>
         <WorkExperience experience={workExperiences} />
       </motion.section>
       <Separator className="my-10 opacity-60" />
-      {/* --- Projects Section --- */}
+
       <motion.section
         id="projects"
         initial={{ opacity: 0, y: 20 }}
@@ -102,11 +104,10 @@ function RouteComponent() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         viewport={{ once: true }}
       >
-        <Header3 className="mb-1">Prosjekter</Header3>
+        <Header3 className="mb-1">{t("pages.projects.title")}</Header3>
         <Projects />
       </motion.section>
 
-      {/* --- Contact Section --- */}
       <Separator className="my-10 opacity-60" />
       <motion.section
         id="contact"
@@ -116,16 +117,13 @@ function RouteComponent() {
         viewport={{ once: true }}
         className="mb-16"
       >
-        <Header3 className="mb-1">Kontakt</Header3>
-        <Paragraph>
-          Jeg er alltid åpen for nye muligheter og samarbeid. Ta gjerne kontakt
-          med meg hvis du har et spennende prosjekt eller bare vil si hei!
-        </Paragraph>
+        <Header3 className="mb-1">{t("pages.contact.title")}</Header3>
+        <Paragraph>{t("pages.contact.description")}</Paragraph>
         <a
           href="mailto:lukmarwil@gmail.com"
           className="inline-block mt-2 text-sm font-medium text-primary underline"
         >
-          Send meg en e-post
+          {t("pages.contact.email")}
         </a>
       </motion.section>
     </div>

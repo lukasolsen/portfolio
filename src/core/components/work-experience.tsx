@@ -59,7 +59,7 @@ export const WorkExperience: FC<WorkExperienceProps> = ({
                       href={seeMoreLink}
                       className="text-primary hover:underline text-sm font-medium"
                     >
-                      {seeMoreLabel ?? "Les mer"}
+                      {seeMoreLabel + " " + company}
                       <ArrowRightIcon className="inline-block h-4 w-4 ml-1" />
                     </a>
                   </div>

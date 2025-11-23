@@ -3,7 +3,6 @@ import { WarpType } from "./warps";
 export enum BackrandModelType {
   MeshGradient = "mesh_gradient",
   ReflectiveMesh = "reflective_mesh",
-  ConicGradient = "conic_gradient",
   SKY = "sky",
 }
 
@@ -40,42 +39,42 @@ export const BackrandModels: Record<BackrandModelType, BackrandModel> = {
     id: BackrandModelType.MeshGradient,
     name: "Mesh Gradient",
     description:
-      "Et avansert gradientmesh som holder fargeankere i kantene for stabilitet og struktur.",
+      "A advanced mesh-based gradient model that creates smooth color transitions using a network of points.",
     technical_description:
-      "Denne modellen kombinerer Delaunay-triangulering med forankringspunkter for å forhindre ekstreme deformasjoner.",
+      "This model generates a mesh of interconnected points and interpolates colors across the mesh to create complex gradient effects.",
     tags: ["mesh", "anchored"],
     supportsWarp: false,
     options: [
       {
         key: "distribution",
-        label: "Distribusjon",
-        description: "Bestemmer hvilken algoritme som brukes",
+        label: "Color Distribution",
+        description: "Choose how colors are distributed across the mesh points",
         type: "select",
         default: "random",
         options: [
           {
             label: "Linear",
             value: "linear",
-            description: "Fargene fordeles jevnt mellom punktene",
+            description: "Colors are evenly distributed between points",
           },
           {
             label: "Random",
             value: "random",
             description:
-              "Fargene fordeles tilfeldig mellom punktene for et mer organisk utseende",
+              "Colors are randomly distributed between points for a more organic look",
           },
           {
             label: "Radial",
             value: "radial",
             description:
-              "Fargene fordeles i en sirkulær mønster fra sentrum til kantene",
+              "Colors are distributed in a circular pattern from the center to the edges",
           },
         ],
       },
       {
         key: "algorithm",
-        label: "Algoritme",
-        description: "Velg hvilken mesh-genereringsalgoritme som skal brukes",
+        label: "Algorithm",
+        description: "Choose which mesh generation algorithm to use",
         type: "select",
         default: "delaunay",
         options: [
@@ -83,108 +82,53 @@ export const BackrandModels: Record<BackrandModelType, BackrandModel> = {
             label: "Delaunay Triangulation",
             value: "delaunay",
             description:
-              "En klassisk algoritme som skaper et nettverk av trekanter basert på punktene",
+              "A classic algorithm that creates a network of triangles based on the points",
           },
           {
             label: "Radial Basis Function",
             value: "rbf",
             description:
-              "En mer avansert metode som bruker matematiske funksjoner for å interpolere fargene mellom punktene",
+              "A more advanced method that uses mathematical functions to interpolate colors between points",
           },
           {
             label: "Voronoi Diagram",
             value: "voronoi",
             description:
-              "Deler rommet i regioner basert på avstanden til punktene, noe som skaper et unikt mønster",
+              "Divides the space into regions based on the distance to points, creating a unique pattern",
           },
         ],
       },
       {
         key: "use_relaxation",
-        label: "Bruk avslapning",
+        label: "Use Relaxation",
         type: "boolean",
         description:
-          "Aktiverer en prosess som jevner ut mesh-strukturen for å redusere skarpe kanter og forbedre visuell kvalitet.",
+          "Enables a process that smooths the mesh structure to reduce sharp edges and improve visual quality.",
       },
     ],
   },
 
   [BackrandModelType.ReflectiveMesh]: {
     id: BackrandModelType.ReflectiveMesh,
-    name: "🪞 Reflective Mesh - Speilende overflater",
+    name: "Reflective Mesh",
     description:
-      "Et mesh-basert bakgrunnsmodell som simulerer speilende og reflekterende overflater.",
+      "A mesh-based model that simulates reflective surfaces by manipulating light interactions on a 3D mesh.",
     technical_description:
-      "Denne modellen bruker en kombinasjon av mesh-deformasjon og miljøkart for å skape realistiske refleksjonseffekter.",
+      "This model creates a 3D mesh and applies reflection algorithms to simulate how light interacts with the surface, producing realistic reflections.",
     tags: ["mesh", "reflective"],
     supportsWarp: true,
     allowedWarps: [WarpType.None, WarpType.Wave, WarpType.Turbulence],
     options: [
       {
         key: "reflection_amount",
-        label: "Refleksjonsmengde",
+        label: "Reflection Amount",
         type: "slider",
         min: 0,
         max: 1,
         step: 0.05,
         default: 0.5,
         description:
-          "Kontrollerer intensiteten av refleksjonene på overflaten. Høyere verdier gir sterkere refleksjoner.",
-      },
-    ],
-  },
-
-  [BackrandModelType.ConicGradient]: {
-    id: BackrandModelType.ConicGradient,
-    name: "🌀 Conic Gradient – Sirkulær overgang",
-    description:
-      "En sirkulær gradientmodell som skaper en jevn overgang mellom farger rundt et sentralt punkt.",
-    technical_description:
-      "Denne modellen bruker polarkoordinater for å generere en konisk gradient som roterer rundt et definert sentrum.",
-    tags: ["gradient", "circular"],
-    supportsWarp: false,
-    options: [
-      {
-        key: "rotation_angle",
-        label: "Rotasjonsvinkel",
-        type: "slider",
-        min: 0,
-        max: 360,
-        step: 1,
-        default: 0,
-        description: "Vinkelen for å rotere gradienten rundt sentrumspunktet.",
-      },
-      //swirl_factor, smoothness, center_bias
-      {
-        key: "swirl_factor",
-        label: "Virvelfaktor",
-        type: "slider",
-        min: 0,
-        max: 5,
-        step: 0.1,
-        default: 1,
-        description:
-          "Kontrollerer graden av virvling i gradienten for en mer dynamisk effekt.",
-      },
-      {
-        key: "smoothness",
-        label: "Mykhet",
-        type: "slider",
-        min: 0,
-        max: 1,
-        step: 0.05,
-        default: 0.5,
-        description:
-          "Justere hvor jevn overgangen mellom fargene i gradienten er.",
-      },
-      {
-        key: "center_bias",
-        label: "Senterbias",
-        type: "slider",
-        min: 0,
-        max: 1,
-        step: 0.05,
-        default: 0.5,
+          "Controls the intensity of reflections on the mesh surface.",
       },
     ],
   },

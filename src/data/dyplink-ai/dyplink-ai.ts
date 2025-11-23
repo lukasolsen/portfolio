@@ -2,8 +2,8 @@ import type { Project } from "@/common/project/project";
 
 export const dyplinkAiProject: Project = {
   id: "dyplink-ai",
-
   title: "Dyplink AI",
+
   description:
     "Et AI system som tilbyr hjelpemidler og funksjoner til Dyplink sine kunder. Bygget med tanke på sikkerhet, skalerbarhet og ytelse.",
 
@@ -33,6 +33,7 @@ export const dyplinkAiProject: Project = {
       },
     ],
   },
+
   highlights: [],
   type: "work",
   highlighted: true,
