@@ -62,6 +62,27 @@ export const backrandProject: Project = {
         credit: "Lukas Olsen",
         license: "CC BY-NC 4.0",
       },
+      {
+        src: "/images/backrand/backrand_1.png",
+        alt: "Fargerik gradientbakgrunn",
+        caption: "Fargerik gradientbakgrunn generert med Backrand",
+        credit: "Lukas Olsen",
+        license: "CC BY-NC 4.0",
+      },
+      {
+        src: "/images/backrand/green.png",
+        alt: "Grønn nyanse gradientbakgrunn",
+        caption: "Grønn nyanse gradientbakgrunn generert med Backrand",
+        credit: "Lukas Olsen",
+        license: "CC BY-NC 4.0",
+      },
+      {
+        src: "/images/backrand/sm.png",
+        alt: "Subtile Mountains gradientbakgrunn",
+        caption: "Subtile Mountains gradientbakgrunn generert med Backrand",
+        credit: "Lukas Olsen",
+        license: "CC BY-NC 4.0",
+      },
     ],
   },
 };
