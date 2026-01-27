@@ -1,6 +1,6 @@
 import { BookIcon, Menu, X } from "lucide-react";
 import type { FC } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "../components/ui/button";
 import {
   NavigationMenu,
@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useRouterState } from "@tanstack/react-router";
 
 interface MenuItem {
   title: string;
@@ -22,6 +23,7 @@ interface MenuItem {
 }
 
 export const InstanceHeader: FC = () => {
+  const { location } = useRouterState();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -30,6 +32,10 @@ export const InstanceHeader: FC = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const isPlayground = useMemo(() => {
+    return location.pathname.includes("/playground");
+  }, [location.pathname]);
 
   const menu = [
     {
@@ -57,7 +63,8 @@ export const InstanceHeader: FC = () => {
     <header
       className={cn(
         "flex items-center justify-between w-full py-2 bg-background/60 backdrop-blur-sm sticky top-0 z-50 transition-colors",
-        isScrolled ? "border-b border-border" : ""
+        isScrolled ? "border-b border-border" : "",
+        isPlayground ? "px-8" : "",
       )}
     >
       {/* Logo */}
@@ -155,7 +162,7 @@ export const InstanceHeader: FC = () => {
                       {item.title}
                     </a>
                   </li>
-                )
+                ),
               )}
             </ul>
           </motion.nav>

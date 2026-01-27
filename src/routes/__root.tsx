@@ -5,7 +5,7 @@ import { NotFound } from "@/core/pages/not-found";
 import { I18nProvider } from "@/hooks/use-translation";
 import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import appCss from "@/styles/globals.css?url";
+import "@/styles/globals.css";
 import { seo } from "@/utils/seo";
 
 export const Route = createRootRoute({
@@ -24,7 +24,6 @@ export const Route = createRootRoute({
       }),
     ],
     links: [
-      { rel: "stylesheet", href: appCss },
       {
         rel: "apple-touch-icon",
         sizes: "180x180",
@@ -44,11 +43,12 @@ export const Route = createRootRoute({
       },
       { rel: "manifest", href: "/site.webmanifest", color: "#fffff" },
       { rel: "icon", href: "/favicon.ico" },
-    ],
-    scripts: [
       {
-        src: "/customScript.js",
-        type: "text/javascript",
+        rel: "preload",
+        href: "/fonts/Inter.woff2",
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "",
       },
     ],
   }),

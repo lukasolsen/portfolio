@@ -28,7 +28,7 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
   const value = useMemo(() => {
     const t = (
       key: TranslationKey,
-      params?: Record<string, string | number>
+      params?: Record<string, string | number>,
     ) => {
       const dict = resources[language];
       const text = getNestedValue(dict, key);

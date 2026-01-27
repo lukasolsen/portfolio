@@ -1,8 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-
 @import "./markdown.css";
 @import "tailwindcss";
 @import "tw-animate-css";
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   font-family: 'Inter', sans-serif;
@@ -149,10 +159,6 @@ body {
   .content a:hover {
     color: var(--link-hover);
   }
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 ::selection {

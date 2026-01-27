@@ -1,12 +1,14 @@
 import React, { createContext, useContext, useState, useCallback } from "react";
 import { toast } from "sonner";
-import { generateBackrandImage } from "@/common/backrand/http";
+import {
+  generateBackrandImage,
+  type BackrandImage,
+} from "@/common/backrand/http";
 import {
   BackrandModels,
   BackrandModelType,
   type BackrandModel,
 } from "@/common/backrand/models";
-import { colorPresets } from "@/common/backrand/colors";
 import { WarpType } from "@/common/backrand/warps";
 import { BackrandQuality } from "@/common/backrand/quality";
 import { BackrandAspectRatio } from "@/common/backrand/aspect-ratio";
@@ -14,7 +16,7 @@ import type { BackrandParams } from "@/common/backrand/backrand";
 
 type BackrandContextType = {
   params: BackrandParams;
-  image: string | null;
+  image: BackrandImage | null;
   loading: boolean;
   models: BackrandModel[];
 
@@ -65,7 +67,7 @@ export const BackrandProvider = ({
     },
   });
 
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<BackrandImage | null>(null);
   const [loading, setLoading] = useState(false);
 
   const models = Object.values(BackrandModels);
@@ -109,6 +111,8 @@ export const BackrandProvider = ({
     toast.dismiss();
 
     try {
+      image?.revoke();
+
       const result = await generateBackrandImage(settings);
       setImage(result);
     } catch (e) {
