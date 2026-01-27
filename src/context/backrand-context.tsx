@@ -6,8 +6,8 @@ import {
 } from "@/common/backrand/http";
 import {
   BackrandModels,
-  BackrandModelType,
-  type BackrandModel,
+  BackrandEngineType,
+  type BackrandEngine,
 } from "@/common/backrand/models";
 import { WarpType } from "@/common/backrand/warps";
 import { BackrandQuality } from "@/common/backrand/quality";
@@ -18,9 +18,9 @@ type BackrandContextType = {
   params: BackrandParams;
   image: BackrandImage | null;
   loading: boolean;
-  models: BackrandModel[];
+  models: BackrandEngine[];
 
-  currentModel: BackrandModel;
+  currentModel: BackrandEngine;
   setModel: (model_id: string) => void;
 
   handleGenerate: () => Promise<void>;
@@ -40,7 +40,7 @@ export const BackrandProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const defaultModel = BackrandModels[BackrandModelType.MeshGradient];
+  const defaultModel = BackrandModels[BackrandEngineType.OrganicMesh];
 
   const [settings, setParams] = useState<BackrandParams>({
     size: "512x512",
@@ -48,7 +48,7 @@ export const BackrandProvider = ({
     aspect_ratio: BackrandAspectRatio.Wide,
     quality: BackrandQuality.ULTRA,
     colors: null,
-    num_points: 4,
+    num_points: 6,
     blur_radius: 10,
     border_colors: "",
     warp_octaves: 1,
@@ -57,12 +57,14 @@ export const BackrandProvider = ({
     warp_frequency: 0.05,
     grain: 0.02,
     model_options: {
-      ...defaultModel.options.reduce(
+      ...defaultModel.options?.reduce(
         (acc, option) => {
-          acc[option.key] = option.default;
+          if (option.default !== undefined) {
+            acc[option.key] = option.default;
+          }
           return acc;
         },
-        {} as Record<string, string | number>,
+        {} as Record<string, string | number | boolean>,
       ),
     },
   });
@@ -74,7 +76,7 @@ export const BackrandProvider = ({
   const [currentModel, setCurrentModel] = useState(models[0]);
 
   const setModel = (model_id: string) => {
-    const model = BackrandModels[model_id as BackrandModelType];
+    const model = BackrandModels[model_id];
 
     setCurrentModel(model);
     setParams((prev) => ({
@@ -83,10 +85,12 @@ export const BackrandProvider = ({
       model_options: {
         ...model.options?.reduce(
           (acc, option) => {
-            acc[option.key] = option.default;
+            if (option.default !== undefined) {
+              acc[option.key] = option.default;
+            }
             return acc;
           },
-          {} as Record<string, string | number>,
+          {} as Record<string, string | number | boolean>,
         ),
       },
     }));

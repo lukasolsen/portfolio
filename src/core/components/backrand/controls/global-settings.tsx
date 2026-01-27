@@ -16,7 +16,7 @@ import {
   BackrandQuality,
   BackrandQualityLabels,
 } from "@/common/backrand/quality";
-import { BackrandModels, BackrandModelType } from "@/common/backrand/models";
+import { BackrandModels, BackrandEngineType } from "@/common/backrand/models";
 import { Button } from "@/components/ui/button";
 import { useBackrand } from "@/context/backrand-context";
 import { cn } from "@/lib/utils";
@@ -29,31 +29,29 @@ export const GlobalSettings: FC<Props> = ({ showOption }) => {
 
   return (
     <div className="space-y-6">
-      {/* === Model Selection === */}
       <section className="space-y-3">
         <div className="flex items-center gap-2 text-muted-foreground">
           <Box className="w-4 h-4" />
           <h3 className="text-xs font-semibold uppercase tracking-wider">
-            Algoritme
+            Architecture
           </h3>
         </div>
         <div className="p-3 rounded-xl border border-border bg-card/30 space-y-3">
           <div className="space-y-1.5">
-            <Label className="text-xs">Valgt Modell</Label>
+            <Label className="text-xs">Processing Engine</Label>
             <Select
               value={params.model.id}
               onValueChange={(v) => {
-                const model = BackrandModels[v as BackrandModelType];
-                setModel(model.id);
+                setModel(v);
               }}
             >
               <SelectTrigger className="bg-background/50">
-                <SelectValue placeholder="Velg modell" />
+                <SelectValue placeholder="Select Engine" />
               </SelectTrigger>
               <SelectContent>
-                {Object.values(BackrandModelType).map((m) => (
+                {Object.values(BackrandEngineType).map((m) => (
                   <SelectItem key={m} value={m}>
-                    {BackrandModels[m].name}
+                    {BackrandModels[m].displayName || BackrandModels[m].name}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -62,19 +60,18 @@ export const GlobalSettings: FC<Props> = ({ showOption }) => {
         </div>
       </section>
 
-      {/* === Dimensions === */}
       <section className="space-y-3">
         <div className="flex items-center gap-2 text-muted-foreground">
           <Monitor className="w-4 h-4" />
           <h3 className="text-xs font-semibold uppercase tracking-wider">
-            Dimensjoner
+            Dimensions
           </h3>
         </div>
 
         <div className="grid grid-cols-2 gap-4 p-3 rounded-xl border border-border bg-card/30">
           {showOption("aspect_ratio") && (
             <div className="space-y-1.5 col-span-2">
-              <Label className="text-xs">Sideforhold</Label>
+              <Label className="text-xs">Aspect Ratio</Label>
               <Select
                 value={params.aspect_ratio}
                 onValueChange={(v) =>
@@ -82,7 +79,7 @@ export const GlobalSettings: FC<Props> = ({ showOption }) => {
                 }
               >
                 <SelectTrigger className="bg-background/50 h-8 text-xs">
-                  <SelectValue placeholder="Velg" />
+                  <SelectValue placeholder="Select" />
                 </SelectTrigger>
                 <SelectContent>
                   {BackrandAspectRatios.map((r) => (
@@ -101,7 +98,7 @@ export const GlobalSettings: FC<Props> = ({ showOption }) => {
 
           {showOption("size") && (
             <div className="space-y-1.5 col-span-2">
-              <Label className="text-xs">Oppløsning (WxH)</Label>
+              <Label className="text-xs">Resolution (WxH)</Label>
               <Input
                 value={params.size}
                 onChange={(e) => {
@@ -117,13 +114,12 @@ export const GlobalSettings: FC<Props> = ({ showOption }) => {
         </div>
       </section>
 
-      {/* === Quality / Compute === */}
       {showOption("quality") && (
         <section className="space-y-3">
           <div className="flex items-center gap-2 text-muted-foreground">
             <Cpu className="w-4 h-4" />
             <h3 className="text-xs font-semibold uppercase tracking-wider">
-              Kvalitet
+              Output Quality
             </h3>
           </div>
           <div className="grid grid-cols-3 gap-2">

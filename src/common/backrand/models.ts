@@ -1,9 +1,9 @@
 import { WarpType } from "./warps";
 
-export enum BackrandModelType {
-  MeshGradient = "mesh_gradient",
-  ReflectiveMesh = "reflective_mesh",
-  SKY = "sky",
+export enum BackrandEngineType {
+  OrganicMesh = "mesh_gradient",
+  GlassRefraction = "reflective_mesh",
+  AtmosphericSky = "sky",
 }
 
 export type ModelOption = {
@@ -13,16 +13,24 @@ export type ModelOption = {
   min?: number;
   max?: number;
   step?: number;
-  default?: number | string;
+  default?: number | string | boolean;
   description?: string;
   options?: { label: string; value: string; description?: string }[];
   advanced?: boolean;
   category?: string;
+  /**
+   * Only show this option if another option has a specific value
+   */
+  condition?: {
+    key: string;
+    value: string | number | boolean;
+  };
 };
 
-export type BackrandModel = {
-  id: BackrandModelType;
+export type BackrandEngine = {
+  id: BackrandEngineType;
   name: string;
+  displayName: string;
   description: string;
   technical_description: string;
   tags?: string[];
@@ -34,47 +42,23 @@ export type BackrandModel = {
   options?: ModelOption[];
 };
 
-export const BackrandModels: Record<BackrandModelType, BackrandModel> = {
-  [BackrandModelType.MeshGradient]: {
-    id: BackrandModelType.MeshGradient,
-    name: "Mesh Gradient",
+export const BackrandModels: Record<string, BackrandEngine> = {
+  [BackrandEngineType.OrganicMesh]: {
+    id: BackrandEngineType.OrganicMesh,
+    name: "Organic Mesh",
+    displayName: "✨ Organic Mesh Composer",
     description:
-      "A advanced mesh-based gradient model that creates smooth color transitions using a network of points.",
+      "A fluid, high-fidelity mesh engine that generates seamless color transitions using advanced geometric layouts.",
     technical_description:
-      "This model generates a mesh of interconnected points and interpolates colors across the mesh to create complex gradient effects.",
-    tags: ["mesh", "anchored"],
+      "Synthesizes a dynamic vertex grid with real-time color interpolation. Supports topological relaxation and varying distribution patterns for natural-looking gradients.",
+    tags: ["gradient", "fluid", "mesh"],
     supportsWarp: true,
     options: [
       {
-        key: "distribution",
-        label: "Color Distribution",
-        description: "Choose how colors are distributed across the mesh points",
-        type: "select",
-        default: "random",
-        options: [
-          {
-            label: "Linear",
-            value: "linear",
-            description: "Colors are evenly distributed between points",
-          },
-          {
-            label: "Random",
-            value: "random",
-            description:
-              "Colors are randomly distributed between points for a more organic look",
-          },
-          {
-            label: "Radial",
-            value: "radial",
-            description:
-              "Colors are distributed in a circular pattern from the center to the edges",
-          },
-        ],
-      },
-      {
         key: "algorithm",
-        label: "Algorithm",
-        description: "Choose which mesh generation algorithm to use",
+        label: "Topology Engine",
+        description:
+          "The mathematical foundation used to generate the mesh structure.",
         type: "select",
         default: "delaunay",
         options: [
@@ -82,179 +66,209 @@ export const BackrandModels: Record<BackrandModelType, BackrandModel> = {
             label: "Delaunay Triangulation",
             value: "delaunay",
             description:
-              "A classic algorithm that creates a network of triangles based on the points",
+              "Creates perfectly balanced triangles between points, ideal for structural and sharp gradients.",
           },
           {
             label: "Radial Basis Function",
             value: "rbf",
             description:
-              "A more advanced method that uses mathematical functions to interpolate colors between points",
+              "A smooth, non-linear interpolation method that creates dream-like, misty transitions.",
           },
           {
-            label: "Voronoi Diagram",
+            label: "Voronoi Tessellation",
             value: "voronoi",
             description:
-              "Divides the space into regions based on the distance to points, creating a unique pattern",
+              "Divides space into distinct cells, creating a stained-glass or cell-like aesthetic.",
           },
         ],
       },
       {
-        key: "use_relaxation",
-        label: "Use Relaxation",
-        type: "boolean",
+        key: "distribution",
+        label: "Vertex Distribution",
         description:
-          "Enables a process that smooths the mesh structure to reduce sharp edges and improve visual quality.",
+          "Governs how the initial points are scattered across the canvas.",
+        type: "select",
+        default: "random",
+        options: [
+          {
+            label: "Natural Random",
+            value: "random",
+            description:
+              "Standard random distribution for an organic, unpredictable look.",
+          },
+          {
+            label: "Poisson Disk",
+            value: "poisson",
+            description:
+              "Ensures points are evenly spaced, avoiding clusters for a cleaner mesh.",
+          },
+          {
+            label: "Golden Spiral",
+            value: "spiral",
+            description:
+              "Arranges points in a mathematical Fibonacci spiral from the center.",
+          },
+        ],
+      },
+      // Delaunay Specific Options
+      {
+        key: "mesh_complexity",
+        label: "Mesh Complexity",
+        type: "slider",
+        min: 3,
+        max: 50,
+        step: 1,
+        default: 12,
+        description:
+          "Controls the density of the Delaunay triangles. Higher values create more intricate patterns.",
+        condition: { key: "algorithm", value: "delaunay" },
+      },
+      {
+        key: "edge_tension",
+        label: "Edge Tension",
+        type: "slider",
+        min: 0,
+        max: 1,
+        step: 0.01,
+        default: 0.5,
+        description:
+          "Adjusts how tightly the colors cling to the triangle edges.",
+        condition: { key: "algorithm", value: "delaunay" },
+      },
+      {
+        key: "use_relaxation",
+        label: "Iterative Relaxation",
+        type: "boolean",
+        default: true,
+        description:
+          "Applies Lloyd's algorithm to center points within their regions, creating a more uniform and 'relaxed' mesh structure.",
+      },
+      {
+        key: "color_blending",
+        label: "Blending Mode",
+        type: "select",
+        default: "smooth",
+        options: [
+          { label: "Ultra Smooth", value: "smooth" },
+          { label: "Per-Vertex", value: "vertex" },
+          { label: "Posterized", value: "hard" },
+        ],
       },
     ],
     allowedWarps: [WarpType.None, WarpType.Turbulence],
   },
 
-  [BackrandModelType.ReflectiveMesh]: {
-    id: BackrandModelType.ReflectiveMesh,
+  [BackrandEngineType.GlassRefraction]: {
+    id: BackrandEngineType.GlassRefraction,
     name: "Reflective Mesh",
+    displayName: "💎 Glass Refraction",
     description:
-      "A mesh-based model that simulates reflective surfaces by manipulating light interactions on a 3D mesh.",
+      "A premium rendering engine that simulates light passing through textured glass and reflective surfaces.",
     technical_description:
-      "This model creates a 3D mesh and applies reflection algorithms to simulate how light interacts with the surface, producing realistic reflections.",
-    tags: ["mesh", "reflective"],
+      "Utilizes pseudo-3D normal mapping on a 2D mesh to calculate light refraction and specular highlights.",
+    tags: ["glass", "reflective", "3d"],
     supportsWarp: true,
     allowedWarps: [WarpType.None, WarpType.Wave, WarpType.Turbulence],
     options: [
       {
-        key: "reflection_amount",
-        label: "Reflection Amount",
+        key: "refraction_index",
+        label: "Refraction Index",
+        type: "slider",
+        min: 0,
+        max: 2,
+        step: 0.01,
+        default: 1.2,
+        description:
+          "Simulates the density of the glass material. Higher values distort colors more intensely.",
+      },
+      {
+        key: "reflection_intensity",
+        label: "Specular Intensity",
         type: "slider",
         min: 0,
         max: 1,
         step: 0.05,
         default: 0.5,
         description:
-          "Controls the intensity of reflections on the mesh surface.",
+          "Controls how much light is reflected off the surface 'ridges'.",
+      },
+      {
+        key: "roughness",
+        label: "Surface Roughness",
+        type: "slider",
+        min: 0,
+        max: 1,
+        step: 0.05,
+        default: 0.2,
+        description:
+          "Adds micro-textures to the surface to simulate frosted glass.",
       },
     ],
   },
 
-  [BackrandModelType.SKY]: {
-    id: BackrandModelType.SKY,
-    name: "☁️ Sky – Himmel og skyer",
+  [BackrandEngineType.AtmosphericSky]: {
+    id: BackrandEngineType.AtmosphericSky,
+    name: "Atmospheric Sky",
+    displayName: "🌌 Atmospheric Void",
     description:
-      "Genererer realistiske himmellandskap med dynamiske skyer og atmosfæriske effekter.",
+      "A vast celestial engine for creating hyper-realistic skies, deep space vistas, and nebula-like backgrounds.",
     technical_description:
-      "SKY-modellen bruker volumetrisk sky-simulering og atmosfærisk spredning for å skape levende himmellandskap.",
-    tags: ["sky", "clouds"],
+      "Implements Rayleigh and Mie scattering models for atmosphere, combined with multi-layered noise for cloud and star field generation.",
+    tags: ["sky", "nebula", "space"],
     supportsWarp: false,
     options: [
       {
         key: "mode",
-        label: "Modus",
+        label: "Celestial Preset",
         type: "select",
         options: [
-          { value: "night", label: "Natt" },
-          { value: "day", label: "Dag" },
-          { value: "dawn", label: "Morgen" },
-          { value: "dusk", label: "Kveld" },
+          { value: "night", label: "Midnight Void" },
+          { value: "day", label: "High Noon" },
+          { value: "dawn", label: "Golden Hour" },
+          { value: "dusk", label: "Twilight" },
         ],
         default: "night",
       },
       {
-        key: "palette",
-        label: "Egendefinert palett",
-        type: "colorlist",
-        description:
-          "Velg en egendefinert fargepalett for himmelen (liste av hex-farger).",
-      },
-      {
         key: "cloud_density",
-        label: "Sky tetthet",
+        label: "Vapor Density",
         type: "slider",
         min: 0,
         max: 1,
         step: 0.05,
         default: 0.35,
-        description: "Kontrollerer hvor tette skyene er i himmelen.",
+        description: "Governs the thickness and opacity of cloud formations.",
       },
       {
-        key: "cloud_coverage",
-        label: "Skydekke",
-        type: "slider",
-        min: 0,
-        max: 1,
-        step: 0.05,
-        default: 0.5,
-        description: "Hvor mye av himmelen som er dekket av skyer.",
-      },
-      {
-        key: "cloud_softness",
-        label: "Sky mykhet",
-        type: "slider",
-        min: 0,
-        max: 1,
-        step: 0.05,
-        default: 0.6,
-        description: "Justere hvor myke og diffuse skyene ser ut.",
-      },
-      {
-        key: "star_density",
-        label: "Stjernetetthet",
+        key: "star_field_density",
+        label: "Star Cluster Density",
         type: "slider",
         min: 0,
         max: 0.01,
         step: 0.0005,
         default: 0.002,
         description:
-          "Kontrollerer hvor mange stjerner som vises på nattehimmelen.",
+          "Controls the amount of stars generated in the deep space layers.",
       },
       {
-        key: "moon_enabled",
-        label: "Måne aktivert",
-        type: "boolean",
-        description: "Velg om månen skal vises på himmelen.",
-      },
-      {
-        key: "moon_phase",
-        label: "Månefase",
-        type: "select",
-        options: [
-          { value: "new", label: "Nymåne" },
-          { value: "crescent", label: "Halvmåne" },
-          { value: "quarter", label: "Første kvartal" },
-          { value: "gibbous", label: "Gibbous" },
-          { value: "full", label: "Fullmåne" },
-        ],
-        default: "full",
-        description:
-          "Velg månefasen som skal vises. Mapper automatisk til riktig float verdi.",
-      },
-      {
-        key: "planet_count",
-        label: "Antall planeter",
-        type: "number",
+        key: "nebula_intensity",
+        label: "Nebula Glow",
+        type: "slider",
         min: 0,
-        max: 5,
-        step: 1,
-        default: 0,
-        description: "Antall synlige planeter på himmelen.",
+        max: 1,
+        step: 0.05,
+        default: 0.5,
+        description: "Adds colorful gas clouds and nebulae to the background.",
       },
       {
-        key: "horizon_brightness",
-        label: "Horisont lysstyrke",
+        key: "horizon_glow",
+        label: "Atmospheric Bloom",
         type: "slider",
         min: 0,
         max: 1,
         step: 0.05,
         default: 0.6,
-        description:
-          "Justere lysstyrken nær horisonten for soloppgang/solnedgangseffekter.",
-      },
-      {
-        key: "star_twinkle",
-        label: "Stjerneskinn",
-        type: "slider",
-        min: 0,
-        max: 0.2,
-        step: 0.01,
-        default: 0.08,
-        description: "Kontrollerer hvor mye stjernene skinner og blinker.",
+        description: "Adjusts the light scattering at the horizon line.",
       },
     ],
   },

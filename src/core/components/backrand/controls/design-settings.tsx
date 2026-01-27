@@ -17,7 +17,6 @@ export const DesignSettings: FC = () => {
         defaultValue={["params", "colors"]}
         className="w-full space-y-4"
       >
-        {/* === Model Parameters === */}
         <AccordionItem
           value="params"
           className="border rounded-xl bg-card/20 px-3 border-border/60"
@@ -25,7 +24,7 @@ export const DesignSettings: FC = () => {
           <AccordionTrigger className="hover:no-underline py-3">
             <div className="flex items-center gap-2">
               <SlidersHorizontal className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium">Parametere</span>
+              <span className="text-sm font-medium">Engine Configuration</span>
             </div>
           </AccordionTrigger>
           <AccordionContent className="pt-1 pb-4">
@@ -33,7 +32,6 @@ export const DesignSettings: FC = () => {
           </AccordionContent>
         </AccordionItem>
 
-        {/* === Colors === */}
         <AccordionItem
           value="colors"
           className="border rounded-xl bg-card/20 px-3 border-border/60"
@@ -41,7 +39,7 @@ export const DesignSettings: FC = () => {
           <AccordionTrigger className="hover:no-underline py-3">
             <div className="flex items-center gap-2">
               <Palette className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium">Farger</span>
+              <span className="text-sm font-medium">Color Palette</span>
             </div>
           </AccordionTrigger>
           <AccordionContent className="pt-1 pb-4">

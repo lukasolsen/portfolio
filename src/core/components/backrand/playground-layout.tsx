@@ -35,7 +35,7 @@ export const PlaygroundLayout: FC = () => {
         {isSidebarOpen && (
           <motion.aside
             initial={{ width: 0, opacity: 0 }}
-            animate={{ width: 380, opacity: 1 }}
+            animate={{ width: 600, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="h-full border-l border-border bg-card/50 backdrop-blur-xl z-40 flex flex-col shadow-2xl"

@@ -1,5 +1,5 @@
 import type { BackrandAspectRatio } from "./aspect-ratio";
-import type { BackrandModel } from "./models";
+import type { BackrandEngine } from "./models";
 import type { BackrandQuality } from "./quality";
 import type { WarpType } from "./warps";
 
@@ -11,8 +11,8 @@ export interface BackrandParams {
   aspect_ratio: BackrandAspectRatio;
   quality: BackrandQuality;
 
-  // ** Selected Backrand model */
-  model: BackrandModel;
+  // ** Selected Backrand engine */
+  model: BackrandEngine;
   model_options?: Record<string, unknown>;
 
   /** Warp-related parameters */
