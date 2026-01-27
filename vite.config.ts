@@ -1,29 +1,35 @@
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import mdx from "@mdx-js/rollup";
-
+import tsConfigPaths from "vite-tsconfig-paths";
+import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import { nitro } from "nitro/vite";
 
-import path from "node:path";
-
-import { tanstackRouter } from "@tanstack/router-plugin/vite";
-
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    tanstackRouter({
-      target: "react",
-      autoCodeSplitting: true,
-    }),
-    react(),
-    mdx({
-      providerImportSource: "@mdx-js/react",
-    }),
-    tailwindcss(),
-  ],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
+  server: {
+    port: 3000,
   },
+  plugins: [
+    tailwindcss(),
+    tsConfigPaths({
+      projects: ["./tsconfig.json"],
+    }),
+    tanstackStart({
+      router: {
+        codeSplittingOptions: {
+          defaultBehavior: [
+            [
+              "component",
+              "pendingComponent",
+              "errorComponent",
+              "notFoundComponent",
+              "loader",
+            ],
+          ],
+        },
+      },
+    }),
+    viteReact(),
+    nitro(),
+  ],
 });

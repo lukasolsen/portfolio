@@ -33,7 +33,7 @@ export const WorkExperience: FC<WorkExperienceProps> = ({
             seeMoreLink,
             seeMoreLabel,
           },
-          idx
+          idx,
         ) => (
           <div
             key={idx}
@@ -75,7 +75,7 @@ export const WorkExperience: FC<WorkExperienceProps> = ({
               </div>
             </div>
           </div>
-        )
+        ),
       )}
     </div>
   );

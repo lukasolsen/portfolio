@@ -14,7 +14,7 @@ export const en = {
       items: {
         dyplink: {
           position: "Apprentice Fullstack Developer",
-          duration: "August 2024 - Present",
+          duration: "August 2023 - Present",
           company: "Dyplink",
           location: "Hamar",
           time: "Full-time",

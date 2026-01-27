@@ -24,7 +24,7 @@ export interface BackrandParams {
   warp_octaves: number;
 
   /** Color and generation settings */
-  colors: string; // comma-separated hex
+  colors: string | null; // comma-separated hex
   num_points: number;
   blur_radius: number;
   border_colors: string; // optional comma-separated

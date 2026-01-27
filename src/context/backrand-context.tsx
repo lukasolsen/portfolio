@@ -24,13 +24,13 @@ type BackrandContextType = {
   handleGenerate: () => Promise<void>;
   updateSetting: <K extends keyof BackrandParams>(
     key: K,
-    value: BackrandParams[K]
+    value: BackrandParams[K],
   ) => void;
   updateModelOption: (key: string, value: string | number | boolean) => void;
 };
 
 const BackrandContext = createContext<BackrandContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export const BackrandProvider = ({
@@ -45,7 +45,7 @@ export const BackrandProvider = ({
     model: defaultModel,
     aspect_ratio: BackrandAspectRatio.Wide,
     quality: BackrandQuality.ULTRA,
-    colors: colorPresets[0].colors.join(","),
+    colors: null,
     num_points: 4,
     blur_radius: 10,
     border_colors: "",
@@ -55,10 +55,13 @@ export const BackrandProvider = ({
     warp_frequency: 0.05,
     grain: 0.02,
     model_options: {
-      ...defaultModel.options.reduce((acc, option) => {
-        acc[option.key] = option.default;
-        return acc;
-      }, {} as Record<string, string | number>),
+      ...defaultModel.options.reduce(
+        (acc, option) => {
+          acc[option.key] = option.default;
+          return acc;
+        },
+        {} as Record<string, string | number>,
+      ),
     },
   });
 
@@ -76,10 +79,13 @@ export const BackrandProvider = ({
       ...prev,
       model: model,
       model_options: {
-        ...model.options?.reduce((acc, option) => {
-          acc[option.key] = option.default;
-          return acc;
-        }, {} as Record<string, string | number>),
+        ...model.options?.reduce(
+          (acc, option) => {
+            acc[option.key] = option.default;
+            return acc;
+          },
+          {} as Record<string, string | number>,
+        ),
       },
     }));
   };
@@ -88,7 +94,7 @@ export const BackrandProvider = ({
     <K extends keyof BackrandParams>(key: K, value: BackrandParams[K]) => {
       setParams((prev) => ({ ...prev, [key]: value }));
     },
-    []
+    [],
   );
 
   const updateModelOption = (key: string, value: string | number | boolean) => {

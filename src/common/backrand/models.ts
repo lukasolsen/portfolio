@@ -43,7 +43,7 @@ export const BackrandModels: Record<BackrandModelType, BackrandModel> = {
     technical_description:
       "This model generates a mesh of interconnected points and interpolates colors across the mesh to create complex gradient effects.",
     tags: ["mesh", "anchored"],
-    supportsWarp: false,
+    supportsWarp: true,
     options: [
       {
         key: "distribution",
@@ -106,6 +106,7 @@ export const BackrandModels: Record<BackrandModelType, BackrandModel> = {
           "Enables a process that smooths the mesh structure to reduce sharp edges and improve visual quality.",
       },
     ],
+    allowedWarps: [WarpType.None, WarpType.Turbulence],
   },
 
   [BackrandModelType.ReflectiveMesh]: {

@@ -47,7 +47,7 @@ export interface FileRoutesByFullPath {
   '/blogs/$id': typeof BlogsIdRoute
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
-  '/projects/backrand': typeof ProjectsBackrandIndexRoute
+  '/projects/backrand/': typeof ProjectsBackrandIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -71,7 +71,7 @@ export interface FileRouteTypes {
     | '/blogs/$id'
     | '/projects/dyplink-ai'
     | '/projects/backrand/playground'
-    | '/projects/backrand'
+    | '/projects/backrand/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,7 +122,7 @@ declare module '@tanstack/react-router' {
     '/projects/backrand/': {
       id: '/projects/backrand/'
       path: '/projects/backrand'
-      fullPath: '/projects/backrand'
+      fullPath: '/projects/backrand/'
       preLoaderRoute: typeof ProjectsBackrandIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -146,3 +146,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

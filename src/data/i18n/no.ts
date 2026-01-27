@@ -14,7 +14,7 @@ export const no = {
       items: {
         dyplink: {
           position: "Lærling Fullstack Utvikler",
-          duration: "August 2024 - Pågående",
+          duration: "August 2023 - Pågående",
           company: "Dyplink",
           location: "Hamar",
           time: "Fulltid",

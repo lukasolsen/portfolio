@@ -17,7 +17,7 @@ export const generateBackrandImage = async (params: BackrandParams) => {
     model: params.model.id,
     model_options: params.model_options ?? {},
 
-    colors: params.colors.split(","),
+    colors: params.colors ? params.colors.split(",") : null,
 
     warp: {
       type: params.warp,
@@ -39,7 +39,7 @@ export const generateBackrandImage = async (params: BackrandParams) => {
   try {
     const res = await axios.post<GenerateBackrandResponse>(
       "http://127.0.0.1:8000/generate/mesh_gradient",
-      body
+      body,
     );
 
     return `data:image/png;base64,${res.data.image_content}`;

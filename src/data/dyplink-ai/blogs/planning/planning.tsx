@@ -1,5 +1,5 @@
 import type { Blog } from "@/common/blog/blog";
-import Content from "./content.mdx";
+import Content from "./content.mdx?url";
 import rawContentText from "./content.mdx?raw";
 
 export const planningBlog: Blog = {

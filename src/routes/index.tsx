@@ -38,7 +38,6 @@ function RouteComponent() {
 
   return (
     <div className="content mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-      {/* --- Hero Section --- */}
       <motion.section
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
