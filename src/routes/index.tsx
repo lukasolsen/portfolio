@@ -1,10 +1,7 @@
 import { motion } from "framer-motion";
 import { Projects } from "@/core/components/projects";
-import {
-  WorkExperience,
-  type ExperienceItem,
-} from "@/core/components/work-experience";
-import { createFileRoute } from "@tanstack/react-router";
+import { WorkExperience } from "@/core/components/work-experience";
+import { createFileRoute, useLoaderData } from "@tanstack/react-router";
 import { Separator } from "@/components/ui/separator";
 import {
   Header3,
@@ -12,29 +9,21 @@ import {
   Paragraph,
 } from "@/components/typography/typography";
 import { useTranslation } from "@/hooks/use-translation";
+import { getWorkExperience } from "@/data/work-experience.server";
 
 export const Route = createFileRoute("/")({
+  loader: async () => {
+    const workExperiences = await getWorkExperience();
+    return { workExperiences };
+  },
   component: RouteComponent,
 });
 
 function RouteComponent() {
   const { t } = useTranslation();
-
-  const workExperiences: Array<ExperienceItem> = [
-    {
-      title: t("pages.experience.items.dyplink.position"),
-      details:
-        t("pages.experience.items.dyplink.time") +
-        " • " +
-        t("pages.experience.items.dyplink.location"),
-      period: t("pages.experience.items.dyplink.duration"),
-      company: t("pages.experience.items.dyplink.company"),
-      logo: "https://dyplink.no/wp-content/uploads/2022/06/dyplink-top-white-text-outlined.svg",
-      description: t("pages.experience.items.dyplink.description"),
-      seeMoreLabel: t("pages.experience.readMore"),
-      seeMoreLink: "https://dyplink.no",
-    },
-  ];
+  const { workExperiences } = useLoaderData({
+    from: Route.id,
+  });
 
   return (
     <div className="content mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">

@@ -2,11 +2,18 @@ export const en = {
   common: {
     subtitle:
       "Norwegian developer building products and services — from small ideas to scalable systems.",
+    resources: "Resources",
+    blog: "Blog",
+    blogDescription: "Read my latest thoughts and updates.",
+    docs: "Documentation",
+    docsDescription: "Find out more about how to use my products.",
   },
   pages: {
     index: {
       about: {
         title: "About Me",
+        description:
+          "My name is <0>Lukas Moe Olsen</0>, and I am a Norwegian developer who enjoys building all kinds of products and services. I started my career in late 2022, when I joined <1>2INF</1> at Hamar Katedralskole. Now I work as an apprentice at <2>Dyplink AS</2>, where I learn the trade in practice – from project management to full-stack development of critical systems.",
       },
     },
     experience: {

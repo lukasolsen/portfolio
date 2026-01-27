@@ -8,7 +8,13 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import "@/styles/globals.css";
 import { seo } from "@/utils/seo";
 
+import { getLocale } from "@/utils/i18n.server";
+
 export const Route = createRootRoute({
+  beforeLoad: async () => {
+    const locale = await getLocale();
+    return { locale };
+  },
   head: () => ({
     meta: [
       {
@@ -58,14 +64,16 @@ export const Route = createRootRoute({
 });
 
 function RootDocument() {
+  const { locale } = Route.useRouteContext();
+
   return (
-    <html>
+    <html lang={locale}>
       <head>
         <HeadContent />
       </head>
       <body>
         <TooltipProvider delayDuration={0}>
-          <I18nProvider>
+          <I18nProvider locale={locale}>
             <Layout />
           </I18nProvider>
         </TooltipProvider>

@@ -1,4 +1,4 @@
-import { BookIcon, Menu, X } from "lucide-react";
+import { BookIcon, Menu, X, Globe } from "lucide-react";
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "../components/ui/button";
@@ -10,9 +10,16 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useRouterState } from "@tanstack/react-router";
+import { useTranslation } from "@/hooks/use-translation";
 
 interface MenuItem {
   title: string;
@@ -23,6 +30,7 @@ interface MenuItem {
 }
 
 export const InstanceHeader: FC = () => {
+  const { t, language, setLanguage } = useTranslation();
   const { location } = useRouterState();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -37,27 +45,36 @@ export const InstanceHeader: FC = () => {
     return location.pathname.includes("/playground");
   }, [location.pathname]);
 
-  const menu = [
-    {
-      title: "Ressurser",
-      url: "#",
-      items: [
-        {
-          title: "Blogg",
-          url: "/blog",
-          description: "Les mine siste tanker og oppdateringer.",
-          icon: <BookIcon />,
-        },
-        {
-          title: "Dokumentasjon",
-          url: "/docs",
-          description: "Finn ut mer om hvordan du bruker produktene mine.",
-          icon: <BookIcon />,
-        },
-      ],
-    },
-    { title: "Kontakt", url: "/contact" },
-  ];
+  const menu = useMemo(
+    () => [
+      {
+        title: t("common.resources", "Ressurser"),
+        url: "#",
+        items: [
+          {
+            title: t("common.blog", "Blogg"),
+            url: "/blog",
+            description: t(
+              "common.blogDescription",
+              "Les mine siste tanker og oppdateringer.",
+            ),
+            icon: <BookIcon />,
+          },
+          {
+            title: t("common.docs", "Dokumentasjon"),
+            url: "/docs",
+            description: t(
+              "common.docsDescription",
+              "Finn ut mer om hvordan du bruker produktene mine.",
+            ),
+            icon: <BookIcon />,
+          },
+        ],
+      },
+      { title: t("pages.contact.title", "Kontakt"), url: "/contact" },
+    ],
+    [t],
+  );
 
   return (
     <header
@@ -92,6 +109,24 @@ export const InstanceHeader: FC = () => {
 
       {/* Right side buttons */}
       <div className="flex items-center gap-2">
+        {/* Language Switcher */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm" className="gap-2">
+              <Globe className="h-4 w-4" />
+              <span className="uppercase">{language}</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setLanguage("no")}>
+              Norsk (NO)
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setLanguage("en")}>
+              English (EN)
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <a href="https://github.com/lukasolsen">
           <Button variant="ghost" size="sm" className="hidden sm:inline-flex">
             <svg

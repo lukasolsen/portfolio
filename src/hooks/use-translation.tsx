@@ -1,51 +1,50 @@
 import {
-  defaultLanguage,
-  getNestedValue,
-  interpolate,
-  resources,
-  type LanguageCode,
-  type TranslationKey,
-} from "@/lib/i18n";
-import {
-  createContext,
-  useContext,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+  useTranslation as useI18nTranslation,
+  I18nextProvider,
+} from "react-i18next";
+import { useCallback, useEffect } from "react";
+import type { LanguageCode } from "@/lib/i18n";
+import i18n from "@/lib/i18n";
 
-interface I18nContextProps {
-  language: LanguageCode;
-  setLanguage: (lang: LanguageCode) => void;
-  t: (key: TranslationKey, params?: Record<string, string | number>) => string;
-}
+export const useTranslation = () => {
+  const { t, i18n: i18nInstance } = useI18nTranslation();
 
-const I18nContext = createContext<I18nContextProps | null>(null);
+  const setLanguage = useCallback(
+    (lang: LanguageCode) => {
+      i18nInstance.changeLanguage(lang);
+      // Also set the cookie for SSR persistence
+      if (typeof document !== "undefined") {
+        document.cookie = `locale=${lang}; path=/; max-age=31536000`;
+        document.documentElement.lang = lang;
+      }
+    },
+    [i18nInstance],
+  );
 
-export const I18nProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState<LanguageCode>(defaultLanguage);
-
-  const value = useMemo(() => {
-    const t = (
-      key: TranslationKey,
-      params?: Record<string, string | number>,
-    ) => {
-      const dict = resources[language];
-      const text = getNestedValue(dict, key);
-      return interpolate(text, params);
-    };
-
-    return { language, setLanguage, t };
-  }, [language]);
-
-  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
+  return {
+    language: i18nInstance.language as LanguageCode,
+    setLanguage,
+    t,
+  };
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
-export const useTranslation = () => {
-  const context = useContext(I18nContext);
-  if (!context) {
-    throw new Error("useTranslation must be used within an I18nProvider");
+export const I18nProvider = ({
+  children,
+  locale,
+}: {
+  children: React.ReactNode;
+  locale?: LanguageCode;
+}) => {
+  // Sync the language on the first render if locale is provided
+  if (locale && i18n.language !== locale) {
+    i18n.changeLanguage(locale);
   }
-  return context;
+
+  useEffect(() => {
+    if (locale) {
+      document.documentElement.lang = locale;
+    }
+  }, [locale]);
+
+  return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
 };

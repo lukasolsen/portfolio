@@ -1,44 +1,45 @@
 import { en } from "@/data/i18n/en";
 import { no } from "@/data/i18n/no";
+import i18next from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
 
 export const defaultLanguage = "no";
+export const supportedLanguages = ["en", "no"] as const;
+export type LanguageCode = (typeof supportedLanguages)[number];
+
 export const resources = {
-  en,
-  no,
+  en: { translation: en },
+  no: { translation: no },
 } as const;
 
-export type LanguageCode = keyof typeof resources;
+// Root translation structure for type safety
 export type TranslationStructure = typeof en;
 
-type RecursiveKeyOf<TObj extends object> = {
-  [TKey in keyof TObj & (string | number)]: TObj[TKey] extends object
-    ? `${TKey}` | `${TKey}.${RecursiveKeyOf<TObj[TKey]>}`
-    : `${TKey}`;
-}[keyof TObj & (string | number)];
-
-export type TranslationKey = RecursiveKeyOf<TranslationStructure>;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getNestedValue = (obj: any, path: string): string => {
-  return path.split(".").reduce((acc, part) => acc && acc[part], obj) || path;
-};
-
-export const interpolate = (
-  template: string,
-  params?: Record<string, string | number>
-) => {
-  if (!params) return template;
-  return template.replace(/{(\w+)}/g, (_, key) => {
-    return params[key] !== undefined ? String(params[key]) : `{${key}}`;
+// Initialize i18next
+i18next
+  .use(initReactI18next)
+  .use(new LanguageDetector())
+  .init({
+    resources,
+    fallbackLng: defaultLanguage,
+    supportedLngs: supportedLanguages,
+    interpolation: {
+      escapeValue: false, // react already safes from xss
+    },
+    detection: {
+      order: ["querystring", "cookie", "localStorage", "navigator", "htmlTag"],
+      caches: ["cookie", "localStorage"],
+      lookupCookie: "locale",
+    },
   });
-};
 
-export const getT = (
-  key: TranslationKey,
-  lang: LanguageCode,
-  params?: Record<string, string | number>
-): string => {
-  const dict = resources[lang];
-  const text = getNestedValue(dict, key);
-  return interpolate(text, params);
-};
+export default i18next;
+
+// Type safety for i18next
+declare module "i18next" {
+  interface CustomTypeOptions {
+    defaultNS: "translation";
+    resources: (typeof resources)["en"];
+  }
+}

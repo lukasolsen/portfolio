@@ -21,7 +21,7 @@ function buildBackrandRequest(params: BackrandParams) {
   return {
     size: [width, height],
     model: params.model.id,
-    colors: params.colors.split(","),
+    colors: params.colors ? params.colors.split(",") : null,
     num_points: params.num_points,
     blur_radius: params.blur_radius,
     grain: params.grain,
@@ -47,7 +47,7 @@ export async function generateBackrandImage(params: BackrandParams) {
   try {
     const res = await axios.post<GenerateBackrandResponse>(
       "http://127.0.0.1:8000/generate/mesh_gradient",
-      body
+      body,
     );
 
     return `data:image/png;base64,${res.data.image_content}`;

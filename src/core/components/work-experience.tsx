@@ -52,14 +52,13 @@ export const WorkExperience: FC<WorkExperienceProps> = ({
                 <span className="text-muted-foreground">{details}</span>
                 <p className="mt-4">{description}</p>
 
-                {/* New "See more" section */}
                 {seeMoreLink && (
                   <div className="mt-3">
                     <a
                       href={seeMoreLink}
                       className="text-primary hover:underline text-sm font-medium"
                     >
-                      {seeMoreLabel + " " + company}
+                      {seeMoreLabel} {company}
                       <ArrowRightIcon className="inline-block h-4 w-4 ml-1" />
                     </a>
                   </div>

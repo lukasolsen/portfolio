@@ -1,4 +1,4 @@
-import type { Project } from "@/data";
+import type { Project } from "@/common/project/project";
 import { Star, Clock } from "lucide-react";
 
 export const ProjectMeta = ({ project }: { project: Project }) => {

@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsDyplinkAiRouteImport } from './routes/projects/dyplink-ai'
 import { Route as BlogsIdRouteImport } from './routes/blogs/$id'
+import { Route as ApiProjectsRouteImport } from './routes/api/projects'
+import { Route as ApiBlogsRouteImport } from './routes/api/blogs'
 import { Route as ProjectsBackrandIndexRouteImport } from './routes/projects/backrand/index'
 import { Route as ProjectsBackrandPlaygroundRouteImport } from './routes/projects/backrand/playground'
 
@@ -30,6 +32,16 @@ const BlogsIdRoute = BlogsIdRouteImport.update({
   path: '/blogs/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiProjectsRoute = ApiProjectsRouteImport.update({
+  id: '/api/projects',
+  path: '/api/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiBlogsRoute = ApiBlogsRouteImport.update({
+  id: '/api/blogs',
+  path: '/api/blogs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsBackrandIndexRoute = ProjectsBackrandIndexRouteImport.update({
   id: '/projects/backrand/',
   path: '/projects/backrand/',
@@ -44,6 +56,8 @@ const ProjectsBackrandPlaygroundRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/blogs': typeof ApiBlogsRoute
+  '/api/projects': typeof ApiProjectsRoute
   '/blogs/$id': typeof BlogsIdRoute
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
@@ -51,6 +65,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/blogs': typeof ApiBlogsRoute
+  '/api/projects': typeof ApiProjectsRoute
   '/blogs/$id': typeof BlogsIdRoute
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
@@ -59,6 +75,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/blogs': typeof ApiBlogsRoute
+  '/api/projects': typeof ApiProjectsRoute
   '/blogs/$id': typeof BlogsIdRoute
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
@@ -68,6 +86,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/api/blogs'
+    | '/api/projects'
     | '/blogs/$id'
     | '/projects/dyplink-ai'
     | '/projects/backrand/playground'
@@ -75,6 +95,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/api/blogs'
+    | '/api/projects'
     | '/blogs/$id'
     | '/projects/dyplink-ai'
     | '/projects/backrand/playground'
@@ -82,6 +104,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/api/blogs'
+    | '/api/projects'
     | '/blogs/$id'
     | '/projects/dyplink-ai'
     | '/projects/backrand/playground'
@@ -90,6 +114,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiBlogsRoute: typeof ApiBlogsRoute
+  ApiProjectsRoute: typeof ApiProjectsRoute
   BlogsIdRoute: typeof BlogsIdRoute
   ProjectsDyplinkAiRoute: typeof ProjectsDyplinkAiRoute
   ProjectsBackrandPlaygroundRoute: typeof ProjectsBackrandPlaygroundRoute
@@ -119,6 +145,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/projects': {
+      id: '/api/projects'
+      path: '/api/projects'
+      fullPath: '/api/projects'
+      preLoaderRoute: typeof ApiProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/blogs': {
+      id: '/api/blogs'
+      path: '/api/blogs'
+      fullPath: '/api/blogs'
+      preLoaderRoute: typeof ApiBlogsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects/backrand/': {
       id: '/projects/backrand/'
       path: '/projects/backrand'
@@ -138,6 +178,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiBlogsRoute: ApiBlogsRoute,
+  ApiProjectsRoute: ApiProjectsRoute,
   BlogsIdRoute: BlogsIdRoute,
   ProjectsDyplinkAiRoute: ProjectsDyplinkAiRoute,
   ProjectsBackrandPlaygroundRoute: ProjectsBackrandPlaygroundRoute,

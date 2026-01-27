@@ -58,7 +58,7 @@ export function RouteComponent() {
       }
 
       const headingNodes = Array.from(
-        container.querySelectorAll<HTMLElement>("h1, h2, h3")
+        container.querySelectorAll<HTMLElement>("h1, h2, h3"),
       );
 
       const built: HeadingItem[] = headingNodes.map((node) => {
