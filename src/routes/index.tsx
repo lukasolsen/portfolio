@@ -46,14 +46,14 @@ function RouteComponent() {
           </span>
         </h1>
         <div className="max-w-2xl">
-          <LeadText>{t("common.subtitle")}</LeadText>
+          <LeadText>{m["common.subtitle"]()}</LeadText>
         </div>
       </motion.section>
 
       <Separator className="my-12 opacity-40" />
 
       <motion.section id="about" {...fadeInUp}>
-        <Header3 className="mb-4">{t("pages.index.about.title")}</Header3>
+        <Header3 className="mb-4">{m["pages.index.about.title"]()}</Header3>
         <div className="prose dark:prose-invert max-w-none text-muted-foreground leading-relaxed">
           <Paragraph>
             Mitt navn er <strong>Lukas Moe Olsen</strong>, og jeg er en norsk
@@ -83,7 +83,7 @@ function RouteComponent() {
       <Separator className="my-12 opacity-40" />
 
       <motion.section id="work-experience" {...fadeInUp}>
-        <Header3 className="mb-6">{t("pages.experience.title")}</Header3>
+        <Header3 className="mb-6">{m["pages.experience.title"]()}</Header3>
         <WorkExperience experience={workExperiences} />
       </motion.section>
 
@@ -91,7 +91,7 @@ function RouteComponent() {
 
       <motion.section id="projects" {...fadeInUp}>
         <div className="flex items-center justify-between mb-2">
-          <Header3>{t("pages.projects.title")}</Header3>
+          <Header3>{m["pages.projects.title"]()}</Header3>
           <span className="text-sm text-muted-foreground hidden sm:block">
             Utvalgte prosjekter
           </span>
@@ -103,15 +103,15 @@ function RouteComponent() {
 
       <motion.section id="contact" {...fadeInUp} className="mb-16">
         <div className="bg-muted/30 rounded-2xl p-6 md:p-8 border border-border/50">
-          <Header3 className="mb-3">{t("pages.contact.title")}</Header3>
+          <Header3 className="mb-3">{m["pages.contact.title"]()}</Header3>
           <Paragraph className="text-muted-foreground mb-4 max-w-2xl">
-            {t("pages.contact.description")}
+            {m["pages.contact.description"]()}
           </Paragraph>
           <a
             href="mailto:lukmarwil@gmail.com"
             className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-primary-foreground bg-primary rounded-lg hover:bg-primary/90 transition-colors shadow-sm"
           >
-            {t("pages.contact.email")}
+            {m["pages.contact.email"]()}
           </a>
         </div>
       </motion.section>

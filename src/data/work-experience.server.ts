@@ -1,23 +1,21 @@
 import type { ExperienceItem } from "@/core/components/work-experience";
 import { createServerFn } from "@tanstack/react-start";
-import i18next, { type LanguageCode } from "@/lib/i18n";
+import { m } from "@/paraglide/messages";
 
 export const getWorkExperience = createServerFn().handler(
   async (): Promise<ExperienceItem[]> => {
-    const t = i18next.getFixedT("en" as LanguageCode);
-
     return [
       {
-        title: t("pages.experience.items.dyplink.position"),
+        title: m["pages.experience.items.dyplink.position"](),
         details:
-          t("pages.experience.items.dyplink.time") +
+          m["pages.experience.items.dyplink.time"]() +
           " • " +
-          t("pages.experience.items.dyplink.location"),
-        period: t("pages.experience.items.dyplink.duration"),
-        company: t("pages.experience.items.dyplink.company"),
+          m["pages.experience.items.dyplink.location"](),
+        period: m["pages.experience.items.dyplink.duration"](),
+        company: m["pages.experience.items.dyplink.company"](),
         logo: "https://dyplink.no/wp-content/uploads/2022/06/dyplink-top-white-text-outlined.svg",
-        description: t("pages.experience.items.dyplink.description"),
-        seeMoreLabel: t("pages.experience.readMore"),
+        description: m["pages.experience.items.dyplink.description"](),
+        seeMoreLabel: m["pages.experience.readMore"](),
         seeMoreLink: "https://dyplink.no",
       },
     ];

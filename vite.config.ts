@@ -10,8 +10,10 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  ssr: {
-    external: ["i18next"],
+  build: {
+    rollupOptions: {
+      external: ["@inlang/paraglide-js"],
+    },
   },
   plugins: [
     paraglideVitePlugin({
@@ -37,7 +39,6 @@ export default defineConfig({
         },
       ],
     }),
-    tailwindcss(),
     tsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
@@ -46,5 +47,6 @@ export default defineConfig({
     }),
     viteReact(),
     nitro(),
+    tailwindcss(),
   ],
 });

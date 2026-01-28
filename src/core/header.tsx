@@ -19,7 +19,8 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useRouterState } from "@tanstack/react-router";
-import { useTranslation } from "@/hooks/use-translation";
+import { m } from "@/paraglide/messages";
+import { setLocale, getLocale } from "@/paraglide/runtime";
 
 interface MenuItem {
   title: string;
@@ -30,7 +31,6 @@ interface MenuItem {
 }
 
 export const InstanceHeader: FC = () => {
-  const { t, language, setLanguage } = useTranslation();
   const { location } = useRouterState();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -48,32 +48,26 @@ export const InstanceHeader: FC = () => {
   const menu = useMemo(
     () => [
       {
-        title: t("common.resources", "Ressurser"),
+        title: m["common.resources"](),
         url: "#",
         items: [
           {
-            title: t("common.blog", "Blogg"),
+            title: m["common.blog"](),
             url: "/blog",
-            description: t(
-              "common.blogDescription",
-              "Les mine siste tanker og oppdateringer.",
-            ),
+            description: m["common.blogDescription"](),
             icon: <BookIcon />,
           },
           {
-            title: t("common.docs", "Dokumentasjon"),
+            title: m["common.docs"](),
             url: "/docs",
-            description: t(
-              "common.docsDescription",
-              "Finn ut mer om hvordan du bruker produktene mine.",
-            ),
+            description: m["common.docsDescription"](),
             icon: <BookIcon />,
           },
         ],
       },
-      { title: t("pages.contact.title", "Kontakt"), url: "/contact" },
+      { title: m["pages.contact.title"](), url: "/contact" },
     ],
-    [t],
+    [],
   );
 
   return (
@@ -84,7 +78,6 @@ export const InstanceHeader: FC = () => {
         isPlayground ? "px-8" : "",
       )}
     >
-      {/* Logo */}
       <a
         className="flex max-h-8 items-center gap-2 text-lg font-semibold tracking-tighter"
         href="/"
@@ -100,28 +93,25 @@ export const InstanceHeader: FC = () => {
         </span>
       </a>
 
-      {/* Desktop navigation */}
       <NavigationMenu className="hidden lg:flex flex-1 items-center justify-center relative">
         <NavigationMenuList>
           {menu.map((item) => renderMenuItem(item))}
         </NavigationMenuList>
       </NavigationMenu>
 
-      {/* Right side buttons */}
       <div className="flex items-center gap-2">
-        {/* Language Switcher */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="sm" className="gap-2">
               <Globe className="h-4 w-4" />
-              <span className="uppercase">{language}</span>
+              <span className="uppercase">{getLocale()}</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setLanguage("no")}>
+            <DropdownMenuItem onClick={() => setLocale("no")}>
               Norsk (NO)
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setLanguage("en")}>
+            <DropdownMenuItem onClick={() => setLocale("en")}>
               English (EN)
             </DropdownMenuItem>
           </DropdownMenuContent>

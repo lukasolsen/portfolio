@@ -1,0 +1,41 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "common": {
+    "subtitle": "Norsk utvikler som bygger produkter og tjenester — fra små idéer til skalerbare systemer.",
+    "resources": "Ressurser",
+    "blog": "Blogg",
+    "blogDescription": "Les mine siste tanker og oppdateringer.",
+    "docs": "Dokumentasjon",
+    "docsDescription": "Finn ut mer om hvordan du bruker produktene mine."
+  },
+  "pages": {
+    "index": {
+      "about": {
+        "title": "Om meg",
+        "description": "Mitt navn er Lukas Moe Olsen</0> , og jeg er en norsk utvikler som liker å bygge alle slags produkter og tjenester. Jeg startet karrieren min sent i 2022, da jeg begynte i &lt;1&gt;2INF.</1> på Hamar Katedralskole. Nå jobber jeg som lærling hos &lt;2&gt;Dyplink AS</2> , hvor jeg lærer faget i praksis – fra prosjektledelse til fullstack-utvikling av kritiske systemer."
+      }
+    },
+    "experience": {
+      "title": "Jobberfaring",
+      "items": {
+        "dyplink": {
+          "position": "Lærling Fullstack Utvikler",
+          "duration": "August 2023 - Pågående",
+          "company": "Dyplink",
+          "location": "Hamar",
+          "time": "Fulltid",
+          "description": "Utvikler og vedlikeholder tjenester ved hjelp av moderne teknologier som React, Node.js og PHP. Fokuserer på å forbedre eksisterende løsninger og levere verdi til kundene gjennom god kode og struktur."
+        }
+      },
+      "readMore": "Les mer om min tid hos"
+    },
+    "contact": {
+      "title": "Kontakt",
+      "description": "Jeg er alltid åpen for nye muligheter og samarbeid. Ta gjerne kontakt med meg hvis du har et spennende prosjekt eller bare vil si hei!",
+      "email": "Send meg en e-post"
+    },
+    "projects": {
+      "title": "Prosjekter"
+    }
+  }
+}
