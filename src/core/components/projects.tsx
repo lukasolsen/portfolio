@@ -11,7 +11,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Link } from "@tanstack/react-router";
-import { isLinkExternal } from "@/lib/utils";
 import { projects } from "@/data";
 import type { Project } from "@/common/project/project";
 
@@ -148,12 +147,7 @@ const ProjectCard: FC<{
 
         <div className="flex-1 space-y-2">
           <Link
-            to={project.socials.website || project.socials.github}
-            target={
-              isLinkExternal(project.socials.website ?? "")
-                ? "_blank"
-                : undefined
-            }
+            to={"/projects/" + project.id}
             className="block group-hover:underline decoration-primary underline-offset-4 decoration-2"
           >
             <h3 className="text-xl font-semibold tracking-tight text-foreground">

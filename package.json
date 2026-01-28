@@ -73,5 +73,8 @@
     "vite": "^7.3.1",
     "vite-tsconfig-paths": "^6.0.5",
     "@inlang/cli": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=25.5.0"
   }
 }

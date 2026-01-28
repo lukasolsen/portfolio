@@ -7,6 +7,7 @@ import { Share, BookOpen, Briefcase } from "lucide-react";
 import { Relations } from "@/components/relations";
 import { WorkDisclaimer } from "@/components/work-disclaimer";
 import { Markdown } from "@/core/components/markdown/markdown";
+import "@/styles/markdown.css";
 import {
   TableOfContents,
   type HeadingItem,

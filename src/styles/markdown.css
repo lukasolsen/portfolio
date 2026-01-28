@@ -4,13 +4,6 @@
   color: oklch(var(--muted-foreground));
 }
 
-@media (min-width: 768px) {
-  .markdown-content {
-    font-size: 1rem;
-    line-height: 1.7;
-  }
-}
-
 .markdown-content h1,
 .markdown-content h2,
 .markdown-content h3,
@@ -25,29 +18,10 @@
   scroll-margin-top: 6rem;
 }
 
-@media (min-width: 768px) {
-  .markdown-content h1,
-  .markdown-content h2,
-  .markdown-content h3,
-  .markdown-content h4,
-  .markdown-content h5,
-  .markdown-content h6 {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-  }
-}
-
 .markdown-content h1 {
   font-size: 1.5rem;
   margin-top: 0;
   margin-bottom: 1rem;
-}
-
-@media (min-width: 768px) {
-  .markdown-content h1 {
-    font-size: 1.875rem;
-    margin-bottom: 1.5rem;
-  }
 }
 
 .markdown-content h2 {
@@ -56,46 +30,18 @@
   margin-bottom: 0.75rem;
 }
 
-@media (min-width: 768px) {
-  .markdown-content h2 {
-    font-size: 1.5rem;
-    margin-top: 2rem;
-    margin-bottom: 1.25rem;
-  }
-}
-
 .markdown-content h3 {
   font-size: 1.125rem;
   margin-top: 1.25rem;
   margin-bottom: 0.5rem;
 }
 
-@media (min-width: 768px) {
-  .markdown-content h3 {
-    font-size: 1.25rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
-  }
-}
-
 .markdown-content h4 {
   font-size: 1rem;
 }
 
-@media (min-width: 768px) {
-  .markdown-content h4 {
-    font-size: 1.125rem;
-  }
-}
-
 .markdown-content p {
   margin-bottom: 1.25rem;
-}
-
-@media (min-width: 768px) {
-  .markdown-content p {
-    margin-bottom: 1.5rem;
-  }
 }
 
 .markdown-content strong {
@@ -111,7 +57,7 @@
 }
 
 .markdown-content a:hover {
-  @apply text-blue-600;
+  color: #2563eb;
 }
 
 .markdown-content code {
@@ -123,13 +69,6 @@
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Inconsolata, "Roboto Mono", "Source Code Pro", monospace;
 }
 
-@media (min-width: 768px) {
-  .markdown-content code {
-    padding: 0.125rem 0.375rem;
-    font-size: 0.875rem;
-  }
-}
-
 .markdown-content pre {
   background-color: oklch(var(--muted) / 0.5);
   border: 1px solid oklch(var(--border));
@@ -138,14 +77,6 @@
   overflow-x: auto;
   margin: 1rem 0;
   font-size: 0.75rem;
-}
-
-@media (min-width: 768px) {
-  .markdown-content pre {
-    padding: 1rem;
-    margin: 1.25rem 0;
-    font-size: 0.875rem;
-  }
 }
 
 .markdown-content pre code {
@@ -164,14 +95,6 @@
   color: oklch(var(--muted-foreground));
 }
 
-@media (min-width: 768px) {
-  .markdown-content blockquote {
-    border-left-width: 4px;
-    padding-left: 1rem;
-    margin: 1.5rem 0;
-  }
-}
-
 .markdown-content ul,
 .markdown-content ol {
   margin: 1.25rem 0;
@@ -179,34 +102,14 @@
   list-style: disc;
 }
 
-@media (min-width: 768px) {
-  .markdown-content ul,
-  .markdown-content ol {
-    margin: 1.5rem 0;
-    padding-left: 1.5rem;
-  }
-}
-
 .markdown-content li {
   margin-bottom: 0.375rem;
-}
-
-@media (min-width: 768px) {
-  .markdown-content li {
-    margin-bottom: 0.5rem;
-  }
 }
 
 .markdown-content hr {
   border: 0;
   border-top: 1px solid oklch(var(--border));
   margin: 1.5rem 0;
-}
-
-@media (min-width: 768px) {
-  .markdown-content hr {
-    margin: 2rem 0;
-  }
 }
 
 .markdown-content img {
@@ -217,14 +120,6 @@
   margin-bottom: 1.25rem;
 }
 
-@media (min-width: 768px) {
-  .markdown-content img {
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-}
-
-/* Responsive table handling */
 .markdown-content table {
   width: 100%;
   border-collapse: collapse;
@@ -232,13 +127,6 @@
   font-size: 0.8rem;
   overflow-x: auto;
   display: block;
-}
-
-@media (min-width: 768px) {
-  .markdown-content table {
-    font-size: 0.875rem;
-    display: table;
-  }
 }
 
 .markdown-content th,
@@ -251,4 +139,88 @@
 .markdown-content th {
   background-color: oklch(var(--muted) / 0.3);
   font-weight: 600;
+}
+
+/* Desktop styles grouped for better performance and readability */
+@media (min-width: 768px) {
+  .markdown-content {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .markdown-content h1,
+  .markdown-content h2,
+  .markdown-content h3,
+  .markdown-content h4,
+  .markdown-content h5,
+  .markdown-content h6 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .markdown-content h1 {
+    font-size: 1.875rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .markdown-content h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .markdown-content h3 {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .markdown-content h4 {
+    font-size: 1.125rem;
+  }
+
+  .markdown-content p {
+    margin-bottom: 1.5rem;
+  }
+
+  .markdown-content code {
+    padding: 0.125rem 0.375rem;
+    font-size: 0.875rem;
+  }
+
+  .markdown-content pre {
+    padding: 1rem;
+    margin: 1.25rem 0;
+    font-size: 0.875rem;
+  }
+
+  .markdown-content blockquote {
+    border-left-width: 4px;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .markdown-content ul,
+  .markdown-content ol {
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .markdown-content li {
+    margin-bottom: 0.5rem;
+  }
+
+  .markdown-content hr {
+    margin: 2rem 0;
+  }
+
+  .markdown-content img {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .markdown-content table {
+    font-size: 0.875rem;
+    display: table;
+  }
 }

@@ -11,8 +11,12 @@ export function getRouter() {
     defaultNotFoundComponent: () => <NotFound />,
     scrollRestoration: true,
     rewrite: {
-      input: ({ url }) => deLocalizeUrl(url),
-      output: ({ url }) => localizeUrl(url),
+      input: ({ url }) => {
+        return deLocalizeUrl(url);
+      },
+      output: ({ url }) => {
+        return localizeUrl(url);
+      },
     },
   });
   return router;

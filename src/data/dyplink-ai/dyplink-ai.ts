@@ -10,9 +10,7 @@ export const dyplinkAiProject: Project = {
   period: "2025 - Pågående",
   tags: ["AI", "Node.js", "React", "PHP"],
 
-  socials: {
-    website: "/projects/dyplink-ai",
-  },
+  socials: {},
   stats: {},
 
   logo: "/images/dyplink-ai/brand.png",

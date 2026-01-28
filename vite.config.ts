@@ -44,6 +44,14 @@ export default defineConfig({
     }),
     tanstackStart({
       srcDirectory: "src",
+      prerender: {
+        enabled: true,
+        crawlLinks: true,
+      },
+      sitemap: {
+        enabled: true,
+        host: "https://lukasolsen.no",
+      },
     }),
     viteReact(),
     nitro(),

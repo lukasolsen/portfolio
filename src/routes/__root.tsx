@@ -21,6 +21,7 @@ export const Route = createRootRoute({
       ...seo({
         title: "Lukas Olsen | Full-Stack Developer",
         description: `Lukas Olsen is a full-stack developer with a focus on creating high-quality, type-safe, and client-first applications.`,
+        keywords: "technology, programmer, developer, full-stack",
       }),
     ],
     links: [

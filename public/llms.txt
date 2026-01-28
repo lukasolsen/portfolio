@@ -1,0 +1,9 @@
+# Lukas Olsen
+
+> Lukas Olsen is a full-stack developer with a focus on creating high-quality, type-safe, and client-first applications.
+
+## Contact
+
+- [Email](mailto:lukmarwil@gmail.com)
+- [GitHub](https://github.com/lukasolsen)
+- [X](https://x.com/lukasolsen9)
