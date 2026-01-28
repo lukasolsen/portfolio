@@ -1,12 +1,10 @@
 import type { ExperienceItem } from "@/core/components/work-experience";
 import { createServerFn } from "@tanstack/react-start";
-import { getLocale } from "@/utils/i18n.server";
-import i18next from "@/lib/i18n";
+import i18next, { type LanguageCode } from "@/lib/i18n";
 
 export const getWorkExperience = createServerFn().handler(
   async (): Promise<ExperienceItem[]> => {
-    const locale = await getLocale();
-    const t = i18next.getFixedT(locale);
+    const t = i18next.getFixedT("en" as LanguageCode);
 
     return [
       {

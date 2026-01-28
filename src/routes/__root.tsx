@@ -2,19 +2,13 @@
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/core/layout";
 import { NotFound } from "@/core/pages/not-found";
-import { I18nProvider } from "@/hooks/use-translation";
 import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import "@/styles/globals.css";
 import { seo } from "@/utils/seo";
-
-import { getLocale } from "@/utils/i18n.server";
+import { getLocale } from "@/paraglide/runtime";
 
 export const Route = createRootRoute({
-  beforeLoad: async () => {
-    const locale = await getLocale();
-    return { locale };
-  },
   head: () => ({
     meta: [
       {
@@ -64,18 +58,14 @@ export const Route = createRootRoute({
 });
 
 function RootDocument() {
-  const { locale } = Route.useRouteContext();
-
   return (
-    <html lang={locale}>
+    <html lang={getLocale()}>
       <head>
         <HeadContent />
       </head>
       <body>
         <TooltipProvider delayDuration={0}>
-          <I18nProvider locale={locale}>
-            <Layout />
-          </I18nProvider>
+          <Layout />
         </TooltipProvider>
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />

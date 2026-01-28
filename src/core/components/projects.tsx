@@ -1,8 +1,8 @@
-import type { FC } from "react";
+import type { FC, MouseEvent } from "react";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
-import { Github, Link2, Heart } from "lucide-react";
+import { Github, Link2, Heart, Star, Calendar } from "lucide-react";
 import clsx from "clsx";
 import { Tag } from "./tag";
 import {
@@ -13,24 +13,12 @@ import {
 import { Link } from "@tanstack/react-router";
 import { isLinkExternal } from "@/lib/utils";
 import { projects } from "@/data";
+import type { Project } from "@/common/project/project";
 
 interface GithubData {
   stars: number;
   updated: string;
   description?: string;
-}
-
-export interface ProjectItem {
-  title: string;
-  description: string;
-  period: string;
-  logo: string;
-  type: "Work" | "Personal";
-  tags: string[];
-  github?: string;
-  link?: string;
-  highlight?: boolean;
-  like?: boolean;
 }
 
 export const Projects: FC = () => {
@@ -51,200 +39,187 @@ export const Projects: FC = () => {
           try {
             const repoPath = new URL(p.socials.github).pathname.replace(
               /^\/+/,
-              ""
+              "",
             );
             const res = await fetch(`https://api.github.com/repos/${repoPath}`);
             if (!res.ok) continue;
 
             const data = await res.json();
-            localStorage.setItem(
-              `ghrepo:${p.socials.github}`,
-              JSON.stringify({
-                stars: data.stargazers_count,
-                updated: data.updated_at,
-                description: data.description,
-              })
-            );
-
-            results[p.socials.github] = {
+            const info = {
               stars: data.stargazers_count,
               updated: data.updated_at,
               description: data.description,
             };
+
+            localStorage.setItem(
+              `ghrepo:${p.socials.github}`,
+              JSON.stringify(info),
+            );
+            results[p.socials.github] = info;
           } catch (err) {
             console.warn(`GitHub API error for ${p.title}`, err);
-            localStorage.removeItem(`ghrepo:${p.socials.github}`);
           }
         }
       }
-
       setGithubInfo(results);
     };
 
     fetchGithubData();
-  }, [projects]);
+  }, []);
 
   return (
-    <section className="mx-auto space-y-8 mt-4">
-      {projects.map((project, idx) => {
-        const gh = project.socials.github
-          ? githubInfo[project.socials.github]
-          : null;
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+      {projects.map((project, idx) => (
+        <ProjectCard
+          key={idx}
+          project={project}
+          ghData={
+            project.socials.github
+              ? githubInfo[project.socials.github]
+              : undefined
+          }
+          index={idx}
+        />
+      ))}
+    </div>
+  );
+};
 
-        return (
-          <motion.div
-            key={idx}
-            viewport={{ once: true }}
-            className={clsx(
-              "group flex flex-col md:flex-row gap-6 items-center rounded-2xl p-4 transition-all duration-300",
-              project.highlighted
-                ? "bg-primary/5 border border-primary/30 shadow-lg hover:shadow-primary/20"
-                : "bg-muted/10 border border-border/40 hover:bg-muted/20",
-              project.like && "relative"
-            )}
-          >
-            {/* If liked, show heart */}
+const ProjectCard: FC<{
+  project: Project;
+  ghData?: GithubData;
+  index: number;
+}> = ({ project, ghData, index }) => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  const background = useMotionTemplate`radial-gradient(650px circle at ${mouseX}px ${mouseY}px, rgba(14, 165, 233, 0.15), transparent 80%)`;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
+      viewport={{ once: true }}
+      className={clsx(
+        "group relative border border-border/50 bg-background/50 overflow-hidden rounded-xl",
+        project.highlighted ? "md:col-span-2" : "md:col-span-1",
+      )}
+      onMouseMove={handleMouseMove}
+    >
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
+        style={{ background: background }}
+      />
+
+      <div className="relative h-full flex flex-col p-6 z-10">
+        <div className="flex justify-between items-start mb-4">
+          <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-border/60 bg-background/50 shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+            <img
+              src={project.logo}
+              alt={project.title}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </div>
+
+          <div className="flex gap-2">
             {project.like && (
-              <div className="absolute top-3 right-3 flex items-center text-rose-500">
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Heart className="h-5 w-5 fill-rose-500 animate-pulse" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Dette prosjektet liker jeg ekstra godt ❤️</p>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
+              <Tooltip>
+                <TooltipTrigger>
+                  <div className="p-2 bg-rose-500/10 rounded-full">
+                    <Heart className="w-4 h-4 text-rose-500 fill-rose-500 animate-pulse" />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>Liker dette ekstra godt!</TooltipContent>
+              </Tooltip>
             )}
+            <Badge variant={project.type === "work" ? "default" : "secondary"}>
+              {project.type}
+            </Badge>
+          </div>
+        </div>
 
-            {/* Media */}
-            <div
-              className={clsx(
-                "overflow-hidden rounded-xl shrink-0",
-                project.highlighted ? "w-36 h-36 md:w-48 md:h-48" : "w-28 h-28"
+        <div className="flex-1 space-y-2">
+          <Link
+            to={project.socials.website || project.socials.github}
+            target={
+              isLinkExternal(project.socials.website ?? "")
+                ? "_blank"
+                : undefined
+            }
+            className="block group-hover:underline decoration-primary underline-offset-4 decoration-2"
+          >
+            <h3 className="text-xl font-semibold tracking-tight text-foreground">
+              {project.title}
+            </h3>
+          </Link>
+
+          <p className="text-muted-foreground text-sm line-clamp-3">
+            {project.description}
+          </p>
+        </div>
+
+        <div className="mt-6 space-y-4">
+          <div className="flex flex-wrap gap-2">
+            {project.tags.slice(0, 4).map((tag, i) => (
+              <Tag key={i} label={tag} />
+            ))}
+            {project.tags.length > 4 && (
+              <span className="text-xs text-muted-foreground self-center">
+                +{project.tags.length - 4}
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center justify-between pt-4 border-t border-border/40">
+            <div className="flex items-center gap-4 text-xs text-muted-foreground font-medium">
+              {ghData ? (
+                <div className="flex items-center gap-1 text-yellow-600/90 dark:text-yellow-500/90">
+                  <Star className="w-3.5 h-3.5 fill-current" />
+                  <span>{ghData.stars}</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-1">
+                  <Calendar className="w-3.5 h-3.5" />
+                  <span>{project.period}</span>
+                </div>
               )}
-            >
-              <img
-                src={project.logo}
-                alt={`${project.title} preview`}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-                decoding="async"
-              />
             </div>
 
-            {/* Content */}
-            <div className="flex flex-col justify-between w-full">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex flex-col">
-                    <Link
-                      to={project.socials.website || project.socials.github}
-                      target={
-                        isLinkExternal(project.socials.website ?? "")
-                          ? "_blank"
-                          : undefined
-                      }
-                      rel="noopener noreferrer"
-                      className="hover:underline underline-offset-2 decoration-primary/50"
-                    >
-                      <h3
-                        className={clsx(
-                          "font-semibold leading-tight",
-                          project.highlighted ? "text-2xl" : "text-xl"
-                        )}
-                      >
-                        {project.title}
-                      </h3>
-                    </Link>
-                    <p className="text-muted-foreground text-sm mt-1">
-                      {project.description}
-                    </p>
-                  </div>
-
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Badge
-                        variant={
-                          project.type === "work" ? "default" : "secondary"
-                        }
-                        className="text-xs uppercase tracking-wide"
-                      >
-                        {project.type === "work" ? "Arbeid" : "Personlig"}
-                      </Badge>
-                    </TooltipTrigger>
-
-                    <TooltipContent>
-                      {project.type === "work" ? (
-                        <>
-                          <p>
-                            Profesjonelt prosjekt utviklet for arbeidsgiver
-                            eller klient.
-                          </p>
-                          <p className="text-xs italic mt-1">
-                            (Noe informasjon kan være konfidensiell)
-                          </p>
-                        </>
-                      ) : (
-                        <p>Personlig prosjekt for læring eller moro.</p>
-                      )}
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-
-                {/* GitHub metadata */}
-                {gh && (
-                  <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                    <span>⭐ {gh.stars.toLocaleString()} stjerner</span>
-                    <span>•</span>
-                    <span>
-                      Sist oppdatert{" "}
-                      {new Date(gh.updated).toLocaleDateString("no-NO")}
-                    </span>
-                  </div>
-                )}
-
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {project.tags.map((tag, tagIdx) => (
-                    <Tag label={tag} key={tagIdx} />
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-4 flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">
-                  {project.period}
-                </span>
-
-                <div className="flex gap-3">
-                  {project.socials.github && (
-                    <a
-                      href={project.socials.github}
-                      aria-label={`${project.title} GitHub repository`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <Github className="h-5 w-5" />
-                    </a>
-                  )}
-                  {project.socials.website && (
-                    <a
-                      href={project.socials.website}
-                      aria-label={`${project.title} external link`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <Link2 className="h-5 w-5" />
-                    </a>
-                  )}
-                </div>
-              </div>
+            <div className="flex items-center gap-3">
+              {project.socials.github && (
+                <a
+                  href={project.socials.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                  aria-label="View Source"
+                >
+                  <Github className="w-5 h-5" />
+                </a>
+              )}
+              {project.socials.website && (
+                <a
+                  href={project.socials.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                  aria-label="View Website"
+                >
+                  <Link2 className="w-5 h-5" />
+                </a>
+              )}
             </div>
-          </motion.div>
-        );
-      })}
-    </section>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 };

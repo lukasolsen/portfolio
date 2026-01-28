@@ -45,6 +45,7 @@ export const WorkExperience: FC<WorkExperienceProps> = ({
                   <img
                     src={logo}
                     alt={`${company} logo`}
+                    loading="lazy"
                     className="h-5 object-contain"
                   />
                   <h3 className="text-lg m-0">{title}</h3>
