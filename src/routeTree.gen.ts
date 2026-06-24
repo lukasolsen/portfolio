@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsDyplinkAiRouteImport } from './routes/projects/dyplink-ai'
+import { Route as LabBackrand6RouteImport } from './routes/lab/backrand-6'
 import { Route as BlogsIdRouteImport } from './routes/blogs/$id'
 import { Route as ApiProjectsRouteImport } from './routes/api/projects'
 import { Route as ApiBlogsRouteImport } from './routes/api/blogs'
@@ -25,6 +26,11 @@ const IndexRoute = IndexRouteImport.update({
 const ProjectsDyplinkAiRoute = ProjectsDyplinkAiRouteImport.update({
   id: '/projects/dyplink-ai',
   path: '/projects/dyplink-ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LabBackrand6Route = LabBackrand6RouteImport.update({
+  id: '/lab/backrand-6',
+  path: '/lab/backrand-6',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogsIdRoute = BlogsIdRouteImport.update({
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/api/blogs': typeof ApiBlogsRoute
   '/api/projects': typeof ApiProjectsRoute
   '/blogs/$id': typeof BlogsIdRoute
+  '/lab/backrand-6': typeof LabBackrand6Route
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
   '/projects/backrand/': typeof ProjectsBackrandIndexRoute
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/api/blogs': typeof ApiBlogsRoute
   '/api/projects': typeof ApiProjectsRoute
   '/blogs/$id': typeof BlogsIdRoute
+  '/lab/backrand-6': typeof LabBackrand6Route
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
   '/projects/backrand': typeof ProjectsBackrandIndexRoute
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/api/blogs': typeof ApiBlogsRoute
   '/api/projects': typeof ApiProjectsRoute
   '/blogs/$id': typeof BlogsIdRoute
+  '/lab/backrand-6': typeof LabBackrand6Route
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
   '/projects/backrand/': typeof ProjectsBackrandIndexRoute
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/api/blogs'
     | '/api/projects'
     | '/blogs/$id'
+    | '/lab/backrand-6'
     | '/projects/dyplink-ai'
     | '/projects/backrand/playground'
     | '/projects/backrand/'
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/api/blogs'
     | '/api/projects'
     | '/blogs/$id'
+    | '/lab/backrand-6'
     | '/projects/dyplink-ai'
     | '/projects/backrand/playground'
     | '/projects/backrand'
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/api/blogs'
     | '/api/projects'
     | '/blogs/$id'
+    | '/lab/backrand-6'
     | '/projects/dyplink-ai'
     | '/projects/backrand/playground'
     | '/projects/backrand/'
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   ApiBlogsRoute: typeof ApiBlogsRoute
   ApiProjectsRoute: typeof ApiProjectsRoute
   BlogsIdRoute: typeof BlogsIdRoute
+  LabBackrand6Route: typeof LabBackrand6Route
   ProjectsDyplinkAiRoute: typeof ProjectsDyplinkAiRoute
   ProjectsBackrandPlaygroundRoute: typeof ProjectsBackrandPlaygroundRoute
   ProjectsBackrandIndexRoute: typeof ProjectsBackrandIndexRoute
@@ -136,6 +149,13 @@ declare module '@tanstack/react-router' {
       path: '/projects/dyplink-ai'
       fullPath: '/projects/dyplink-ai'
       preLoaderRoute: typeof ProjectsDyplinkAiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lab/backrand-6': {
+      id: '/lab/backrand-6'
+      path: '/lab/backrand-6'
+      fullPath: '/lab/backrand-6'
+      preLoaderRoute: typeof LabBackrand6RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blogs/$id': {
@@ -181,6 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiBlogsRoute: ApiBlogsRoute,
   ApiProjectsRoute: ApiProjectsRoute,
   BlogsIdRoute: BlogsIdRoute,
+  LabBackrand6Route: LabBackrand6Route,
   ProjectsDyplinkAiRoute: ProjectsDyplinkAiRoute,
   ProjectsBackrandPlaygroundRoute: ProjectsBackrandPlaygroundRoute,
   ProjectsBackrandIndexRoute: ProjectsBackrandIndexRoute,
