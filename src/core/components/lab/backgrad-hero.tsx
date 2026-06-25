@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { backrandLabData } from "./backrand-data";
+import { Header1, LeadText, SmallText } from "@/components/typography/typography";
+import { Button } from "@/components/ui/button";
 
 export const BackgradHero = () => {
   const { research, links } = backrandLabData;
@@ -70,22 +72,23 @@ export const BackgradHero = () => {
             </span>
           </div>
 
-          <h1 className="text-6xl md:text-[6rem] font-bold tracking-tighter text-foreground leading-[0.85]">
+          <Header1 className="text-6xl md:text-[6rem] font-bold tracking-tighter leading-[0.85]">
             {research.title}
-          </h1>
+          </Header1>
 
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-light">
+          <LeadText className="max-w-2xl mx-auto font-light">
             {research.subtitle}
-          </p>
+          </LeadText>
 
-          <motion.p
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-sm text-muted-foreground/60 max-w-xl mx-auto leading-relaxed"
           >
-            {research.abstract}
-          </motion.p>
+            <SmallText className="text-muted-foreground/60 max-w-xl mx-auto leading-relaxed">
+              {research.abstract}
+            </SmallText>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -93,26 +96,22 @@ export const BackgradHero = () => {
             transition={{ delay: 0.5, duration: 0.5 }}
             className="flex items-center justify-center gap-4 pt-2"
           >
-            <a
-              href="#quickstart"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity"
-            >
-              Get started
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M1 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </a>
-            <a
-              href={links.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border/40 text-sm font-medium text-muted-foreground hover:text-foreground hover:border-border/60 transition-colors"
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
-              </svg>
-              Source code
-            </a>
+            <Button variant="default" size="sm" asChild>
+              <a href="#quickstart">
+                Get started
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M1 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
+            </Button>
+            <Button variant="outline" size="sm" asChild>
+              <a href={links.github} target="_blank" rel="noopener noreferrer">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                </svg>
+                Source code
+              </a>
+            </Button>
           </motion.div>
 
           <motion.div

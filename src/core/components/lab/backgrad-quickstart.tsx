@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { backrandLabData } from "./backrand-data";
+import { Header6, SmallText } from "@/components/typography/typography";
 
 export const BackgradQuickstart = () => {
   const { links } = backrandLabData;
@@ -29,10 +30,10 @@ export const BackgradQuickstart = () => {
               viewport={{ once: true }}
               className="space-y-3"
             >
-              <h3 className="text-sm font-semibold text-foreground">Install</h3>
+              <Header6 className="font-semibold">Install</Header6>
               <div className="rounded-lg bg-muted/50 border border-border/20 p-4 space-y-2">
                 <code className="text-[13px] font-mono text-foreground block">pip install .</code>
-                <p className="text-[11px] text-muted-foreground/50">Python 3.10+, from source</p>
+                <SmallText className="text-muted-foreground/50">Python 3.10+, from source</SmallText>
               </div>
             </motion.div>
 
@@ -43,11 +44,11 @@ export const BackgradQuickstart = () => {
               viewport={{ once: true }}
               className="space-y-3"
             >
-              <h3 className="text-sm font-semibold text-foreground">Generate</h3>
+              <Header6 className="font-semibold">Generate</Header6>
               <div className="rounded-lg bg-muted/50 border border-border/20 p-4">
                 <code className="text-[13px] font-mono text-foreground block whitespace-pre">{`backgrad -m mesh_gradient \\
   -o gradient.webp -s 42`}</code>
-                <p className="text-[11px] text-muted-foreground/50 mt-2">CLI to file</p>
+                <SmallText className="text-muted-foreground/50 mt-2">CLI to file</SmallText>
               </div>
             </motion.div>
 
@@ -58,7 +59,7 @@ export const BackgradQuickstart = () => {
               viewport={{ once: true }}
               className="space-y-3"
             >
-              <h3 className="text-sm font-semibold text-foreground">Serve</h3>
+              <Header6 className="font-semibold">Serve</Header6>
               <div className="rounded-lg bg-muted/50 border border-border/20 p-4">
                 <code className="text-[13px] font-mono text-foreground block whitespace-pre">{`backgrad serve --port 8000`}</code>
                 <p className="text-[11px] text-muted-foreground/50 mt-2">REST API at /docs</p>
@@ -67,7 +68,7 @@ export const BackgradQuickstart = () => {
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-foreground">Examples</h3>
+            <Header6 className="font-semibold">Examples</Header6>
             <div className="rounded-lg bg-muted/50 border border-border/20 p-4 space-y-3">
               <div className="flex items-start gap-3">
                 <span className="text-[11px] font-mono text-muted-foreground/40 shrink-0 pt-0.5">$</span>
