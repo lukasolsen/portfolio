@@ -1,26 +1,22 @@
 import { WarpType } from "./warps";
 
 export enum BackrandEngineType {
-  OrganicMesh = "mesh_gradient",
-  GlassRefraction = "reflective_mesh",
-  AtmosphericSky = "sky",
+  MeshGradient = "mesh_gradient",
+  MeshCSS = "mesh_css",
+  ReflectiveMesh = "reflective_mesh",
+  Sky = "sky",
 }
 
 export type ModelOption = {
   key: string;
   label: string;
-  type: "slider" | "number" | "select" | "colorlist" | "boolean";
+  type: "slider" | "number" | "select" | "boolean";
   min?: number;
   max?: number;
   step?: number;
   default?: number | string | boolean;
   description?: string;
-  options?: { label: string; value: string; description?: string }[];
-  advanced?: boolean;
-  category?: string;
-  /**
-   * Only show this option if another option has a specific value
-   */
+  options?: { label: string; value: string }[];
   condition?: {
     key: string;
     value: string | number | boolean;
@@ -30,98 +26,64 @@ export type ModelOption = {
 export type BackrandEngine = {
   id: BackrandEngineType;
   name: string;
-  displayName: string;
   description: string;
-  technical_description: string;
-  tags?: string[];
-
-  supportsWarp?: boolean;
-  allowedWarps?: WarpType[];
-  blacklistedOptions?: string[];
-
-  options?: ModelOption[];
+  tags: string[];
+  supportsWarp: boolean;
+  allowedWarps: WarpType[];
+  options: ModelOption[];
 };
 
 export const BackrandModels: Record<string, BackrandEngine> = {
-  [BackrandEngineType.OrganicMesh]: {
-    id: BackrandEngineType.OrganicMesh,
-    name: "Organic Mesh",
-    displayName: "✨ Organic Mesh Composer",
-    description:
-      "A fluid, high-fidelity mesh engine that generates seamless color transitions using advanced geometric layouts.",
-    technical_description:
-      "Synthesizes a dynamic vertex grid with real-time color interpolation. Supports topological relaxation and varying distribution patterns for natural-looking gradients.",
-    tags: ["gradient", "fluid", "mesh"],
+  [BackrandEngineType.MeshGradient]: {
+    id: BackrandEngineType.MeshGradient,
+    name: "Mesh Gradient",
+    description: "Smooth organic gradients via control points and interpolation",
+    tags: ["gradient", "mesh", "organic"],
     supportsWarp: true,
+    allowedWarps: [WarpType.None, WarpType.Wave, WarpType.Turbulence, WarpType.Curl],
     options: [
       {
         key: "algorithm",
-        label: "Topology Engine",
-        description:
-          "The mathematical foundation used to generate the mesh structure.",
+        label: "Interpolation",
         type: "select",
         default: "delaunay",
         options: [
-          {
-            label: "Delaunay Triangulation",
-            value: "delaunay",
-            description:
-              "Creates perfectly balanced triangles between points, ideal for structural and sharp gradients.",
-          },
-          {
-            label: "Radial Basis Function",
-            value: "rbf",
-            description:
-              "A smooth, non-linear interpolation method that creates dream-like, misty transitions.",
-          },
-          {
-            label: "Voronoi Tessellation",
-            value: "voronoi",
-            description:
-              "Divides space into distinct cells, creating a stained-glass or cell-like aesthetic.",
-          },
+          { label: "Delaunay", value: "delaunay" },
+          { label: "Fluid", value: "fluid" },
+          { label: "RBF", value: "rbf" },
+          { label: "Voronoi", value: "voronoi" },
+        ],
+      },
+      {
+        key: "blend_mode",
+        label: "Blend Mode",
+        type: "select",
+        default: "smooth",
+        options: [
+          { label: "Smooth", value: "smooth" },
+          { label: "Vertex", value: "vertex" },
+          { label: "Hard", value: "hard" },
         ],
       },
       {
         key: "distribution",
-        label: "Vertex Distribution",
-        description:
-          "Governs how the initial points are scattered across the canvas.",
+        label: "Point Distribution",
         type: "select",
         default: "random",
         options: [
-          {
-            label: "Natural Random",
-            value: "random",
-            description:
-              "Standard random distribution for an organic, unpredictable look.",
-          },
-          {
-            label: "Poisson Disk",
-            value: "poisson",
-            description:
-              "Ensures points are evenly spaced, avoiding clusters for a cleaner mesh.",
-          },
-          {
-            label: "Golden Spiral",
-            value: "spiral",
-            description:
-              "Arranges points in a mathematical Fibonacci spiral from the center.",
-          },
+          { label: "Random", value: "random" },
+          { label: "Poisson Disk", value: "poisson" },
+          { label: "Golden Spiral", value: "spiral" },
         ],
       },
-      // Delaunay Specific Options
       {
         key: "mesh_complexity",
-        label: "Mesh Complexity",
+        label: "Complexity",
         type: "slider",
         min: 3,
         max: 50,
         step: 1,
         default: 12,
-        description:
-          "Controls the density of the Delaunay triangles. Higher values create more intricate patterns.",
-        condition: { key: "algorithm", value: "delaunay" },
       },
       {
         key: "edge_tension",
@@ -131,144 +93,248 @@ export const BackrandModels: Record<string, BackrandEngine> = {
         max: 1,
         step: 0.01,
         default: 0.5,
-        description:
-          "Adjusts how tightly the colors cling to the triangle edges.",
-        condition: { key: "algorithm", value: "delaunay" },
       },
       {
-        key: "use_relaxation",
-        label: "Iterative Relaxation",
-        type: "boolean",
-        default: true,
-        description:
-          "Applies Lloyd's algorithm to center points within their regions, creating a more uniform and 'relaxed' mesh structure.",
+        key: "bloom_intensity",
+        label: "Bloom",
+        type: "slider",
+        min: 0,
+        max: 1,
+        step: 0.05,
+        default: 0,
       },
       {
-        key: "color_blending",
-        label: "Blending Mode",
-        type: "select",
-        default: "smooth",
-        options: [
-          { label: "Ultra Smooth", value: "smooth" },
-          { label: "Per-Vertex", value: "vertex" },
-          { label: "Posterized", value: "hard" },
-        ],
+        key: "saturation",
+        label: "Saturation",
+        type: "slider",
+        min: 0,
+        max: 2,
+        step: 0.05,
+        default: 1,
+      },
+      {
+        key: "contrast",
+        label: "Contrast",
+        type: "slider",
+        min: 0,
+        max: 2,
+        step: 0.05,
+        default: 1,
       },
     ],
-    allowedWarps: [WarpType.None, WarpType.Turbulence],
   },
 
-  [BackrandEngineType.GlassRefraction]: {
-    id: BackrandEngineType.GlassRefraction,
+  [BackrandEngineType.MeshCSS]: {
+    id: BackrandEngineType.MeshCSS,
+    name: "CSS Mesh",
+    description: "Flowing CSS/Figma-style gradients with Perlin noise flow",
+    tags: ["gradient", "css", "flow"],
+    supportsWarp: true,
+    allowedWarps: [WarpType.None, WarpType.CSSFlow],
+    options: [
+      {
+        key: "preset",
+        label: "Palette",
+        type: "select",
+        default: "aurora",
+        options: [
+          { label: "Aurora", value: "aurora" },
+          { label: "Stripe", value: "stripe" },
+          { label: "Sunset Silk", value: "sunset_silk" },
+          { label: "OpenAI Warm", value: "openai_warm" },
+          { label: "Ocean", value: "ocean" },
+        ],
+      },
+      {
+        key: "style",
+        label: "Style",
+        type: "select",
+        default: "balanced",
+        options: [
+          { label: "Balanced", value: "balanced" },
+          { label: "Silk", value: "silk" },
+          { label: "Hero", value: "hero" },
+          { label: "Ambient", value: "ambient" },
+          { label: "Vibrant", value: "vibrant" },
+        ],
+      },
+      {
+        key: "interpolation",
+        label: "Interpolation",
+        type: "select",
+        default: "bicubic",
+        options: [
+          { label: "Monotone Bicubic", value: "bicubic" },
+          { label: "Freeform RBF", value: "freeform" },
+        ],
+      },
+      {
+        key: "jitter",
+        label: "Jitter",
+        type: "slider",
+        min: 0,
+        max: 1,
+        step: 0.05,
+        default: 0.3,
+      },
+      {
+        key: "flow_octaves",
+        label: "Flow Octaves",
+        type: "slider",
+        min: 1,
+        max: 6,
+        step: 1,
+        default: 3,
+      },
+      {
+        key: "domain_warp",
+        label: "Domain Warp",
+        type: "slider",
+        min: 0,
+        max: 2,
+        step: 0.1,
+        default: 0.5,
+      },
+      {
+        key: "glow",
+        label: "Glow",
+        type: "slider",
+        min: 0,
+        max: 1,
+        step: 0.05,
+        default: 0,
+      },
+      {
+        key: "vignette",
+        label: "Vignette",
+        type: "slider",
+        min: 0,
+        max: 1,
+        step: 0.05,
+        default: 0,
+      },
+    ],
+  },
+
+  [BackrandEngineType.ReflectiveMesh]: {
+    id: BackrandEngineType.ReflectiveMesh,
     name: "Reflective Mesh",
-    displayName: "💎 Glass Refraction",
-    description:
-      "A premium rendering engine that simulates light passing through textured glass and reflective surfaces.",
-    technical_description:
-      "Utilizes pseudo-3D normal mapping on a 2D mesh to calculate light refraction and specular highlights.",
-    tags: ["glass", "reflective", "3d"],
+    description: "Multicolor mesh with light reflections, optimized for speed",
+    tags: ["reflective", "light", "fast"],
     supportsWarp: true,
     allowedWarps: [WarpType.None, WarpType.Wave, WarpType.Turbulence],
     options: [
       {
-        key: "refraction_index",
-        label: "Refraction Index",
+        key: "reflection_count",
+        label: "Light Orbs",
         type: "slider",
-        min: 0,
-        max: 2,
-        step: 0.01,
-        default: 1.2,
-        description:
-          "Simulates the density of the glass material. Higher values distort colors more intensely.",
+        min: 1,
+        max: 20,
+        step: 1,
+        default: 5,
       },
       {
         key: "reflection_intensity",
-        label: "Specular Intensity",
+        label: "Reflection Intensity",
         type: "slider",
         min: 0,
         max: 1,
         step: 0.05,
         default: 0.5,
-        description:
-          "Controls how much light is reflected off the surface 'ridges'.",
-      },
-      {
-        key: "roughness",
-        label: "Surface Roughness",
-        type: "slider",
-        min: 0,
-        max: 1,
-        step: 0.05,
-        default: 0.2,
-        description:
-          "Adds micro-textures to the surface to simulate frosted glass.",
       },
     ],
   },
 
-  [BackrandEngineType.AtmosphericSky]: {
-    id: BackrandEngineType.AtmosphericSky,
-    name: "Atmospheric Sky",
-    displayName: "🌌 Atmospheric Void",
-    description:
-      "A vast celestial engine for creating hyper-realistic skies, deep space vistas, and nebula-like backgrounds.",
-    technical_description:
-      "Implements Rayleigh and Mie scattering models for atmosphere, combined with multi-layered noise for cloud and star field generation.",
-    tags: ["sky", "nebula", "space"],
+  [BackrandEngineType.Sky]: {
+    id: BackrandEngineType.Sky,
+    name: "Sky",
+    description: "Atmospheric scenes with clouds, stars, aurora, moon",
+    tags: ["sky", "atmosphere", "space"],
     supportsWarp: false,
+    allowedWarps: [],
     options: [
       {
         key: "mode",
-        label: "Celestial Preset",
+        label: "Time of Day",
         type: "select",
-        options: [
-          { value: "night", label: "Midnight Void" },
-          { value: "day", label: "High Noon" },
-          { value: "dawn", label: "Golden Hour" },
-          { value: "dusk", label: "Twilight" },
-        ],
         default: "night",
+        options: [
+          { label: "Day", value: "day" },
+          { label: "Night", value: "night" },
+          { label: "Dawn", value: "dawn" },
+          { label: "Dusk", value: "dusk" },
+        ],
+      },
+      {
+        key: "cloud_layers",
+        label: "Cloud Layers",
+        type: "slider",
+        min: 0,
+        max: 5,
+        step: 1,
+        default: 3,
       },
       {
         key: "cloud_density",
-        label: "Vapor Density",
+        label: "Cloud Density",
         type: "slider",
         min: 0,
         max: 1,
         step: 0.05,
         default: 0.35,
-        description: "Governs the thickness and opacity of cloud formations.",
       },
       {
-        key: "star_field_density",
-        label: "Star Cluster Density",
-        type: "slider",
-        min: 0,
-        max: 0.01,
-        step: 0.0005,
-        default: 0.002,
-        description:
-          "Controls the amount of stars generated in the deep space layers.",
-      },
-      {
-        key: "nebula_intensity",
-        label: "Nebula Glow",
+        key: "cloud_coverage",
+        label: "Cloud Coverage",
         type: "slider",
         min: 0,
         max: 1,
         step: 0.05,
         default: 0.5,
-        description: "Adds colorful gas clouds and nebulae to the background.",
       },
       {
-        key: "horizon_glow",
-        label: "Atmospheric Bloom",
+        key: "star_density",
+        label: "Star Density",
         type: "slider",
         min: 0,
-        max: 1,
-        step: 0.05,
-        default: 0.6,
-        description: "Adjusts the light scattering at the horizon line.",
+        max: 0.01,
+        step: 0.0005,
+        default: 0.002,
+      },
+      {
+        key: "aurora_enabled",
+        label: "Aurora",
+        type: "boolean",
+        default: false,
+      },
+      {
+        key: "moon_enabled",
+        label: "Moon",
+        type: "boolean",
+        default: false,
+      },
+      {
+        key: "moon_phase",
+        label: "Moon Phase",
+        type: "select",
+        default: "full",
+        options: [
+          { label: "New", value: "new" },
+          { label: "Crescent", value: "crescent" },
+          { label: "Quarter", value: "quarter" },
+          { label: "Gibbous", value: "gibbous" },
+          { label: "Full", value: "full" },
+        ],
+        condition: { key: "moon_enabled", value: true },
+      },
+      {
+        key: "planet_count",
+        label: "Planets",
+        type: "slider",
+        min: 0,
+        max: 5,
+        step: 1,
+        default: 0,
       },
     ],
   },

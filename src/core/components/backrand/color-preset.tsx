@@ -1,12 +1,6 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 import { colorPresets } from "@/common/backrand/colors";
 
 export function ColorPresetSelector({
@@ -14,43 +8,45 @@ export function ColorPresetSelector({
 }: {
   onChange: (colors: string[]) => void;
 }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 4 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="space-y-2"
-    >
-      <Label className="text-sm font-medium">Velg palett</Label>
+  const [selected, setSelected] = useState<string | null>(null);
 
-      <Select
-        onValueChange={(presetId) => {
-          const preset = colorPresets.find((p) => p.id === presetId);
-          if (preset) onChange(preset.colors);
-        }}
-      >
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Velg en fargepalett" />
-        </SelectTrigger>
-        <SelectContent>
-          {colorPresets.map((preset) => (
-            <SelectItem key={preset.id} value={preset.id}>
-              <div className="flex items-center space-x-3">
-                <div className="flex space-x-1">
-                  {preset.colors.map((c, i) => (
-                    <div
-                      key={i}
-                      className="w-4 h-4 rounded-full border border-border shadow-sm"
-                      style={{ backgroundColor: c }}
-                    />
-                  ))}
-                </div>
-                <span className="text-sm font-medium">{preset.name}</span>
-              </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </motion.div>
+  const handleSelect = (preset: (typeof colorPresets)[number]) => {
+    setSelected(preset.id);
+    onChange(preset.colors);
+  };
+
+  return (
+    <div className="space-y-2">
+      <div className="grid grid-cols-2 gap-1.5">
+        {colorPresets.map((preset, i) => (
+          <motion.button
+            key={preset.id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: i * 0.02 }}
+            onClick={() => handleSelect(preset)}
+            className={cn(
+              "flex flex-col items-start gap-1.5 p-2 rounded-lg border transition-all text-left",
+              selected === preset.id
+                ? "border-primary/50 bg-primary/5"
+                : "border-border/20 bg-muted/10 hover:border-border/40 hover:bg-muted/20"
+            )}
+          >
+            <div className="flex w-full gap-0.5">
+              {preset.colors.slice(0, 5).map((c, j) => (
+                <div
+                  key={j}
+                  className="flex-1 h-3 first:rounded-l-sm last:rounded-r-sm"
+                  style={{ backgroundColor: c }}
+                />
+              ))}
+            </div>
+            <span className="text-[10px] text-muted-foreground/70 font-medium truncate w-full">
+              {preset.name}
+            </span>
+          </motion.button>
+        ))}
+      </div>
+    </div>
   );
 }

@@ -1,35 +1,35 @@
 export enum WarpType {
   None = "none",
+  Sinusoidal = "sinusoidal",
   Wave = "wave",
   Turbulence = "turbulence",
+  Curl = "curl",
+  CSSFlow = "css_flow",
 }
 
-export type Warp = {
-  id: WarpType;
-  name: string;
-  icon: string;
-  description: string;
-};
-
-export const Warps: Record<WarpType, Warp> = {
+export const Warps: Record<WarpType, { name: string; description: string }> = {
   [WarpType.None]: {
-    id: WarpType.None,
-    name: "Ingen warp",
-    icon: "⚪️",
-    description:
-      "Ingen forvrengning. Perfekt for glatte og rene gradienter uten bevegelse.",
+    name: "None",
+    description: "No distortion",
+  },
+  [WarpType.Sinusoidal]: {
+    name: "Sinusoidal",
+    description: "Sine/cosine displacement fields",
   },
   [WarpType.Wave]: {
-    id: WarpType.Wave,
-    name: "Bølge",
-    icon: "🌊",
-    description: "Skaper en bølgeeffekt som gir dybde og bevegelse til bildet.",
+    name: "Wave",
+    description: "OpenSimplex noise with bilinear interpolation",
   },
   [WarpType.Turbulence]: {
-    id: WarpType.Turbulence,
-    name: "Turbulens",
-    icon: "🌪️",
-    description:
-      "Skaper en uregelmessig, turbulent bevegelse som gir liv til bildet.",
+    name: "Turbulence",
+    description: "Multi-octave OpenSimplex noise",
+  },
+  [WarpType.Curl]: {
+    name: "Curl Noise",
+    description: "Divergence-free flow via curl of fractal noise",
+  },
+  [WarpType.CSSFlow]: {
+    name: "CSS Flow",
+    description: "Multi-octave Perlin with domain warping and curl",
   },
 };

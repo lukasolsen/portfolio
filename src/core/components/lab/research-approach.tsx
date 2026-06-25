@@ -6,13 +6,13 @@ export const ResearchApproach = () => {
 
   return (
     <section className="w-full px-4 md:px-8 py-28 border-t border-border/30 bg-muted/3">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="space-y-12"
+          className="space-y-16"
         >
           {/* Section label */}
           <div className="flex items-center gap-3">
@@ -26,77 +26,93 @@ export const ResearchApproach = () => {
             {approach.summary}
           </p>
 
-          {/* Pipeline SVG diagram */}
-          <div className="py-8">
-            <svg
-              viewBox="0 0 900 120"
-              className="w-full h-auto"
-              fill="none"
-            >
-              {approach.pipeline.map((step, i) => {
-                const x = i * 225 + 20;
-                const nextX = (i + 1) * 225 + 20;
-                return (
-                  <g key={i}>
-                    {/* Box */}
-                    <motion.rect
-                      x={x}
-                      y="20"
-                      width="185"
-                      height="80"
-                      rx="8"
-                      className="fill-background stroke-border/40"
-                      strokeWidth="1"
-                      initial={{ opacity: 0, x: x - 20 }}
-                      whileInView={{ opacity: 1, x }}
-                      transition={{ duration: 0.4, delay: i * 0.1 }}
-                      viewport={{ once: true }}
-                    />
-                    {/* Stage label */}
-                    <text
-                      x={x + 16}
-                      y="48"
-                      className="fill-foreground text-[13px] font-semibold"
-                    >
-                      {step.stage}
-                    </text>
-                    {/* Description */}
-                    <text
-                      x={x + 16}
-                      y="66"
-                      className="fill-muted-foreground text-[10px]"
-                    >
-                      {step.description.length > 40
-                        ? step.description.slice(0, 40) + "..."
-                        : step.description}
-                    </text>
-                    <text
-                      x={x + 16}
-                      y="82"
-                      className="fill-muted-foreground/50 text-[9px] font-mono"
-                    >
-                      {step.detail}
-                    </text>
-                    {/* Arrow */}
-                    {i < approach.pipeline.length - 1 && (
-                      <motion.line
-                        x1={x + 185}
-                        y1="60"
-                        x2={nextX}
-                        y2="60"
-                        className="stroke-border/30"
-                        strokeWidth="1"
-                        strokeDasharray="4 4"
-                        initial={{ pathLength: 0 }}
-                        whileInView={{ pathLength: 1 }}
-                        transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
-                        viewport={{ once: true }}
-                      />
-                    )}
-                  </g>
-                );
-              })}
-            </svg>
+          {/* Generator Models */}
+          <div className="space-y-6">
+            <h3 className="text-sm font-semibold tracking-tight text-foreground">
+              Generator Models
+            </h3>
+            <div className="grid gap-4 md:grid-cols-2">
+              {approach.models.map((model, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                  viewport={{ once: true }}
+                  className="group relative p-5 rounded-xl border border-border/30 bg-background hover:border-border/50 transition-colors"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-muted text-[10px] font-mono text-muted-foreground/60">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <code className="text-sm font-mono font-medium text-foreground">
+                        {model.name}
+                      </code>
+                    </div>
+                    <p className="text-[13px] text-muted-foreground leading-relaxed">
+                      {model.description}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {model.algorithms.map((algo, j) => (
+                        <span
+                          key={j}
+                          className="inline-flex items-center px-2 py-0.5 rounded-md bg-muted/50 text-[10px] font-mono text-muted-foreground/60"
+                        >
+                          {algo}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Data Flow Pipeline */}
+          <div className="space-y-6">
+            <h3 className="text-sm font-semibold tracking-tight text-foreground">
+              Data Flow Pipeline
+            </h3>
+            <div className="relative">
+              {/* Vertical connecting line */}
+              <div className="absolute left-[19px] top-3 bottom-3 w-px bg-border/20" />
+
+              <div className="space-y-0">
+                {approach.pipeline.map((step, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -8 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: i * 0.06 }}
+                    viewport={{ once: true }}
+                    className="relative flex items-start gap-4 py-4"
+                  >
+                    {/* Node dot */}
+                    <div className="relative z-10 flex items-center justify-center w-10 h-10 rounded-lg border border-border/40 bg-background shrink-0">
+                      <span className="text-[10px] font-mono text-muted-foreground/50">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0 pt-1.5">
+                      <div className="flex items-baseline gap-3">
+                        <h4 className="text-sm font-medium text-foreground">
+                          {step.stage}
+                        </h4>
+                        <span className="text-[10px] font-mono text-muted-foreground/40">
+                          {step.detail}
+                        </span>
+                      </div>
+                      <p className="text-[13px] text-muted-foreground leading-relaxed mt-1">
+                        {step.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>

@@ -35,7 +35,7 @@ export const ResearchPerformance = () => {
                       Resolution
                     </th>
                     <th className="text-left py-3 px-4 text-[11px] uppercase tracking-wider text-muted-foreground/50 font-medium">
-                      Style
+                      Model
                     </th>
                     <th className="text-right py-3 px-4 text-[11px] uppercase tracking-wider text-muted-foreground/50 font-medium">
                       Time
@@ -62,7 +62,7 @@ export const ResearchPerformance = () => {
                         {bench.resolution}
                       </td>
                       <td className="py-3 px-4 text-xs text-muted-foreground">
-                        {bench.style}
+                        {bench.model}
                       </td>
                       <td className="py-3 px-4 text-right font-mono text-xs text-muted-foreground">
                         {bench.time}

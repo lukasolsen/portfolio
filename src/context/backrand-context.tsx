@@ -14,11 +14,24 @@ import { BackrandQuality } from "@/common/backrand/quality";
 import { BackrandAspectRatio } from "@/common/backrand/aspect-ratio";
 import type { BackrandParams } from "@/common/backrand/backrand";
 
+export type RequestLog = {
+  id: number;
+  timestamp: string;
+  endpoint: string;
+  method: string;
+  body: Record<string, unknown>;
+  responseHeaders: Record<string, string>;
+  status: number;
+  duration: number;
+  error?: string;
+};
+
 type BackrandContextType = {
   params: BackrandParams;
   image: BackrandImage | null;
   loading: boolean;
   models: BackrandEngine[];
+  requestLog: RequestLog[];
 
   currentModel: BackrandEngine;
   setModel: (model_id: string) => void;
@@ -40,7 +53,7 @@ export const BackrandProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const defaultModel = BackrandModels[BackrandEngineType.OrganicMesh];
+  const defaultModel = BackrandModels[BackrandEngineType.MeshGradient];
 
   const [settings, setParams] = useState<BackrandParams>({
     size: "512x512",
@@ -71,6 +84,7 @@ export const BackrandProvider = ({
 
   const [image, setImage] = useState<BackrandImage | null>(null);
   const [loading, setLoading] = useState(false);
+  const [requestLog, setRequestLog] = useState<RequestLog[]>([]);
 
   const models = Object.values(BackrandModels);
   const [currentModel, setCurrentModel] = useState(models[0]);
@@ -114,24 +128,80 @@ export const BackrandProvider = ({
     setLoading(true);
     toast.dismiss();
 
+    const startTime = performance.now();
+    const [width, height] = settings.size.split("x").map(Number);
+
+    const requestBody = {
+      size: [width, height],
+      quality: settings.quality,
+      model: settings.model.id,
+      model_options: settings.model_options ?? {},
+      colors: settings.colors ? settings.colors.split(",") : null,
+      warp: {
+        type: settings.warp,
+        amplitude: settings.warp_amplitude,
+        frequency: settings.warp_frequency,
+        octaves: settings.warp_octaves,
+      },
+      num_points: settings.num_points,
+      blur_radius: settings.blur_radius,
+      grain: settings.grain,
+      seed: settings.seed,
+      output_format: "webp",
+    };
+
     try {
       image?.revoke();
 
       const result = await generateBackrandImage(settings);
       setImage(result);
+
+      const duration = Math.round(performance.now() - startTime);
+
+      setRequestLog((prev) => [
+        {
+          id: Date.now(),
+          timestamp: new Date().toLocaleTimeString(),
+          endpoint: "/generate/" + settings.model.id,
+          method: "POST",
+          body: requestBody,
+          responseHeaders: result.meta as Record<string, string>,
+          status: 200,
+          duration,
+        },
+        ...prev.slice(0, 19),
+      ]);
     } catch (e) {
+      const duration = Math.round(performance.now() - startTime);
+
+      setRequestLog((prev) => [
+        {
+          id: Date.now(),
+          timestamp: new Date().toLocaleTimeString(),
+          endpoint: "/generate/" + settings.model.id,
+          method: "POST",
+          body: requestBody,
+          responseHeaders: {},
+          status: 500,
+          duration,
+          error: e instanceof Error ? e.message : "Unknown error",
+        },
+        ...prev.slice(0, 19),
+      ]);
+
       console.error(e);
-      toast.error("Kunne ikke generere bildet, prøv igjen senere.");
+      toast.error("Generation failed");
     } finally {
       setLoading(false);
     }
-  }, [settings]);
+  }, [settings, image]);
 
   const value: BackrandContextType = {
     params: settings,
     image,
     loading,
     models,
+    requestLog,
     currentModel,
     setModel,
     updateModelOption,

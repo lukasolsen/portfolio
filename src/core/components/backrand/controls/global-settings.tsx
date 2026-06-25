@@ -51,7 +51,7 @@ export const GlobalSettings: FC<Props> = ({ showOption }) => {
               <SelectContent>
                 {Object.values(BackrandEngineType).map((m) => (
                   <SelectItem key={m} value={m}>
-                    {BackrandModels[m].displayName || BackrandModels[m].name}
+                    {BackrandModels[m].name}
                   </SelectItem>
                 ))}
               </SelectContent>
