@@ -1,15 +1,15 @@
 export const backrandLabData = {
   links: {
-    github: "https://github.com/codevault-llc/manager",
+    github: "https://github.com/lukasolsen/backgrad",
     playground: "/projects/backrand/playground",
-    npm: "https://www.npmjs.com/package/backgrad",
+    npm: "https://pypi.org/project/backgrad/",
   },
 
   research: {
     title: "Backgrad",
     subtitle: "Procedural Background Generation Engine",
-    period: "October 2025 — July 2026",
-    status: "Completed" as const,
+    period: "October 2025 — June 2026",
+    status: "Active" as const,
 
     abstract: `Backgrad is a procedural background image generation engine that produces high-quality gradient and stylized backgrounds entirely through mathematical algorithms. No machine learning, no neural networks, no external image assets — every pixel is computed from code using interpolation, noise functions, and image processing pipelines.`,
 
@@ -192,6 +192,57 @@ export const backrandLabData = {
       ],
       impact: `The algorithmic approach proved that production-quality background generation doesn't require ML. By combining well-chosen mathematical primitives — Poisson sampling, Delaunay triangulation, Perlin noise, OpenSimplex warps — with modern image processing (OpenCV), the system achieves both speed and quality while remaining dependency-light and fully deterministic.`,
     },
+
+    updates: [
+      {
+        date: "2026-06-24",
+        type: "feature" as const,
+        title: "New warp styles",
+        description: "Added additional warp algorithm styles for more visual variety across generators.",
+      },
+      {
+        date: "2026-06-23",
+        type: "feature" as const,
+        title: "CSS mesh generator",
+        description: "New mesh_css generator with directional flow, fold shading, and 13 built-in palettes.",
+      },
+      {
+        date: "2026-06-22",
+        type: "release" as const,
+        title: "CLI mode + benchmarks",
+        description: "Added full CLI with backgrad command, benchmarking suite, and test coverage at 82%.",
+      },
+      {
+        date: "2026-06-14",
+        type: "improvement" as const,
+        title: "Delaunay smoothing fix",
+        description: "Fixed smoothing generation in the Delaunay interpolator and resolved critical bugs.",
+      },
+      {
+        date: "2026-01-27",
+        type: "feature" as const,
+        title: "WebP output support",
+        description: "Added WebP as an output format alongside PNG and JPEG.",
+      },
+      {
+        date: "2025-11-26",
+        type: "improvement" as const,
+        title: "Faster generation",
+        description: "Optimized generation pipeline for faster output across all models.",
+      },
+      {
+        date: "2025-10-30",
+        type: "feature" as const,
+        title: "Sky model + 50x speedup",
+        description: "Added sky generator with clouds, stars, aurora, and moon. Restructured codebase into modular folders.",
+      },
+      {
+        date: "2025-10-26",
+        type: "release" as const,
+        title: "v0.1 — Initial commit",
+        description: "First working version with mesh gradient generator, REST API, and warp effects.",
+      },
+    ],
 
     extends: [
       {

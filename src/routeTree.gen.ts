@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsDyplinkAiRouteImport } from './routes/projects/dyplink-ai'
 import { Route as LabBackrand6RouteImport } from './routes/lab/backrand-6'
+import { Route as LabBackgradGalleryRouteImport } from './routes/lab/backgrad-gallery'
+import { Route as LabBackgradRouteImport } from './routes/lab/backgrad'
 import { Route as BlogsIdRouteImport } from './routes/blogs/$id'
 import { Route as ApiProjectsRouteImport } from './routes/api/projects'
 import { Route as ApiBlogsRouteImport } from './routes/api/blogs'
@@ -31,6 +33,16 @@ const ProjectsDyplinkAiRoute = ProjectsDyplinkAiRouteImport.update({
 const LabBackrand6Route = LabBackrand6RouteImport.update({
   id: '/lab/backrand-6',
   path: '/lab/backrand-6',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LabBackgradGalleryRoute = LabBackgradGalleryRouteImport.update({
+  id: '/lab/backgrad-gallery',
+  path: '/lab/backgrad-gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LabBackgradRoute = LabBackgradRouteImport.update({
+  id: '/lab/backgrad',
+  path: '/lab/backgrad',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogsIdRoute = BlogsIdRouteImport.update({
@@ -65,6 +77,8 @@ export interface FileRoutesByFullPath {
   '/api/blogs': typeof ApiBlogsRoute
   '/api/projects': typeof ApiProjectsRoute
   '/blogs/$id': typeof BlogsIdRoute
+  '/lab/backgrad': typeof LabBackgradRoute
+  '/lab/backgrad-gallery': typeof LabBackgradGalleryRoute
   '/lab/backrand-6': typeof LabBackrand6Route
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
@@ -75,6 +89,8 @@ export interface FileRoutesByTo {
   '/api/blogs': typeof ApiBlogsRoute
   '/api/projects': typeof ApiProjectsRoute
   '/blogs/$id': typeof BlogsIdRoute
+  '/lab/backgrad': typeof LabBackgradRoute
+  '/lab/backgrad-gallery': typeof LabBackgradGalleryRoute
   '/lab/backrand-6': typeof LabBackrand6Route
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
@@ -86,6 +102,8 @@ export interface FileRoutesById {
   '/api/blogs': typeof ApiBlogsRoute
   '/api/projects': typeof ApiProjectsRoute
   '/blogs/$id': typeof BlogsIdRoute
+  '/lab/backgrad': typeof LabBackgradRoute
+  '/lab/backgrad-gallery': typeof LabBackgradGalleryRoute
   '/lab/backrand-6': typeof LabBackrand6Route
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
@@ -98,6 +116,8 @@ export interface FileRouteTypes {
     | '/api/blogs'
     | '/api/projects'
     | '/blogs/$id'
+    | '/lab/backgrad'
+    | '/lab/backgrad-gallery'
     | '/lab/backrand-6'
     | '/projects/dyplink-ai'
     | '/projects/backrand/playground'
@@ -108,6 +128,8 @@ export interface FileRouteTypes {
     | '/api/blogs'
     | '/api/projects'
     | '/blogs/$id'
+    | '/lab/backgrad'
+    | '/lab/backgrad-gallery'
     | '/lab/backrand-6'
     | '/projects/dyplink-ai'
     | '/projects/backrand/playground'
@@ -118,6 +140,8 @@ export interface FileRouteTypes {
     | '/api/blogs'
     | '/api/projects'
     | '/blogs/$id'
+    | '/lab/backgrad'
+    | '/lab/backgrad-gallery'
     | '/lab/backrand-6'
     | '/projects/dyplink-ai'
     | '/projects/backrand/playground'
@@ -129,6 +153,8 @@ export interface RootRouteChildren {
   ApiBlogsRoute: typeof ApiBlogsRoute
   ApiProjectsRoute: typeof ApiProjectsRoute
   BlogsIdRoute: typeof BlogsIdRoute
+  LabBackgradRoute: typeof LabBackgradRoute
+  LabBackgradGalleryRoute: typeof LabBackgradGalleryRoute
   LabBackrand6Route: typeof LabBackrand6Route
   ProjectsDyplinkAiRoute: typeof ProjectsDyplinkAiRoute
   ProjectsBackrandPlaygroundRoute: typeof ProjectsBackrandPlaygroundRoute
@@ -156,6 +182,20 @@ declare module '@tanstack/react-router' {
       path: '/lab/backrand-6'
       fullPath: '/lab/backrand-6'
       preLoaderRoute: typeof LabBackrand6RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lab/backgrad-gallery': {
+      id: '/lab/backgrad-gallery'
+      path: '/lab/backgrad-gallery'
+      fullPath: '/lab/backgrad-gallery'
+      preLoaderRoute: typeof LabBackgradGalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lab/backgrad': {
+      id: '/lab/backgrad'
+      path: '/lab/backgrad'
+      fullPath: '/lab/backgrad'
+      preLoaderRoute: typeof LabBackgradRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blogs/$id': {
@@ -201,6 +241,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiBlogsRoute: ApiBlogsRoute,
   ApiProjectsRoute: ApiProjectsRoute,
   BlogsIdRoute: BlogsIdRoute,
+  LabBackgradRoute: LabBackgradRoute,
+  LabBackgradGalleryRoute: LabBackgradGalleryRoute,
   LabBackrand6Route: LabBackrand6Route,
   ProjectsDyplinkAiRoute: ProjectsDyplinkAiRoute,
   ProjectsBackrandPlaygroundRoute: ProjectsBackrandPlaygroundRoute,

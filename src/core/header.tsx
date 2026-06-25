@@ -1,4 +1,4 @@
-import { BookIcon, Menu, X, Globe } from "lucide-react";
+import { BookIcon, Globe, Menu, X } from "lucide-react";
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "../components/ui/button";
@@ -10,12 +10,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useRouterState } from "@tanstack/react-router";
@@ -100,22 +94,23 @@ export const InstanceHeader: FC = () => {
       </NavigationMenu>
 
       <div className="flex items-center gap-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="gap-2">
-              <Globe className="h-4 w-4" />
-              <span className="uppercase">{getLocale()}</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setLocale("no")}>
-              Norsk (NO)
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setLocale("en")}>
-              English (EN)
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex items-center rounded-md border border-border/40 p-0.5">
+          <Globe className="h-3 w-3 text-muted-foreground/50 mx-1.5 shrink-0" />
+          {(["en", "no"] as const).map((loc) => (
+            <button
+              key={loc}
+              onClick={() => setLocale(loc)}
+              className={cn(
+                "px-2 py-0.5 text-[11px] font-mono font-medium uppercase rounded transition-colors",
+                getLocale() === loc
+                  ? "bg-foreground text-background"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {loc}
+            </button>
+          ))}
+        </div>
 
         <a href="https://github.com/lukasolsen">
           <Button variant="ghost" size="sm" className="hidden sm:inline-flex">

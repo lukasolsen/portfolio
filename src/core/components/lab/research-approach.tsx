@@ -31,38 +31,33 @@ export const ResearchApproach = () => {
             <h3 className="text-sm font-semibold tracking-tight text-foreground">
               Generator Models
             </h3>
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-0 divide-y divide-border/40">
               {approach.models.map((model, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 12 }}
+                  initial={{ opacity: 0, y: 8 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                  transition={{ duration: 0.3, delay: i * 0.06 }}
                   viewport={{ once: true }}
-                  className="group relative p-5 rounded-xl border border-border/30 bg-background hover:border-border/50 transition-colors"
+                  className="group py-4 first:pt-0 last:pb-0"
                 >
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2">
-                      <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-muted text-[10px] font-mono text-muted-foreground/60">
-                        {String(i + 1).padStart(2, "0")}
+                  <div className="flex items-baseline gap-3 mb-1.5">
+                    <code className="text-sm font-mono font-semibold text-foreground bg-muted/50 px-2 py-0.5 rounded">
+                      {model.name}
+                    </code>
+                  </div>
+                  <p className="text-[13px] text-muted-foreground leading-relaxed mb-2.5">
+                    {model.description}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {model.algorithms.map((algo, j) => (
+                      <span
+                        key={j}
+                        className="inline-flex items-center px-2 py-0.5 rounded-md bg-muted/60 text-[10px] font-mono text-muted-foreground/70"
+                      >
+                        {algo}
                       </span>
-                      <code className="text-sm font-mono font-medium text-foreground">
-                        {model.name}
-                      </code>
-                    </div>
-                    <p className="text-[13px] text-muted-foreground leading-relaxed">
-                      {model.description}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5 pt-1">
-                      {model.algorithms.map((algo, j) => (
-                        <span
-                          key={j}
-                          className="inline-flex items-center px-2 py-0.5 rounded-md bg-muted/50 text-[10px] font-mono text-muted-foreground/60"
-                        >
-                          {algo}
-                        </span>
-                      ))}
-                    </div>
+                    ))}
                   </div>
                 </motion.div>
               ))}
