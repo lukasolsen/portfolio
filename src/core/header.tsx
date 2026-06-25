@@ -95,13 +95,13 @@ export const InstanceHeader: FC = () => {
 
       <div className="flex items-center gap-2">
         <div className="flex items-center rounded-md border border-border/40 p-0.5">
-          <Globe className="h-3 w-3 text-muted-foreground/50 mx-1.5 shrink-0" />
+          <Globe className="h-3.5 w-3.5 text-muted-foreground/50 mx-1.5 shrink-0" />
           {(["en", "no"] as const).map((loc) => (
             <button
               key={loc}
               onClick={() => setLocale(loc)}
               className={cn(
-                "px-2 py-0.5 text-[11px] font-mono font-medium uppercase rounded transition-colors",
+                "px-2 py-0.5 text-xs font-mono font-medium uppercase rounded transition-colors",
                 getLocale() === loc
                   ? "bg-foreground text-background"
                   : "text-muted-foreground hover:text-foreground",

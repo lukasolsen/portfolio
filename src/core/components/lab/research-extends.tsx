@@ -47,13 +47,13 @@ export const ResearchExtends = () => {
           className="space-y-10"
         >
           <div className="flex items-center gap-3">
-            <span className="text-xs font-mono text-muted-foreground/40">09</span>
+            <span className="text-xs font-mono text-muted-foreground/40">08</span>
             <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium">
               Roadmap
             </span>
           </div>
 
-          <p className="text-[15px] text-muted-foreground leading-relaxed max-w-2xl">
+          <p className="text-base text-foreground leading-relaxed max-w-2xl">
             From algorithmic foundations to community ecosystem — the progression
             from core engine to platform.
           </p>
@@ -94,7 +94,7 @@ export const ResearchExtends = () => {
                     <div className={`w-1.5 h-1.5 rounded-full ${meta.dotColor} shrink-0 mt-1.5`} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
-                        <h4 className="text-[13px] font-medium text-foreground leading-snug truncate">
+                        <h4 className="text-sm font-medium text-foreground leading-snug truncate">
                           {item.title}
                         </h4>
                         <span
@@ -103,7 +103,7 @@ export const ResearchExtends = () => {
                           {badge.label}
                         </span>
                       </div>
-                      <p className="text-[12px] text-muted-foreground leading-relaxed mt-0.5 line-clamp-2">
+                      <p className="text-sm text-muted-foreground leading-relaxed mt-0.5 line-clamp-2">
                         {item.description}
                       </p>
                     </div>

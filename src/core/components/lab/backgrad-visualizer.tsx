@@ -1,8 +1,35 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
+function useIntersectionObserver(threshold = 0.1) {
+  const ref = useRef<HTMLDivElement>(null);
+  const visibleRef = useRef(false);
+  const callbacksRef = useRef<(() => void)[]>([]);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visibleRef.current = entry.isIntersecting;
+        if (entry.isIntersecting) {
+          callbacksRef.current.forEach((cb) => cb());
+        }
+      },
+      { threshold }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, visibleRef, callbacksRef };
+}
+
 function DelaunayDemo() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { ref: containerRef, visibleRef } = useIntersectionObserver(0.1);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -12,7 +39,7 @@ function DelaunayDemo() {
 
     let w = 0;
     let h = 0;
-    let points: { x: number; y: number; ox: number; oy: number; vx: number; vy: number }[] = [];
+    let points: { x: number; y: number; ox: number; oy: number }[] = [];
     let raf: number;
 
     const resize = () => {
@@ -30,13 +57,18 @@ function DelaunayDemo() {
       points = Array.from({ length: 18 }, () => {
         const x = Math.random() * w;
         const y = Math.random() * h;
-        return { x, y, ox: x, oy: y, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3 };
+        return { x, y, ox: x, oy: y };
       });
     };
 
     const hue = (i: number) => `hsl(${260 + i * 12}, 70%, 60%)`;
 
     const draw = (t: number) => {
+      if (!visibleRef.current) {
+        raf = requestAnimationFrame(draw);
+        return;
+      }
+
       ctx.clearRect(0, 0, w, h);
 
       points.forEach((p, i) => {
@@ -79,13 +111,18 @@ function DelaunayDemo() {
     raf = requestAnimationFrame(draw);
     window.addEventListener("resize", resize);
     return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
-  }, []);
+  }, [visibleRef]);
 
-  return <canvas ref={canvasRef} className="w-full h-full" />;
+  return (
+    <div ref={containerRef} className="w-full h-full">
+      <canvas ref={canvasRef} className="w-full h-full" />
+    </div>
+  );
 }
 
 function FlowFieldDemo() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { ref: containerRef, visibleRef } = useIntersectionObserver(0.1);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -97,6 +134,7 @@ function FlowFieldDemo() {
     let h = 0;
     let particles: { x: number; y: number; px: number; py: number; life: number }[] = [];
     let raf: number;
+    let lastTime = 0;
 
     const fade = () => {
       ctx.fillStyle = "rgba(0,0,0,0.04)";
@@ -134,6 +172,16 @@ function FlowFieldDemo() {
     };
 
     const draw = (t: number) => {
+      if (!visibleRef.current) {
+        lastTime = 0;
+        raf = requestAnimationFrame(draw);
+        return;
+      }
+
+      if (!lastTime) lastTime = t;
+      const dt = (t - lastTime) / 16.666;
+      lastTime = t;
+
       fade();
 
       for (let i = particles.length - 1; i >= 0; i--) {
@@ -141,9 +189,10 @@ function FlowFieldDemo() {
         const angle = noise(p.x, p.y, t * 0.0002) * Math.PI * 2;
         p.px = p.x;
         p.py = p.y;
-        p.x += Math.cos(angle) * 1.8;
-        p.y += Math.sin(angle) * 1.8;
-        p.life--;
+
+        p.x += Math.cos(angle) * 1.8 * dt;
+        p.y += Math.sin(angle) * 1.8 * dt;
+        p.life -= dt;
 
         if (p.life <= 0 || p.x < -10 || p.x > w + 10 || p.y < -10 || p.y > h + 10) {
           particles.splice(i, 1);
@@ -165,16 +214,26 @@ function FlowFieldDemo() {
 
     resize();
     for (let i = 0; i < 200; i++) spawn();
-    raf = requestAnimationFrame(draw);
+
+    raf = requestAnimationFrame((t) => {
+      lastTime = t;
+      draw(t);
+    });
+
     window.addEventListener("resize", resize);
     return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
-  }, []);
+  }, [visibleRef]);
 
-  return <canvas ref={canvasRef} className="w-full h-full" />;
+  return (
+    <div ref={containerRef} className="w-full h-full">
+      <canvas ref={canvasRef} className="w-full h-full" />
+    </div>
+  );
 }
 
 function WarpDemo() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { ref: containerRef, visibleRef } = useIntersectionObserver(0.1);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -198,6 +257,11 @@ function WarpDemo() {
     };
 
     const draw = (t: number) => {
+      if (!visibleRef.current) {
+        raf = requestAnimationFrame(draw);
+        return;
+      }
+
       ctx.clearRect(0, 0, w, h);
       const time = t * 0.001;
       const cols = 22;
@@ -230,9 +294,13 @@ function WarpDemo() {
     raf = requestAnimationFrame(draw);
     window.addEventListener("resize", resize);
     return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
-  }, []);
+  }, [visibleRef]);
 
-  return <canvas ref={canvasRef} className="w-full h-full" />;
+  return (
+    <div ref={containerRef} className="w-full h-full">
+      <canvas ref={canvasRef} className="w-full h-full" />
+    </div>
+  );
 }
 
 const demos = [
@@ -265,7 +333,7 @@ export const BackgradVisualizer = () => {
           className="space-y-10"
         >
           <div className="flex items-center gap-3">
-            <span className="text-xs font-mono text-muted-foreground/40">03</span>
+            <span className="text-xs font-mono text-muted-foreground/40">04</span>
             <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium">
               How it works
             </span>

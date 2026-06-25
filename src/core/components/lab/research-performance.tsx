@@ -24,26 +24,26 @@ export const ResearchPerformance = () => {
 
           {/* Benchmarks table */}
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold tracking-tight text-foreground">
+            <h3 className="text-base font-semibold tracking-tight text-foreground">
               Render benchmarks
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border/30">
-                    <th className="text-left py-3 px-4 text-[11px] uppercase tracking-wider text-muted-foreground/50 font-medium">
+                    <th className="text-left py-3 px-4 text-xs uppercase tracking-wider text-muted-foreground/50 font-medium">
                       Resolution
                     </th>
-                    <th className="text-left py-3 px-4 text-[11px] uppercase tracking-wider text-muted-foreground/50 font-medium">
+                    <th className="text-left py-3 px-4 text-xs uppercase tracking-wider text-muted-foreground/50 font-medium">
                       Model
                     </th>
-                    <th className="text-right py-3 px-4 text-[11px] uppercase tracking-wider text-muted-foreground/50 font-medium">
+                    <th className="text-right py-3 px-4 text-xs uppercase tracking-wider text-muted-foreground/50 font-medium">
                       Time
                     </th>
-                    <th className="text-right py-3 px-4 text-[11px] uppercase tracking-wider text-muted-foreground/50 font-medium">
+                    <th className="text-right py-3 px-4 text-xs uppercase tracking-wider text-muted-foreground/50 font-medium">
                       Quality
                     </th>
-                    <th className="text-right py-3 px-4 text-[11px] uppercase tracking-wider text-muted-foreground/50 font-medium w-32">
+                    <th className="text-right py-3 px-4 text-xs uppercase tracking-wider text-muted-foreground/50 font-medium w-32">
                       Score
                     </th>
                   </tr>
@@ -90,7 +90,7 @@ export const ResearchPerformance = () => {
 
           {/* Improvements grid */}
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold tracking-tight text-foreground">
+            <h3 className="text-base font-semibold tracking-tight text-foreground">
               Key improvements
             </h3>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -117,7 +117,7 @@ export const ResearchPerformance = () => {
                       {imp.after}
                     </span>
                   </div>
-                  <p className="text-lg font-semibold text-foreground">
+                  <p className="text-xl font-semibold text-foreground">
                     {imp.change}
                   </p>
                 </motion.div>

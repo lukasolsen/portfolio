@@ -13,6 +13,7 @@ export const BackgradHero = () => {
           viewBox="0 0 1200 600"
           className="w-full h-full"
           preserveAspectRatio="xMidYMid slice"
+          aria-hidden="true"
         >
           <defs>
             <radialGradient id="bg-g1" cx="25%" cy="35%" r="45%">
@@ -27,29 +28,11 @@ export const BackgradHero = () => {
               <stop offset="0%" stopColor="oklch(0.65 0.15 160)" stopOpacity="0.4" />
               <stop offset="100%" stopColor="oklch(0.65 0.15 160)" stopOpacity="0" />
             </radialGradient>
-            <filter id="bg-blur">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="60" />
-            </filter>
           </defs>
-          <g filter="url(#bg-blur)">
-            <motion.ellipse
-              cx="300" cy="210" rx="350" ry="250"
-              fill="url(#bg-g1)"
-              animate={{ cx: [300, 350, 280, 300], cy: [210, 240, 190, 210] }}
-              transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <motion.ellipse
-              cx="900" cy="330" rx="300" ry="220"
-              fill="url(#bg-g2)"
-              animate={{ cx: [900, 850, 920, 900], cy: [330, 300, 360, 330] }}
-              transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <motion.ellipse
-              cx="600" cy="500" rx="250" ry="180"
-              fill="url(#bg-g3)"
-              animate={{ cx: [600, 630, 570, 600], cy: [500, 480, 520, 500] }}
-              transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-            />
+          <g style={{ filter: "blur(40px)" }}>
+            <ellipse cx="300" cy="210" rx="350" ry="250" fill="url(#bg-g1)" />
+            <ellipse cx="900" cy="330" rx="300" ry="220" fill="url(#bg-g2)" />
+            <ellipse cx="600" cy="500" rx="250" ry="180" fill="url(#bg-g3)" />
           </g>
         </svg>
       </div>
@@ -72,11 +55,11 @@ export const BackgradHero = () => {
             </span>
           </div>
 
-          <Header1 className="text-6xl md:text-[6rem] font-bold tracking-tighter leading-[0.85]">
+          <Header1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-tight">
             {research.title}
           </Header1>
 
-          <LeadText className="max-w-2xl mx-auto font-light">
+          <LeadText className="max-w-2xl mx-auto text-lg md:text-xl">
             {research.subtitle}
           </LeadText>
 
@@ -85,7 +68,7 @@ export const BackgradHero = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            <SmallText className="text-muted-foreground/60 max-w-xl mx-auto leading-relaxed">
+            <SmallText className="text-muted-foreground max-w-xl mx-auto leading-relaxed text-base">
               {research.abstract}
             </SmallText>
           </motion.div>

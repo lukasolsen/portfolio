@@ -30,7 +30,7 @@ export const BackgradUpdates = () => {
           className="space-y-8"
         >
           <div className="flex items-center gap-3">
-            <span className="text-xs font-mono text-muted-foreground/40">05</span>
+            <span className="text-xs font-mono text-muted-foreground/40">07</span>
             <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium">
               Updates
             </span>
@@ -57,7 +57,7 @@ export const BackgradUpdates = () => {
                     className="relative flex items-start gap-4 py-4"
                   >
                     <div className="relative z-10 flex items-center justify-center w-[44px] shrink-0">
-                      <span className="text-[11px] font-mono text-muted-foreground/50">
+                      <span className="text-xs font-mono text-muted-foreground/50">
                         {formatted}
                       </span>
                     </div>
@@ -66,7 +66,7 @@ export const BackgradUpdates = () => {
 
                     <div className="flex-1 min-w-0 pt-0.5">
                       <div className="flex items-center gap-2 mb-0.5">
-                        <h4 className="text-[13px] font-medium text-foreground">
+                        <h4 className="text-sm font-medium text-foreground">
                           {update.title}
                         </h4>
                         <span
@@ -75,7 +75,7 @@ export const BackgradUpdates = () => {
                           {badge.label}
                         </span>
                       </div>
-                      <p className="text-[12px] text-muted-foreground leading-relaxed">
+                      <p className="text-sm text-muted-foreground leading-relaxed">
                         {update.description}
                       </p>
                     </div>

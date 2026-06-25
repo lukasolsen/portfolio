@@ -25,18 +25,16 @@ font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 | `text-[9px]` | 9px | Badges, micro labels |
 | `text-[10px]` | 10px | Section labels, overlines |
 | `text-[11px]` | 11px | Small UI text, captions |
-| `text-[12px]` | 12px | Descriptions, metadata |
-| `text-[13px]` | 13px | Card content, body in dense UI |
-| `text-sm` | 14px | Body text, UI labels |
-| `text-base` | 16px | Default body |
-| `text-[15px]` | 15px | Section descriptions |
+| `text-sm` | 14px | Descriptions, metadata, body in dense UI |
+| `text-base` | 17px | Default body text (primary reading size) |
 | `text-lg` | 18px | Lead text, emphasis |
-| `text-xl` | 20px | Subheadings |
+| `text-xl` | 20px | Subheadings, card headings |
 | `text-2xl` | 24px | H3 |
 | `text-3xl` | 30px | H2 |
 | `text-4xl` | 36px | H1 (page titles) |
 | `text-5xl` | 48px | H1 (section heroes) |
 | `text-6xl` | 60px | Hero titles only |
+| `text-7xl` | 72px | Large hero titles (desktop only) |
 
 ### Typography Components
 
@@ -80,7 +78,7 @@ import { Header1, Header2, Header3, Paragraph, LeadText, SmallText } from "@/com
 
 ### Text Rules
 
-- **Body text:** `text-muted-foreground leading-relaxed` — never use `text-foreground` for long-form reading
+- **Body text:** `text-foreground leading-relaxed` — use full white on black, nice black on white
 - **Headings:** `text-foreground` — always
 - **Maximum line width:** `max-w-2xl` for descriptions, `max-w-3xl` for paragraphs
 - **Line height:** `leading-relaxed` (1.625) for body, `leading-snug` (1.375) for headings, `leading-none` for tight hero text

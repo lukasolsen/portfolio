@@ -29,13 +29,13 @@ export const BackgradFooter = () => {
               href={links.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[12px] text-muted-foreground/50 hover:text-foreground transition-colors"
+              className="text-sm text-muted-foreground/50 hover:text-foreground transition-colors"
             >
               GitHub
             </a>
             <a
               href={links.playground}
-              className="text-[12px] text-muted-foreground/50 hover:text-foreground transition-colors"
+              className="text-sm text-muted-foreground/50 hover:text-foreground transition-colors"
             >
               Playground
             </a>
@@ -43,7 +43,7 @@ export const BackgradFooter = () => {
               href={links.npm}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[12px] text-muted-foreground/50 hover:text-foreground transition-colors"
+              className="text-sm text-muted-foreground/50 hover:text-foreground transition-colors"
             >
               npm
             </a>

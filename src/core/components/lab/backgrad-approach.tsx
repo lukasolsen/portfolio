@@ -15,13 +15,13 @@ export const BackgradApproach = () => {
           className="space-y-12"
         >
           <div className="flex items-center gap-3">
-            <span className="text-xs font-mono text-muted-foreground/40">02</span>
+            <span className="text-xs font-mono text-muted-foreground/40">03</span>
             <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium">
               How it works
             </span>
           </div>
 
-          <p className="text-[15px] text-muted-foreground leading-relaxed max-w-2xl">
+          <p className="text-base text-foreground leading-relaxed max-w-2xl">
             {approach.summary}
           </p>
 
@@ -40,14 +40,14 @@ export const BackgradApproach = () => {
                     {model.name}
                   </code>
                 </div>
-                <p className="text-[13px] text-muted-foreground leading-relaxed mb-2.5">
+                <p className="text-sm text-muted-foreground leading-relaxed mb-2.5">
                   {model.description}
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {model.algorithms.map((algo, j) => (
                     <span
                       key={j}
-                      className="inline-flex items-center px-2 py-0.5 rounded-md bg-muted/60 text-[10px] font-mono text-muted-foreground/70"
+                      className="inline-flex items-center px-2 py-0.5 rounded-md bg-muted/60 text-xs font-mono text-muted-foreground/70"
                     >
                       {algo}
                     </span>
@@ -58,7 +58,7 @@ export const BackgradApproach = () => {
           </div>
 
           <div className="space-y-4 pt-4">
-            <h3 className="text-sm font-semibold tracking-tight text-foreground">
+            <h3 className="text-base font-semibold tracking-tight text-foreground">
               Key findings
             </h3>
             <div className="grid gap-4 md:grid-cols-2">
@@ -71,14 +71,14 @@ export const BackgradApproach = () => {
                   viewport={{ once: true }}
                   className="p-4 rounded-lg border border-border/20 space-y-2"
                 >
-                  <h4 className="text-[13px] font-medium text-foreground">
+                  <h4 className="text-sm font-medium text-foreground">
                     {finding.title}
                   </h4>
-                  <p className="text-[12px] text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     {finding.text}
                   </p>
                   {finding.metric && (
-                    <div className="flex items-center gap-2 pt-1 text-[11px] font-mono">
+                    <div className="flex items-center gap-2 pt-1 text-xs font-mono">
                       <span className="text-muted-foreground/50 line-through">{finding.metric.before}</span>
                       <span className="text-muted-foreground/30">→</span>
                       <span className="text-green-600 dark:text-green-400">{finding.metric.after}</span>

@@ -30,7 +30,7 @@ export const ResearchStyles = () => {
             </span>
           </div>
 
-          <p className="text-[15px] text-muted-foreground leading-relaxed max-w-2xl">
+          <p className="text-base text-foreground leading-relaxed max-w-2xl">
             The warp system displaces control points or pixels to create flowing,
             organic distortions. Each algorithm produces distinct visual character —
             from smooth periodic waves to chaotic turbulence.
@@ -54,14 +54,14 @@ export const ResearchStyles = () => {
                   </span>
                   <div className="flex-1 min-w-0 space-y-1.5">
                     <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium text-foreground">
+                      <p className="text-base font-medium text-foreground">
                         {style.name}
                       </p>
                       <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-mono uppercase tracking-wider ${colorClass}`}>
                         {style.count}
                       </span>
                     </div>
-                    <p className="text-[12px] text-muted-foreground leading-relaxed">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
                       {style.description}
                     </p>
                   </div>

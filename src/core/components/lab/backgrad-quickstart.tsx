@@ -30,10 +30,10 @@ export const BackgradQuickstart = () => {
               viewport={{ once: true }}
               className="space-y-3"
             >
-              <Header6 className="font-semibold">Install</Header6>
+              <Header6 className="font-semibold text-lg">Install</Header6>
               <div className="rounded-lg bg-muted/50 border border-border/20 p-4 space-y-2">
-                <code className="text-[13px] font-mono text-foreground block">pip install .</code>
-                <SmallText className="text-muted-foreground/50">Python 3.10+, from source</SmallText>
+                <code className="text-sm font-mono text-foreground block">pip install .</code>
+                <SmallText className="text-muted-foreground">Python 3.10+, from source</SmallText>
               </div>
             </motion.div>
 
@@ -44,11 +44,11 @@ export const BackgradQuickstart = () => {
               viewport={{ once: true }}
               className="space-y-3"
             >
-              <Header6 className="font-semibold">Generate</Header6>
+              <Header6 className="font-semibold text-lg">Generate</Header6>
               <div className="rounded-lg bg-muted/50 border border-border/20 p-4">
-                <code className="text-[13px] font-mono text-foreground block whitespace-pre">{`backgrad -m mesh_gradient \\
+                <code className="text-sm font-mono text-foreground block whitespace-pre">{`backgrad -m mesh_gradient \\
   -o gradient.webp -s 42`}</code>
-                <SmallText className="text-muted-foreground/50 mt-2">CLI to file</SmallText>
+                <SmallText className="text-muted-foreground mt-2">CLI to file</SmallText>
               </div>
             </motion.div>
 
@@ -59,28 +59,28 @@ export const BackgradQuickstart = () => {
               viewport={{ once: true }}
               className="space-y-3"
             >
-              <Header6 className="font-semibold">Serve</Header6>
+              <Header6 className="font-semibold text-lg">Serve</Header6>
               <div className="rounded-lg bg-muted/50 border border-border/20 p-4">
-                <code className="text-[13px] font-mono text-foreground block whitespace-pre">{`backgrad serve --port 8000`}</code>
-                <p className="text-[11px] text-muted-foreground/50 mt-2">REST API at /docs</p>
+                <code className="text-sm font-mono text-foreground block whitespace-pre">{`backgrad serve --port 8000`}</code>
+                <p className="text-xs text-muted-foreground mt-2">REST API at /docs</p>
               </div>
             </motion.div>
           </div>
 
           <div className="space-y-4">
-            <Header6 className="font-semibold">Examples</Header6>
+            <Header6 className="font-semibold text-lg">Examples</Header6>
             <div className="rounded-lg bg-muted/50 border border-border/20 p-4 space-y-3">
               <div className="flex items-start gap-3">
-                <span className="text-[11px] font-mono text-muted-foreground/40 shrink-0 pt-0.5">$</span>
-                <code className="text-[12px] font-mono text-foreground block whitespace-pre">{`backgrad -m sky -c "#FF6B6B,#4ECDC4" -a 16:9 -q high`}</code>
+                <span className="text-xs font-mono text-muted-foreground/40 shrink-0 pt-0.5">$</span>
+                <code className="text-sm font-mono text-foreground block whitespace-pre">{`backgrad -m sky -c "#FF6B6B,#4ECDC4" -a 16:9 -q high`}</code>
               </div>
               <div className="flex items-start gap-3">
-                <span className="text-[11px] font-mono text-muted-foreground/40 shrink-0 pt-0.5">$</span>
-                <code className="text-[12px] font-mono text-foreground block whitespace-pre">{`backgrad -m reflective_mesh -W 1080 -H 720 -f png`}</code>
+                <span className="text-xs font-mono text-muted-foreground/40 shrink-0 pt-0.5">$</span>
+                <code className="text-sm font-mono text-foreground block whitespace-pre">{`backgrad -m reflective_mesh -W 1080 -H 720 -f png`}</code>
               </div>
               <div className="flex items-start gap-3">
-                <span className="text-[11px] font-mono text-muted-foreground/40 shrink-0 pt-0.5">$</span>
-                <code className="text-[12px] font-mono text-foreground block whitespace-pre">{`backgrad --benchmark -m mesh_gradient --benchmark-iterations 3`}</code>
+                <span className="text-xs font-mono text-muted-foreground/40 shrink-0 pt-0.5">$</span>
+                <code className="text-sm font-mono text-foreground block whitespace-pre">{`backgrad --benchmark -m mesh_gradient --benchmark-iterations 3`}</code>
               </div>
             </div>
           </div>

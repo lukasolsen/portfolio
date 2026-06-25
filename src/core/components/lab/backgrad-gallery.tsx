@@ -20,7 +20,7 @@ export const BackgradGallery = () => {
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="text-xs font-mono text-muted-foreground/40">04</span>
+              <span className="text-xs font-mono text-muted-foreground/40">02</span>
               <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium">
                 Gallery
               </span>
@@ -44,7 +44,7 @@ export const BackgradGallery = () => {
             )}
           </div>
 
-          <p className="text-[15px] text-muted-foreground leading-relaxed max-w-2xl">
+          <p className="text-base text-foreground leading-relaxed max-w-2xl">
             Every image on this page was produced by Backgrad. No manual editing,
             no post-processing. Raw outputs from the generation pipeline.
           </p>

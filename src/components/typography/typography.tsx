@@ -9,7 +9,7 @@ interface TypographyProps {
 export const Header1: FC<TypographyProps> = ({ children, className }) => (
   <h1
     className={clsx(
-      "text-4xl md:text-5xl font-semibold tracking-tight leading-tight",
+      "text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-tight",
       className
     )}
   >
@@ -20,7 +20,7 @@ export const Header1: FC<TypographyProps> = ({ children, className }) => (
 export const Header2: FC<TypographyProps> = ({ children, className }) => (
   <h2
     className={clsx(
-      "text-3xl md:text-4xl font-semibold tracking-tight leading-snug",
+      "text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight leading-snug",
       className
     )}
   >
@@ -31,7 +31,7 @@ export const Header2: FC<TypographyProps> = ({ children, className }) => (
 export const Header3: FC<TypographyProps> = ({ children, className }) => (
   <h3
     className={clsx(
-      "text-2xl md:text-3xl font-medium tracking-tight leading-snug",
+      "text-2xl md:text-3xl lg:text-4xl font-medium tracking-tight leading-snug",
       className
     )}
   >
@@ -42,7 +42,7 @@ export const Header3: FC<TypographyProps> = ({ children, className }) => (
 export const Header4: FC<TypographyProps> = ({ children, className }) => (
   <h4
     className={clsx(
-      "text-xl md:text-2xl font-medium tracking-tight leading-snug",
+      "text-xl md:text-2xl lg:text-3xl font-medium tracking-tight leading-snug",
       className
     )}
   >
@@ -53,7 +53,7 @@ export const Header4: FC<TypographyProps> = ({ children, className }) => (
 export const Header5: FC<TypographyProps> = ({ children, className }) => (
   <h5
     className={clsx(
-      "text-lg md:text-xl font-medium tracking-tight leading-snug",
+      "text-lg md:text-xl lg:text-2xl font-medium tracking-tight leading-snug",
       className
     )}
   >
@@ -64,7 +64,7 @@ export const Header5: FC<TypographyProps> = ({ children, className }) => (
 export const Header6: FC<TypographyProps> = ({ children, className }) => (
   <h6
     className={clsx(
-      "text-base md:text-lg font-medium tracking-tight leading-snug",
+      "text-base md:text-lg lg:text-xl font-medium tracking-tight leading-snug",
       className
     )}
   >
@@ -75,7 +75,7 @@ export const Header6: FC<TypographyProps> = ({ children, className }) => (
 export const Paragraph: FC<TypographyProps> = ({ children, className }) => (
   <p
     className={clsx(
-      "text-muted-foreground leading-relaxed max-w-3xl",
+      "text-base md:text-lg text-foreground leading-relaxed max-w-3xl",
       className
     )}
   >
@@ -86,7 +86,7 @@ export const Paragraph: FC<TypographyProps> = ({ children, className }) => (
 export const LeadText: FC<TypographyProps> = ({ children, className }) => (
   <p
     className={clsx(
-      "text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed",
+      "text-lg md:text-xl lg:text-2xl text-foreground max-w-2xl leading-relaxed",
       className
     )}
   >
@@ -97,7 +97,7 @@ export const LeadText: FC<TypographyProps> = ({ children, className }) => (
 export const Title: FC<TypographyProps> = ({ children, className }) => (
   <h1
     className={clsx(
-      "text-4xl md:text-5xl font-semibold tracking-tight",
+      "text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight",
       className
     )}
   >
@@ -106,7 +106,7 @@ export const Title: FC<TypographyProps> = ({ children, className }) => (
 );
 
 export const SmallText: FC<TypographyProps> = ({ children, className }) => (
-  <p className={clsx("text-sm text-muted-foreground", className)}>{children}</p>
+  <p className={clsx("text-sm md:text-base text-muted-foreground leading-relaxed", className)}>{children}</p>
 );
 
 export const ListItem: FC<TypographyProps> = ({ children, className }) => (
