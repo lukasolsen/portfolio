@@ -67,11 +67,24 @@ export const InstanceHeader: FC = () => {
   return (
     <header
       className={cn(
-        "flex items-center justify-between w-full py-2 bg-background/60 backdrop-blur-sm sticky top-0 z-50 transition-colors",
-        isScrolled ? "border-b border-border" : "",
+        "flex items-center justify-between w-full py-2 bg-background/60 backdrop-blur-sm sticky top-0 z-50",
         isPlayground ? "px-8" : "",
       )}
     >
+      <motion.div
+        className="absolute inset-x-0 bottom-0 h-px bg-border"
+        initial={false}
+        animate={{
+          opacity: isScrolled ? 1 : 0,
+          scaleX: isScrolled ? 1 : 0,
+        }}
+        transition={{
+          duration: 0.3,
+          ease: [0.25, 0.1, 0.25, 1],
+        }}
+        style={{ originX: 0.5 }}
+      />
+
       <a
         className="flex max-h-8 items-center gap-2 text-lg font-semibold tracking-tighter"
         href="/"

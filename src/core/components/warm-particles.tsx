@@ -12,6 +12,17 @@ interface Particle {
   pulseSpeed: number;
 }
 
+interface Cloud {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  vx: number;
+  opacity: number;
+  pulse: number;
+  pulseSpeed: number;
+}
+
 const COLORS = [
   "rgba(217, 119, 87,",  // terracotta
   "rgba(237, 161, 0,",   // gold
@@ -19,10 +30,13 @@ const COLORS = [
   "rgba(180, 140, 100,", // warm sand
 ];
 
+const CLOUD_COLOR = "rgba(245, 244, 237,"; // ivory/cloud color
+
 export function WarmParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>(0);
   const particlesRef = useRef<Particle[]>([]);
+  const cloudsRef = useRef<Cloud[]>([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -55,9 +69,50 @@ export function WarmParticles() {
       }));
     };
 
+    const createClouds = () => {
+      const count = Math.min(5, Math.floor(window.innerWidth / 400));
+      cloudsRef.current = Array.from({ length: count }, () => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight * 0.6,
+        width: Math.random() * 400 + 300,
+        height: Math.random() * 80 + 40,
+        vx: (Math.random() - 0.5) * 0.08,
+        opacity: Math.random() * 0.06 + 0.03,
+        pulse: Math.random() * Math.PI * 2,
+        pulseSpeed: Math.random() * 0.002 + 0.001,
+      }));
+    };
+
     const animate = () => {
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
+      // Draw clouds first (behind particles)
+      for (const c of cloudsRef.current) {
+        c.x += c.vx;
+        c.pulse += c.pulseSpeed;
+
+        // Wrap around edges
+        if (c.x < -c.width) c.x = window.innerWidth + c.width;
+        if (c.x > window.innerWidth + c.width) c.x = -c.width;
+
+        const currentOpacity = c.opacity + Math.sin(c.pulse) * 0.015;
+
+        // Draw cloud as multiple overlapping ellipses
+        const gradient = ctx.createRadialGradient(
+          c.x, c.y, 0,
+          c.x, c.y, c.width / 2
+        );
+        gradient.addColorStop(0, `${CLOUD_COLOR} ${currentOpacity})`);
+        gradient.addColorStop(0.5, `${CLOUD_COLOR} ${currentOpacity * 0.6})`);
+        gradient.addColorStop(1, `${CLOUD_COLOR} 0)`);
+
+        ctx.beginPath();
+        ctx.ellipse(c.x, c.y, c.width / 2, c.height / 2, 0, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+      }
+
+      // Draw particles
       for (const p of particlesRef.current) {
         p.x += p.vx;
         p.y += p.vy;
@@ -90,11 +145,13 @@ export function WarmParticles() {
 
     resize();
     createParticles();
+    createClouds();
     animate();
 
     window.addEventListener("resize", () => {
       resize();
       createParticles();
+      createClouds();
     });
 
     return () => {
