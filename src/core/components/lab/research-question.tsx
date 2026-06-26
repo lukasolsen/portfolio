@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { backrandLabData } from "./backrand-data";
+import { SmallText } from "@/components/typography/typography";
 
 export const ResearchQuestion = () => {
   const { research } = backrandLabData;
@@ -31,17 +32,17 @@ export const ResearchQuestion = () => {
           {/* Context */}
           <div className="grid gap-8 md:grid-cols-2 pt-4">
             <div className="space-y-4">
-              <h3 className="text-xs uppercase tracking-[0.15em] text-muted-foreground font-medium">
-                The Problem
-              </h3>
+              <SmallText className="text-xs uppercase tracking-[0.15em] text-muted-foreground font-medium">
+                The problem
+              </SmallText>
               <p className="text-[15px] text-muted-foreground leading-relaxed">
                 {research.context.problem}
               </p>
             </div>
             <div className="space-y-4">
-              <h3 className="text-xs uppercase tracking-[0.15em] text-muted-foreground font-medium">
-                The Gap
-              </h3>
+              <SmallText className="text-xs uppercase tracking-[0.15em] text-muted-foreground font-medium">
+                The gap
+              </SmallText>
               <p className="text-[15px] text-muted-foreground leading-relaxed">
                 {research.context.gap}
               </p>

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { backrandLabData } from "./backrand-data";
+import { Header6 } from "@/components/typography/typography";
 
 const typeBadge: Record<string, { label: string; className: string }> = {
   release: {
@@ -8,11 +9,11 @@ const typeBadge: Record<string, { label: string; className: string }> = {
   },
   feature: {
     label: "Feature",
-    className: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+    className: "bg-primary/10 text-primary",
   },
   improvement: {
     label: "Improvement",
-    className: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
+    className: "bg-muted text-muted-foreground",
   },
 };
 
@@ -66,9 +67,9 @@ export const BackgradUpdates = () => {
 
                     <div className="flex-1 min-w-0 pt-0.5">
                       <div className="flex items-center gap-2 mb-0.5">
-                        <h4 className="text-sm font-medium text-foreground">
+                        <Header6 className="font-medium">
                           {update.title}
-                        </h4>
+                        </Header6>
                         <span
                           className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-mono uppercase tracking-wider ${badge.className}`}
                         >

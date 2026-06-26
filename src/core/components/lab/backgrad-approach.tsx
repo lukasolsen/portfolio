@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { backrandLabData } from "./backrand-data";
+import { Header6 } from "@/components/typography/typography";
 
 export const BackgradApproach = () => {
   const { approach, findings } = backrandLabData.research;
@@ -58,9 +59,7 @@ export const BackgradApproach = () => {
           </div>
 
           <div className="space-y-4 pt-4">
-            <h3 className="text-base font-semibold tracking-tight text-foreground">
-              Key findings
-            </h3>
+            <Header6 className="font-semibold">Key findings</Header6>
             <div className="grid gap-4 md:grid-cols-2">
               {findings.map((finding, i) => (
                 <motion.div
@@ -71,9 +70,9 @@ export const BackgradApproach = () => {
                   viewport={{ once: true }}
                   className="p-4 rounded-lg border border-border/20 space-y-2"
                 >
-                  <h4 className="text-sm font-medium text-foreground">
+                  <Header6 className="font-medium">
                     {finding.title}
-                  </h4>
+                  </Header6>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     {finding.text}
                   </p>

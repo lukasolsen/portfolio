@@ -18,7 +18,7 @@ export const ResearchGallery = () => {
           <div className="flex items-center gap-3">
             <span className="text-xs font-mono text-muted-foreground/40">07</span>
             <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium">
-              Generated Outputs
+              Generated outputs
             </span>
           </div>
 
@@ -46,6 +46,7 @@ export const ResearchGallery = () => {
               alt={image.alt}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               loading="lazy"
+              decoding="async"
             />
             {/* Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">

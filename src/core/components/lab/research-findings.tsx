@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { backrandLabData } from "./backrand-data";
+import { Header6 } from "@/components/typography/typography";
 
 export const ResearchFindings = () => {
   const { findings } = backrandLabData.research;
@@ -36,12 +37,12 @@ export const ResearchFindings = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
                 viewport={{ once: true }}
-                className="p-6 rounded-xl border border-border/30 bg-background/50 space-y-4"
+                className="p-6 rounded-lg border border-border/20 bg-background space-y-4"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <h3 className="text-sm font-semibold tracking-tight text-foreground">
+                  <Header6 className="font-semibold">
                     {finding.title}
-                  </h3>
+                  </Header6>
                   <span className="text-xs font-mono text-muted-foreground/40 flex-shrink-0">
                     {String(i + 1).padStart(2, "0")}
                   </span>

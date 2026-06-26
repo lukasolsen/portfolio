@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { backrandLabData } from "./backrand-data";
+import { Header6 } from "@/components/typography/typography";
 
 export const ResearchPerformance = () => {
   const { performance } = backrandLabData.research;
@@ -24,9 +25,9 @@ export const ResearchPerformance = () => {
 
           {/* Benchmarks table */}
           <div className="space-y-4">
-            <h3 className="text-base font-semibold tracking-tight text-foreground">
+            <Header6 className="font-semibold">
               Render benchmarks
-            </h3>
+            </Header6>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -90,9 +91,9 @@ export const ResearchPerformance = () => {
 
           {/* Improvements grid */}
           <div className="space-y-4">
-            <h3 className="text-base font-semibold tracking-tight text-foreground">
+            <Header6 className="font-semibold">
               Key improvements
-            </h3>
+            </Header6>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {performance.improvements.map((imp, i) => (
                 <motion.div

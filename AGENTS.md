@@ -2,7 +2,7 @@
 
 This document defines the design system for this portfolio. All AI agents, contributors, and design tools must follow these rules when creating or modifying content, components, or pages.
 
-Reference: [OpenAI Brand Guidelines](https://openai.com/brand/) — our guidelines follow similar principles of geometric precision, restraint, and clarity.
+The design language draws from warm, earthy aesthetics — think terracotta, sand, and aged paper. Colors have brownish undertones, never cold grays or blues. The feel is organic and grounded, like a well-worn notebook.
 
 ---
 
@@ -44,17 +44,19 @@ Always use the components from `src/components/typography/typography.tsx`. Never
 import { Header1, Header2, Header3, Paragraph, LeadText, SmallText } from "@/components/typography/typography";
 ```
 
-| Component | When to use |
-|---|---|
-| `<Header1>` | Page title |
-| `<Header2>` | Major section heading |
-| `<Header3>` | Subsection heading |
-| `<Header4>` | Card heading |
-| `<Header5>` | Minor heading |
-| `<Header6>` | Inline heading |
-| `<Paragraph>` | Body text |
-| `<LeadText>` | Intro/emphasis paragraph |
-| `<SmallText>` | Captions, metadata, fine print |
+| Component | Default Size | When to use |
+|---|---|---|
+| `<Header1>` | `text-4xl` → `text-6xl` | Page hero titles only |
+| `<Header2>` | `text-3xl` → `text-5xl` | Major section headings |
+| `<Header3>` | `text-2xl` → `text-4xl` | Subsection headings |
+| `<Header4>` | `text-xl` → `text-3xl` | Card headings |
+| `<Header5>` | `text-lg` → `text-2xl` | Minor headings |
+| `<Header6>` | `text-base` → `text-xl` | Small sub-headings, item titles |
+| `<Paragraph>` | `text-base` → `text-lg` | Body text |
+| `<LeadText>` | `text-lg` → `text-2xl` | Intro/emphasis paragraph |
+| `<SmallText>` | `text-sm` → `text-base` | Captions, metadata, fine print |
+
+**Size override rule:** Only override with a smaller size, never larger. Example: `<Header6 className="font-medium">` for an item title (Header6 defaults to `text-base`, which is correct for item titles). Never use `<Header3 className="text-sm">` — Header3 defaults to `text-2xl`, and Tailwind's CSS order means the component default will win over the override.
 
 ### Font Weights
 
@@ -145,42 +147,49 @@ import { Header1, Header2, Header3, Paragraph, LeadText, SmallText } from "@/com
 ### Principles
 
 - **Use semantic tokens always.** Never use raw hex values for UI elements.
-- **Dark mode is primary.** Design for dark first, adapt to light.
+- **Warm earthy tones.** All colors have brownish/warm undertones. Never cold grays or blues.
 - **Restraint.** Color is for meaning, not decoration.
+
+### Core Palette
+
+| Name | Hex | Usage |
+|---|---|---|
+| Ivory | `#f5f4ed` | Light mode background — warm off-white, not pure white |
+| Charcoal | `#141413` | Dark mode background — warm near-black |
+| Foreground Light | `#1a1a18` | Light mode text — warm dark |
+| Foreground Dark | `#f0eee6` | Dark mode text — warm cream |
+| Terracotta | `#d97757` | Primary accent — warm salmon/terracotta |
+| Gold | `#eda100` | Secondary accent — warm amber |
+| Sand | `#b4a88a` | Muted warm gray |
+| Warm Gray Light | `#87867f` | Muted text, borders (light mode) |
+| Warm Gray Dark | `#b0aea5` | Muted text (dark mode) |
+| Border Light | `#d4d2c9` | Borders (light mode) |
+| Border Dark | `#3d3d3a` | Borders (dark mode) |
 
 ### Semantic Tokens
 
 | Token | Light Mode | Dark Mode | Usage |
 |---|---|---|---|
-| `bg-background` | white | near-black | Page background |
-| `bg-foreground` | near-black | near-white | Primary text (inverted) |
-| `text-foreground` | near-black | near-white | Headings, primary text |
-| `text-muted-foreground` | gray | gray | Descriptions, secondary text |
-| `bg-muted` | light gray | dark gray | Subtle backgrounds |
+| `bg-background` | `#f5f4ed` | `#141413` | Page background |
+| `bg-foreground` | `#1a1a18` | `#f0eee6` | Primary text (inverted) |
+| `text-foreground` | `#1a1a18` | `#f0eee6` | Headings, primary text |
+| `text-muted-foreground` | `#87867f` | `#b0aea5` | Descriptions, secondary text |
+| `bg-muted` | `#e8e6dc` | `#2a2a27` | Subtle backgrounds |
 | `bg-muted/3` | 3% opacity | 3% opacity | Zebra section striping |
 | `bg-muted/50` | 50% opacity | 50% opacity | Code blocks, badges |
-| `border-border` | light gray | white 10% | All borders |
+| `border-border` | `#d4d2c9` | `#3d3d3a` | All borders |
 | `border-border/20` | 20% | 20% | Subtle dividers |
 | `border-border/30` | 30% | 30% | Section borders |
 | `border-border/40` | 40% | 40% | Interactive borders |
-
-### Accent Colors
-
-| Color | CSS | Usage |
-|---|---|---|
-| Green | `text-green-500`, `bg-green-500/10` | Success, active status, "Generated" badges |
-| Blue | `text-blue-500`, `bg-blue-500/10` | Info, links, medium-tier items |
-| Purple | `text-purple-500`, `bg-purple-500/10` | Advanced, long-term items |
-| Yellow | `text-yellow-500`, `bg-yellow-500/10` | Warning, in-progress status |
-| Red | `text-red-500`, `bg-red-500/10` | Error, destructive actions |
+| `bg-primary` | `#d97757` | `#d97757` | Primary action color |
+| `text-primary` | `#d97757` | `#d97757` | Primary text accent |
 
 ### Color Rules
 
-- **Status indicators:** Use dot + text pattern. Example: `<span className="w-1.5 h-1.5 rounded-full bg-green-500" /> Active`
-- **Links:** `text-foreground` with `underline underline-offset-4 decoration-border/40 hover:decoration-foreground/40`
-- **Selection:** `bg-primary text-primary-foreground`
+- **Selection highlight:** `rgba(204, 120, 92, 0.5)` — warm peach, always
+- **Links:** `text-foreground` with `underline decoration-border/40 underline-[0.2em] underline-offset-[0.2em] hover:decoration-primary/60`
 - **Never use color alone to convey meaning.** Always pair with text or icon.
-- **Muted backgrounds:** Use `bg-muted/3` for subtle zebra striping on alternating sections.
+- **Status indicators:** Use dot + text pattern. Example: `<span className="w-1.5 h-1.5 rounded-full bg-green-500" /> Active`
 - **Hover states:** `hover:border-border/40` for cards, `hover:text-foreground` for muted text.
 
 ---
@@ -264,17 +273,19 @@ Every section follows this pattern:
 Always use this exact pattern for section labels:
 
 ```tsx
-<div className="flex items-center gap-3">
-  <span className="text-xs font-mono text-muted-foreground/40">01</span>
-  <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium">
-    Label
-  </span>
-</div>
+<h2
+  className="text-muted-foreground/50 font-medium tracking-wide uppercase mb-8"
+  style={{ fontSize: "0.75rem", letterSpacing: "0.15em" }}
+>
+  Section Title
+</h2>
 ```
 
-- Number: `text-xs font-mono text-muted-foreground/40`
-- Text: `text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium`
-- Separator: `gap-3`
+- Size: `0.75rem` via inline style
+- Color: `text-muted-foreground/50`
+- Weight: `font-medium`
+- Spacing: `tracking-wide` + `letterSpacing: "0.15em"`
+- Bottom margin: `mb-8` or `mb-10`
 
 ### Cards
 
@@ -331,18 +342,6 @@ Arrow link:
 </a>
 ```
 
-### Buttons
-
-Always use the shadcn `Button` component. Never write raw `<button>` for user-facing actions.
-
-```tsx
-import { Button } from "@/components/ui/button";
-
-<Button variant="default" size="sm">Action</Button>
-<Button variant="ghost" size="sm">Secondary</Button>
-<Button variant="outline" size="sm">Tertiary</Button>
-```
-
 ---
 
 ## 6. Animation Rules
@@ -397,7 +396,7 @@ viewport={{ once: true }}
 - Always handle `resize` events
 - Always clean up with `cancelAnimationFrame` on unmount
 - Use `devicePixelRatio` for sharp rendering on Retina displays
-- Cap particles/elements: 350 max for flow fields, 20 max for triangulation
+- Cap particles/elements: 35 max for ambient orbs, 350 max for flow fields, 20 max for triangulation
 
 ---
 
@@ -525,3 +524,28 @@ viewport={{ once: true }}
 | `src/lib/utils.ts` | `cn()` utility |
 | `src/core/layout.tsx` | Page layout wrapper |
 | `src/core/header.tsx` | Navigation header |
+
+---
+
+## 11. Projects over Products
+
+This portfolio uses the word **project** deliberately, not "product."
+
+A project is an experiment — something built to explore, learn, and bring an idea to life. It carries curiosity, not obligation. A product implies requirements, support cycles, and maintenance burden. This portfolio is about the act of building, not the weight of maintaining.
+
+### Terminology Rules
+
+| Use | Avoid | Why |
+|---|---|---|
+| project | product | Projects are exploratory, not obligatory |
+| build / building | ship / shipping | Emphasizes craft over delivery |
+| experiment | feature | Frames work as curiosity-driven |
+| tool | service | Implies utility, not contract |
+| explore | scale | Focuses on learning, not growth metrics |
+
+### Writing Guidelines
+
+- Describe work as things you **built** or **explored**, not things you "shipped" or "delivered"
+- Frame projects by what they do and what you learned, not by business metrics
+- Use "project" in headings, descriptions, and navigation — never "product"
+- When referencing others' work, use their terminology (e.g., "Dyplink products" is fine when quoting the company)

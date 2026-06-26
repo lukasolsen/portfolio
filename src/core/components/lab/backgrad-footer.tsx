@@ -17,7 +17,7 @@ export const BackgradFooter = () => {
         >
           <div className="space-y-1">
             <SmallText className="text-foreground font-medium">
-              Built by <a href="/" className="underline underline-offset-4 decoration-border/40 hover:decoration-foreground/40 transition-colors">Lukas Olsen</a>
+              Built by <a href="/" className="underline underline-offset-4 decoration-border/40 hover:decoration-primary/60 transition-colors">Lukas Olsen</a>
             </SmallText>
             <SmallText className="text-muted-foreground/50">
               MIT License · v0.1.0 · Last updated June 2026

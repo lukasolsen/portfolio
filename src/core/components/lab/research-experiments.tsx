@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { backrandLabData } from "./backrand-data";
+import { Header6 } from "@/components/typography/typography";
 
 const resultStyles: Record<string, { label: string; color: string; bg: string }> = {
   Failed: {
@@ -66,9 +67,9 @@ export const ResearchExperiments = () => {
                         <span className="text-xs font-mono text-muted-foreground/40">
                           {exp.id}
                         </span>
-                        <h3 className="text-base font-semibold tracking-tight text-foreground">
+                        <Header6 className="font-semibold">
                           {exp.title}
-                        </h3>
+                        </Header6>
                       </div>
 
                       <div className="space-y-2">
@@ -138,6 +139,7 @@ export const ResearchExperiments = () => {
                             alt={exp.title}
                             className="w-full h-full object-cover"
                             loading="lazy"
+                            decoding="async"
                           />
                         </div>
                       )}

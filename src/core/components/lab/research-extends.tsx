@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { backrandLabData } from "./backrand-data";
+import { Header6 } from "@/components/typography/typography";
 
 const categoryMeta: Record<string, { label: string; color: string; dotColor: string; bgColor: string }> = {
   "Short-term": {
@@ -10,15 +11,15 @@ const categoryMeta: Record<string, { label: string; color: string; dotColor: str
   },
   "Medium-term": {
     label: "Medium-term",
-    color: "text-blue-500",
-    dotColor: "bg-blue-500",
-    bgColor: "bg-blue-500/10",
+    color: "text-primary",
+    dotColor: "bg-primary",
+    bgColor: "bg-primary/10",
   },
   "Long-term": {
     label: "Long-term",
-    color: "text-purple-500",
-    dotColor: "bg-purple-500",
-    bgColor: "bg-purple-500/10",
+    color: "text-muted-foreground",
+    dotColor: "bg-muted-foreground",
+    bgColor: "bg-muted-foreground/10",
   },
 };
 
@@ -94,9 +95,9 @@ export const ResearchExtends = () => {
                     <div className={`w-1.5 h-1.5 rounded-full ${meta.dotColor} shrink-0 mt-1.5`} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
-                        <h4 className="text-sm font-medium text-foreground leading-snug truncate">
+                        <Header6 className="font-medium leading-snug truncate">
                           {item.title}
-                        </h4>
+                        </Header6>
                         <span
                           className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-mono uppercase tracking-wider shrink-0 ${badge.className}`}
                         >

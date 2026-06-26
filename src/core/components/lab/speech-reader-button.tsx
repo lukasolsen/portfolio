@@ -352,9 +352,9 @@ export function SpeechReaderButton({ targetRef }: SpeechReaderButtonProps) {
             top: highlight.y,
             width: highlight.w,
             height: highlight.h,
-            backgroundColor: "oklch(0.65 0.25 280 / 0.12)",
+            backgroundColor: "rgba(217, 119, 87, 0.12)",
             borderRadius: "3px",
-            boxShadow: "0 0 0 2px oklch(0.65 0.25 280 / 0.25)",
+            boxShadow: "0 0 0 2px rgba(217, 119, 87, 0.25)",
             transition:
               "left 0.12s ease, top 0.12s ease, width 0.12s ease, height 0.12s ease",
           }}
@@ -377,13 +377,13 @@ export function SpeechReaderButton({ targetRef }: SpeechReaderButtonProps) {
             <TooltipTrigger asChild>
               <PopoverTrigger asChild>
                 <motion.button
-                  className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-background/80 backdrop-blur-xl border border-border/40 shadow-lg hover:shadow-violet-500/10 transition-all"
+                  className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-background/80 backdrop-blur-xl border border-border/40 shadow-lg hover:shadow-primary/10 transition-all"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   {isSpeaking && (
                     <motion.div
-                      className="absolute inset-0 rounded-xl bg-gradient-to-br from-violet-500/15 to-fuchsia-500/15"
+                      className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5"
                       animate={{ opacity: [0.4, 0.8, 0.4] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     />
@@ -438,7 +438,7 @@ export function SpeechReaderButton({ targetRef }: SpeechReaderButtonProps) {
                 <div className="mt-2">
                   <div className="h-1 bg-muted/40 rounded-full overflow-hidden">
                     <motion.div
-                      className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full"
+                      className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full"
                       animate={{ width: `${progress}%` }}
                       transition={{ duration: 0.1 }}
                     />
@@ -472,7 +472,7 @@ export function SpeechReaderButton({ targetRef }: SpeechReaderButtonProps) {
 
                 <motion.button
                   onClick={togglePlayPause}
-                  className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white shadow-md shadow-violet-500/20 hover:shadow-violet-500/30 transition-shadow"
+                  className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary text-primary-foreground shadow-md shadow-primary/20 hover:shadow-primary/30 transition-shadow"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -513,7 +513,7 @@ export function SpeechReaderButton({ targetRef }: SpeechReaderButtonProps) {
                   <select
                     value={voiceURI}
                     onChange={(e) => setVoiceURI(e.target.value)}
-                    className="w-full text-xs bg-muted/50 border border-border/40 rounded-lg px-3 py-2 text-foreground outline-none focus:ring-2 focus:ring-violet-500/20 transition-shadow appearance-none cursor-pointer"
+                    className="w-full text-xs bg-muted/50 border border-border/40 rounded-lg px-3 py-2 text-foreground outline-none focus:ring-2 focus:ring-primary/20 transition-shadow appearance-none cursor-pointer"
                   >
                     {voices.map((v) => (
                       <option key={v.voiceURI} value={v.voiceURI}>

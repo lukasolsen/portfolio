@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { backrandLabData } from "./backrand-data";
+import { Header6 } from "@/components/typography/typography";
 
 export const ResearchApproach = () => {
   const { approach } = backrandLabData.research;
@@ -28,9 +29,9 @@ export const ResearchApproach = () => {
 
           {/* Generator Models */}
           <div className="space-y-6">
-            <h3 className="text-sm font-semibold tracking-tight text-foreground">
-              Generator Models
-            </h3>
+            <Header6 className="font-semibold">
+              Generator models
+            </Header6>
             <div className="space-y-0 divide-y divide-border/40">
               {approach.models.map((model, i) => (
                 <motion.div
@@ -66,9 +67,9 @@ export const ResearchApproach = () => {
 
           {/* Data Flow Pipeline */}
           <div className="space-y-6">
-            <h3 className="text-sm font-semibold tracking-tight text-foreground">
-              Data Flow Pipeline
-            </h3>
+            <Header6 className="font-semibold">
+              Data flow pipeline
+            </Header6>
             <div className="relative">
               {/* Vertical connecting line */}
               <div className="absolute left-[19px] top-3 bottom-3 w-px bg-border/20" />
@@ -93,9 +94,9 @@ export const ResearchApproach = () => {
                     {/* Content */}
                     <div className="flex-1 min-w-0 pt-1.5">
                       <div className="flex items-baseline gap-3">
-                        <h4 className="text-sm font-medium text-foreground">
+                        <Header6 className="font-medium">
                           {step.stage}
-                        </h4>
+                        </Header6>
                         <span className="text-[10px] font-mono text-muted-foreground/40">
                           {step.detail}
                         </span>

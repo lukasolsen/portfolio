@@ -1,13 +1,10 @@
 import { motion } from "framer-motion";
 import { Projects } from "@/core/components/projects";
 import { WorkExperience } from "@/core/components/work-experience";
+import { WarmParticles } from "@/core/components/warm-particles";
+import { Timeline } from "@/core/components/timeline";
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
-import { Separator } from "@/components/ui/separator";
-import {
-  Header3,
-  LeadText,
-  Paragraph,
-} from "@/components/typography/typography";
+import { Header1, Paragraph, SmallText } from "@/components/typography/typography";
 import { m } from "@/paraglide/messages";
 import { getWorkExperience } from "@/data/work-experience.server";
 
@@ -24,97 +21,171 @@ function RouteComponent() {
     from: Route.id,
   });
 
-  const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
+  const fadeIn = {
+    initial: { opacity: 0, y: 16 },
     whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, margin: "-50px" },
-    transition: { duration: 0.5, ease: "easeOut" },
+    viewport: { once: true, margin: "-80px" },
+    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] },
   } as const;
 
   return (
-    <div className="content mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pb-20">
-      <motion.section
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="pt-16 md:pt-24"
-      >
-        <h1 className="text-4xl sm:text-5xl xl:text-6xl font-bold tracking-tight mb-4">
-          Lukas Olsen{" "}
-          <span className="text-primary inline-block animate-wave origin-bottom-right">
-            👋
-          </span>
-        </h1>
-        <div className="max-w-2xl">
-          <LeadText>{m["common.subtitle"]()}</LeadText>
-        </div>
-      </motion.section>
+    <>
+      <WarmParticles />
 
-      <Separator className="my-12 opacity-40" />
+      <div className="mx-auto max-w-2xl px-6 sm:px-8 lg:px-0">
+        {/* Hero */}
+        <motion.section
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
+          className="min-h-[85vh] flex flex-col justify-center relative"
+        >
+          {/* Subtle radial glow behind text */}
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] pointer-events-none -z-10 opacity-[0.12]"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, #d97757 0%, transparent 70%)",
+            }}
+          />
+          <div className="space-y-6">
+            <Header1 className="font-medium tracking-tight leading-[1.08]">
+              Norsk utvikler som bygger
+              <br />
+              <span className="text-muted-foreground/60">
+                prosjekter fra idé til virkelighet.
+              </span>
+            </Header1>
+          </div>
+        </motion.section>
 
-      <motion.section id="about" {...fadeInUp}>
-        <Header3 className="mb-4">{m["pages.index.about.title"]()}</Header3>
-        <div className="prose dark:prose-invert max-w-none text-muted-foreground leading-relaxed">
-          <Paragraph>
-            Mitt navn er <strong>Lukas Moe Olsen</strong>, og jeg er en norsk
-            utvikler som liker å bygge alt av produkter og tjenester. Jeg
-            startet karrieren min i slutten av 2022, da jeg begynte på{" "}
-            <a
-              href="https://www.hamar-katedral.vgs.no/hovedmeny/utdanningstilbud/informasjonsteknologi-og-medieproduksjon/"
-              className="text-foreground underline decoration-primary/50 underline-offset-4 hover:decoration-primary transition-all"
-              target="_blank"
-            >
-              2INF
-            </a>{" "}
-            ved Hamar Katedralskole. Nå jobber jeg som lærling i{" "}
-            <a
-              href="https://dyplink.no"
-              className="text-foreground underline decoration-primary/50 underline-offset-4 hover:decoration-primary transition-all"
-              target="_blank"
-            >
-              Dyplink AS
-            </a>
-            , hvor jeg lærer faget i praksis – fra prosjektledelse til fullstack
-            utvikling av kritiske systemer.
-          </Paragraph>
-        </div>
-      </motion.section>
+        {/* Who am I */}
+        <motion.section id="about" {...fadeIn} className="pb-24 md:pb-32">
+          <h2
+            className="text-muted-foreground/50 font-medium tracking-wide uppercase mb-8"
+            style={{ fontSize: "0.75rem", letterSpacing: "0.15em" }}
+          >
+            Hvem er jeg
+          </h2>
+          <div className="text-foreground leading-[1.7]">
+            <Paragraph>
+              Mitt navn er <span className="text-foreground font-medium">Lukas Moe Olsen</span>. Jeg er en norsk
+              utvikler som liker å bygge prosjekter og verktøy. Nå
+              jobber jeg som lærling i{" "}
+              <a
+                href="https://dyplink.no"
+                className="text-foreground underline decoration-border/40 underline-[0.2em] underline-offset-[0.2em] hover:decoration-primary/60 transition-colors"
+                target="_blank"
+              >
+                Dyplink AS
+              </a>
+              , hvor jeg jobber med fullstack utvikling av kritiske systemer.
+            </Paragraph>
+          </div>
+        </motion.section>
 
-      <Separator className="my-12 opacity-40" />
+        {/* Timeline */}
+        <motion.section id="timeline" {...fadeIn} className="pb-24 md:pb-32">
+          <h2
+            className="text-muted-foreground/50 font-medium tracking-wide uppercase mb-10"
+            style={{ fontSize: "0.75rem", letterSpacing: "0.15em" }}
+          >
+            Veien hit
+          </h2>
+          <Timeline />
+        </motion.section>
 
-      <motion.section id="work-experience" {...fadeInUp}>
-        <Header3 className="mb-6">{m["pages.experience.title"]()}</Header3>
-        <WorkExperience experience={workExperiences} />
-      </motion.section>
+        {/* Projects */}
+        <motion.section id="projects" {...fadeIn} className="pb-24 md:pb-32">
+          <h2
+            className="text-muted-foreground/50 font-medium tracking-wide uppercase mb-10"
+            style={{ fontSize: "0.75rem", letterSpacing: "0.15em" }}
+          >
+            {m["pages.projects.title"]()}
+          </h2>
+          <Projects />
+        </motion.section>
 
-      <Separator className="my-12 opacity-40" />
+        {/* Work Experience */}
+        <motion.section id="work-experience" {...fadeIn} className="pb-24 md:pb-32">
+          <h2
+            className="text-muted-foreground/50 font-medium tracking-wide uppercase mb-10"
+            style={{ fontSize: "0.75rem", letterSpacing: "0.15em" }}
+          >
+            {m["pages.experience.title"]()}
+          </h2>
+          <WorkExperience experience={workExperiences} />
+        </motion.section>
 
-      <motion.section id="projects" {...fadeInUp}>
-        <div className="flex items-center justify-between mb-2">
-          <Header3>{m["pages.projects.title"]()}</Header3>
-          <span className="text-sm text-muted-foreground hidden sm:block">
-            Utvalgte prosjekter
-          </span>
-        </div>
-        <Projects />
-      </motion.section>
+        {/* Stats */}
+        <motion.section id="stats" {...fadeIn} className="pb-24 md:pb-32">
+          <h2
+            className="text-muted-foreground/50 font-medium tracking-wide uppercase mb-10"
+            style={{ fontSize: "0.75rem", letterSpacing: "0.15em" }}
+          >
+            Tall
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { value: "2+", label: "years building" },
+              { value: "2", label: "projects built" },
+              { value: "1", label: "company" },
+              { value: "∞", label: "curiosity" },
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.4,
+                  delay: i * 0.08,
+                  ease: [0.25, 0.1, 0.25, 1],
+                }}
+              >
+                <div
+                  className="font-medium text-foreground tracking-tight"
+                  style={{
+                    fontSize: "clamp(1.75rem, 1.6rem + 0.57vw, 2.25rem)",
+                  }}
+                >
+                  {stat.value}
+                </div>
+                <SmallText className="text-[11px] text-muted-foreground/60 mt-1 tracking-wide">
+                  {stat.label}
+                </SmallText>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
 
-      <Separator className="my-12 opacity-40" />
-
-      <motion.section id="contact" {...fadeInUp} className="mb-16">
-        <div className="bg-muted/30 rounded-2xl p-6 md:p-8 border border-border/50">
-          <Header3 className="mb-3">{m["pages.contact.title"]()}</Header3>
-          <Paragraph className="text-muted-foreground mb-4 max-w-2xl">
+        {/* Contact */}
+        <motion.section id="contact" {...fadeIn} className="pb-32 md:pb-40">
+          <h2
+            className="text-muted-foreground/50 font-medium tracking-wide uppercase mb-8"
+            style={{ fontSize: "0.75rem", letterSpacing: "0.15em" }}
+          >
+            {m["pages.contact.title"]()}
+          </h2>
+          <Paragraph className="text-muted-foreground mb-8">
             {m["pages.contact.description"]()}
           </Paragraph>
           <a
             href="mailto:lukmarwil@gmail.com"
-            className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-primary-foreground bg-primary rounded-lg hover:bg-primary/90 transition-colors shadow-sm"
+            className="group inline-flex items-center gap-2.5 text-foreground font-medium transition-colors"
+            style={{
+              fontSize: "clamp(1rem, 0.97rem + 0.16vw, 1.125rem)",
+            }}
           >
-            {m["pages.contact.email"]()}
+            <span className="underline decoration-border/40 underline-[0.12em] underline-offset-[0.2em] group-hover:decoration-primary/60 transition-colors">
+              {m["pages.contact.email"]()}
+            </span>
+            <span className="text-muted-foreground/40 group-hover:text-primary/60 transition-colors translate-x-0 group-hover:translate-x-0.5 transition-transform duration-200">
+              →
+            </span>
           </a>
-        </div>
-      </motion.section>
-    </div>
+        </motion.section>
+      </div>
+    </>
   );
 }

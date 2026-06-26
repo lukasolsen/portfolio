@@ -3,10 +3,10 @@ import { backrandLabData } from "./backrand-data";
 
 const categoryColor: Record<string, string> = {
   Basic: "bg-green-500/10 text-green-600 dark:text-green-400",
-  Intermediate: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
-  Advanced: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
-  Interpolation: "bg-orange-500/10 text-orange-600 dark:text-orange-400",
-  Compositing: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400",
+  Intermediate: "bg-primary/10 text-primary",
+  Advanced: "bg-muted text-muted-foreground",
+  Interpolation: "bg-primary/10 text-primary",
+  Compositing: "bg-green-500/10 text-green-600 dark:text-green-400",
 };
 
 export const ResearchStyles = () => {
@@ -26,7 +26,7 @@ export const ResearchStyles = () => {
           <div className="flex items-center gap-3">
             <span className="text-xs font-mono text-muted-foreground/40">06</span>
             <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium">
-              Algorithms & Warps
+              Algorithms and warps
             </span>
           </div>
 

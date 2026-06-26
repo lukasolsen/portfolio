@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { backrandLabData } from "./backrand-data";
+import { LeadText } from "@/components/typography/typography";
 
 export const ResearchHero = () => {
   const { research } = backrandLabData;
@@ -78,9 +79,9 @@ export const ResearchHero = () => {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-light">
+          <LeadText className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-light">
             {research.subtitle}
-          </p>
+          </LeadText>
 
           {/* Abstract preview */}
           <motion.p

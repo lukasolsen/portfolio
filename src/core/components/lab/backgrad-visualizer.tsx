@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { Header6, SmallText } from "@/components/typography/typography";
 
 function useIntersectionObserver(threshold = 0.1) {
   const ref = useRef<HTMLDivElement>(null);
@@ -354,13 +355,13 @@ export const BackgradVisualizer = () => {
                 viewport={{ once: true }}
                 className="space-y-3"
               >
-                <div className="aspect-[4/3] rounded-lg overflow-hidden bg-[#0a0a0f] border border-border/20">
+                <div className="aspect-[4/3] rounded-lg overflow-hidden bg-muted border border-border/20">
                   <d.Demo />
                 </div>
-                <h4 className="text-sm font-medium text-foreground">{d.label}</h4>
-                <p className="text-[12px] text-muted-foreground leading-relaxed">
+                <Header6 className="font-medium">{d.label}</Header6>
+                <SmallText className="text-muted-foreground">
                   {d.description}
-                </p>
+                </SmallText>
               </motion.div>
             ))}
           </div>
