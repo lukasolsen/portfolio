@@ -1,18 +1,18 @@
 import type { Project } from "@/common/project/project";
 
-export const backrandProject: Project = {
-  id: "backrand",
+export const backgradProject: Project = {
+  id: "backgrad",
 
-  title: "Backrand",
+  title: "Backgrad",
   description:
-    "Backrand er et verktøy som lager gradientbakgrunner på sekunder. Perfekt for designere og utviklere som ønsker raske og vakre bakgrunner.",
+    "Backgrad er et verktøy som lager gradientbakgrunner på sekunder. Perfekt for designere og utviklere som ønsker raske og vakre bakgrunner.",
 
   period: "2025 - Pågående",
   tags: ["Python", "Flask"],
 
   socials: {
     github: "https://github.com/codevault-llc/manager",
-    website: "/projects/backrand",
+    website: "/projects/backgrad",
   },
   stats: {},
 
@@ -35,19 +35,27 @@ export const backrandProject: Project = {
         license: "CC BY-NC 4.0",
       },
       {
-        src: "/images/backrand/v1_global_normalization_8796.png",
-        alt: "Rolig varm gradientbakgrunn",
-        caption: "Rolig varm gradientbakgrunn generert med Backrand",
+        src: "/images/backrand/exp01_max_organic.png",
+        alt: "Maximum organic flow - fabric-like",
+        caption: "Maximum organic flow - fabric-like",
         credit: "Lukas Olsen",
         license: "CC BY-NC 4.0",
       },
       {
-        src: "/images/backrand/aurora_glow_example.png",
-        alt: "Aurora Glow gradientbakgrunn",
-        caption: "Aurora Glow gradientbakgrunn generert med Backrand",
+        src: "/images/backrand/exp10_organic_layout.png",
+        alt: "Built-in organic colors",
+        caption: "Built-in organic colors",
         credit: "Lukas Olsen",
         license: "CC BY-NC 4.0",
       },
+      {
+        src: "/images/backrand/exp11_diagonal_layout.png",
+        alt: "Built-in Diagonal layout",
+        caption: "Built-in Diagonal layout",
+        credit: "Lukas Olsen",
+        license: "CC BY-NC 4.0",
+      },
+      
       {
         src: "/images/backrand/sky_and_sand.png",
         alt: "Sky and Sand gradientbakgrunn",

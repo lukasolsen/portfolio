@@ -29,7 +29,7 @@ import {
   SnippetTabsTrigger,
 } from "@/components/kibo-ui/snippet";
 import { useState } from "react";
-import { backrandProject } from "@/data/backrand/backrand";
+import { backgradProject } from "@/data/backrand/backrand";
 
 export const Route = createFileRoute("/projects/backrand/")({
   component: RouteComponent,
@@ -75,7 +75,7 @@ function RouteComponent() {
   const [value, setValue] = useState(commands[0].label);
   const activeCommand = commands.find((command) => command.label === value);
 
-  const project = backrandProject;
+  const project = backgradProject;
 
   return (
     <div className="min-h-screen w-full bg-background text-foreground">

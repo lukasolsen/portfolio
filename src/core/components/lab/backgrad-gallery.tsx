@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
-import { backrandProject } from "@/data/backrand/backrand";
+import { backgradProject } from "@/data/backrand/backrand";
+import { Link } from "@tanstack/react-router";
 
 const PREVIEW_COUNT = 6;
 
 export const BackgradGallery = () => {
-  const allImages = backrandProject.gallery?.images ?? [];
+  const allImages = backgradProject.gallery?.images ?? [];
   const images = allImages.slice(0, PREVIEW_COUNT);
   const hasMore = allImages.length > PREVIEW_COUNT;
 
@@ -26,8 +27,8 @@ export const BackgradGallery = () => {
               </span>
             </div>
             {hasMore && (
-              <a
-                href="/lab/backgrad-gallery"
+              <Link
+                to="/projects/backgrad/gallery"
                 className="group inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
                 View all {allImages.length}
@@ -40,7 +41,7 @@ export const BackgradGallery = () => {
                 >
                   <path d="M2 6h7M7 2l3 4-3 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-              </a>
+              </Link>
             )}
           </div>
 
@@ -53,12 +54,12 @@ export const BackgradGallery = () => {
             {images.map((image, i) => (
               <motion.a
                 key={i}
-                href="/lab/backgrad-gallery"
+                href="/projects/backgrad/gallery"
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: i * 0.05 }}
                 viewport={{ once: true }}
-                className="group relative aspect-[4/3] overflow-hidden rounded-lg bg-muted/30 border border-border/15 block"
+                className="group relative aspect-4/3 overflow-hidden rounded-lg bg-muted/30 border border-border/15 block"
               >
                 <img
                   src={image.src}
@@ -67,7 +68,7 @@ export const BackgradGallery = () => {
                   loading="lazy"
                   decoding="async"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-linear-to-t from-background/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-background/80 backdrop-blur-sm text-[9px] font-mono text-muted-foreground border border-border/20">
                     Generated

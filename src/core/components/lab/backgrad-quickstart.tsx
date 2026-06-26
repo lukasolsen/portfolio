@@ -13,8 +13,7 @@ const steps = [
     number: "02",
     title: "Generate",
     description: "CLI output to file.",
-    code: `backgrad -m mesh_gradient \\
-  -o gradient.webp -s 42`,
+    code: `backgrad -m mesh_gradient -o gradient.webp -s 42`,
   },
   {
     number: "03",

@@ -66,7 +66,7 @@ export function Timeline() {
         >
           {/* Line */}
           {i < timeline.length - 1 && (
-            <div className="absolute left-[11px] top-8 bottom-0 w-px bg-gradient-to-b from-border/60 to-border/20" />
+            <div className="absolute left-2.75 top-8 bottom-0 w-px bg-linear-to-b from-border/60 to-border/20" />
           )}
 
           {/* Dot */}
@@ -99,7 +99,7 @@ export function Timeline() {
           {/* Content */}
           <div className="flex-1 min-w-0">
             <div className="flex items-baseline gap-3 mb-1.5">
-              <span className="text-[11px] font-mono font-medium text-primary/70 tracking-wider">
+              <span className="text-[14px] font-mono font-medium text-primary/70 tracking-wider">
                 {item.year}
               </span>
               <h3 className="text-base font-medium text-foreground tracking-tight">

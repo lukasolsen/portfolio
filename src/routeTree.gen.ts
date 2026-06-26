@@ -12,13 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsDyplinkAiRouteImport } from './routes/projects/dyplink-ai'
 import { Route as LabBackrand6RouteImport } from './routes/lab/backrand-6'
-import { Route as LabBackgradGalleryRouteImport } from './routes/lab/backgrad-gallery'
-import { Route as LabBackgradRouteImport } from './routes/lab/backgrad'
 import { Route as BlogsIdRouteImport } from './routes/blogs/$id'
 import { Route as ApiProjectsRouteImport } from './routes/api/projects'
 import { Route as ApiBlogsRouteImport } from './routes/api/blogs'
 import { Route as ProjectsBackrandIndexRouteImport } from './routes/projects/backrand/index'
+import { Route as ProjectsBackgradIndexRouteImport } from './routes/projects/backgrad/index'
 import { Route as ProjectsBackrandPlaygroundRouteImport } from './routes/projects/backrand/playground'
+import { Route as ProjectsBackgradGalleryRouteImport } from './routes/projects/backgrad/gallery'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -33,16 +33,6 @@ const ProjectsDyplinkAiRoute = ProjectsDyplinkAiRouteImport.update({
 const LabBackrand6Route = LabBackrand6RouteImport.update({
   id: '/lab/backrand-6',
   path: '/lab/backrand-6',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LabBackgradGalleryRoute = LabBackgradGalleryRouteImport.update({
-  id: '/lab/backgrad-gallery',
-  path: '/lab/backgrad-gallery',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LabBackgradRoute = LabBackgradRouteImport.update({
-  id: '/lab/backgrad',
-  path: '/lab/backgrad',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogsIdRoute = BlogsIdRouteImport.update({
@@ -65,23 +55,33 @@ const ProjectsBackrandIndexRoute = ProjectsBackrandIndexRouteImport.update({
   path: '/projects/backrand/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectsBackgradIndexRoute = ProjectsBackgradIndexRouteImport.update({
+  id: '/projects/backgrad/',
+  path: '/projects/backgrad/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsBackrandPlaygroundRoute =
   ProjectsBackrandPlaygroundRouteImport.update({
     id: '/projects/backrand/playground',
     path: '/projects/backrand/playground',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ProjectsBackgradGalleryRoute = ProjectsBackgradGalleryRouteImport.update({
+  id: '/projects/backgrad/gallery',
+  path: '/projects/backgrad/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/blogs': typeof ApiBlogsRoute
   '/api/projects': typeof ApiProjectsRoute
   '/blogs/$id': typeof BlogsIdRoute
-  '/lab/backgrad': typeof LabBackgradRoute
-  '/lab/backgrad-gallery': typeof LabBackgradGalleryRoute
   '/lab/backrand-6': typeof LabBackrand6Route
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
+  '/projects/backgrad/gallery': typeof ProjectsBackgradGalleryRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
+  '/projects/backgrad/': typeof ProjectsBackgradIndexRoute
   '/projects/backrand/': typeof ProjectsBackrandIndexRoute
 }
 export interface FileRoutesByTo {
@@ -89,11 +89,11 @@ export interface FileRoutesByTo {
   '/api/blogs': typeof ApiBlogsRoute
   '/api/projects': typeof ApiProjectsRoute
   '/blogs/$id': typeof BlogsIdRoute
-  '/lab/backgrad': typeof LabBackgradRoute
-  '/lab/backgrad-gallery': typeof LabBackgradGalleryRoute
   '/lab/backrand-6': typeof LabBackrand6Route
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
+  '/projects/backgrad/gallery': typeof ProjectsBackgradGalleryRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
+  '/projects/backgrad': typeof ProjectsBackgradIndexRoute
   '/projects/backrand': typeof ProjectsBackrandIndexRoute
 }
 export interface FileRoutesById {
@@ -102,11 +102,11 @@ export interface FileRoutesById {
   '/api/blogs': typeof ApiBlogsRoute
   '/api/projects': typeof ApiProjectsRoute
   '/blogs/$id': typeof BlogsIdRoute
-  '/lab/backgrad': typeof LabBackgradRoute
-  '/lab/backgrad-gallery': typeof LabBackgradGalleryRoute
   '/lab/backrand-6': typeof LabBackrand6Route
   '/projects/dyplink-ai': typeof ProjectsDyplinkAiRoute
+  '/projects/backgrad/gallery': typeof ProjectsBackgradGalleryRoute
   '/projects/backrand/playground': typeof ProjectsBackrandPlaygroundRoute
+  '/projects/backgrad/': typeof ProjectsBackgradIndexRoute
   '/projects/backrand/': typeof ProjectsBackrandIndexRoute
 }
 export interface FileRouteTypes {
@@ -116,11 +116,11 @@ export interface FileRouteTypes {
     | '/api/blogs'
     | '/api/projects'
     | '/blogs/$id'
-    | '/lab/backgrad'
-    | '/lab/backgrad-gallery'
     | '/lab/backrand-6'
     | '/projects/dyplink-ai'
+    | '/projects/backgrad/gallery'
     | '/projects/backrand/playground'
+    | '/projects/backgrad/'
     | '/projects/backrand/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -128,11 +128,11 @@ export interface FileRouteTypes {
     | '/api/blogs'
     | '/api/projects'
     | '/blogs/$id'
-    | '/lab/backgrad'
-    | '/lab/backgrad-gallery'
     | '/lab/backrand-6'
     | '/projects/dyplink-ai'
+    | '/projects/backgrad/gallery'
     | '/projects/backrand/playground'
+    | '/projects/backgrad'
     | '/projects/backrand'
   id:
     | '__root__'
@@ -140,11 +140,11 @@ export interface FileRouteTypes {
     | '/api/blogs'
     | '/api/projects'
     | '/blogs/$id'
-    | '/lab/backgrad'
-    | '/lab/backgrad-gallery'
     | '/lab/backrand-6'
     | '/projects/dyplink-ai'
+    | '/projects/backgrad/gallery'
     | '/projects/backrand/playground'
+    | '/projects/backgrad/'
     | '/projects/backrand/'
   fileRoutesById: FileRoutesById
 }
@@ -153,11 +153,11 @@ export interface RootRouteChildren {
   ApiBlogsRoute: typeof ApiBlogsRoute
   ApiProjectsRoute: typeof ApiProjectsRoute
   BlogsIdRoute: typeof BlogsIdRoute
-  LabBackgradRoute: typeof LabBackgradRoute
-  LabBackgradGalleryRoute: typeof LabBackgradGalleryRoute
   LabBackrand6Route: typeof LabBackrand6Route
   ProjectsDyplinkAiRoute: typeof ProjectsDyplinkAiRoute
+  ProjectsBackgradGalleryRoute: typeof ProjectsBackgradGalleryRoute
   ProjectsBackrandPlaygroundRoute: typeof ProjectsBackrandPlaygroundRoute
+  ProjectsBackgradIndexRoute: typeof ProjectsBackgradIndexRoute
   ProjectsBackrandIndexRoute: typeof ProjectsBackrandIndexRoute
 }
 
@@ -182,20 +182,6 @@ declare module '@tanstack/react-router' {
       path: '/lab/backrand-6'
       fullPath: '/lab/backrand-6'
       preLoaderRoute: typeof LabBackrand6RouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/lab/backgrad-gallery': {
-      id: '/lab/backgrad-gallery'
-      path: '/lab/backgrad-gallery'
-      fullPath: '/lab/backgrad-gallery'
-      preLoaderRoute: typeof LabBackgradGalleryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/lab/backgrad': {
-      id: '/lab/backgrad'
-      path: '/lab/backgrad'
-      fullPath: '/lab/backgrad'
-      preLoaderRoute: typeof LabBackgradRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blogs/$id': {
@@ -226,11 +212,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsBackrandIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/projects/backgrad/': {
+      id: '/projects/backgrad/'
+      path: '/projects/backgrad'
+      fullPath: '/projects/backgrad/'
+      preLoaderRoute: typeof ProjectsBackgradIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects/backrand/playground': {
       id: '/projects/backrand/playground'
       path: '/projects/backrand/playground'
       fullPath: '/projects/backrand/playground'
       preLoaderRoute: typeof ProjectsBackrandPlaygroundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/backgrad/gallery': {
+      id: '/projects/backgrad/gallery'
+      path: '/projects/backgrad/gallery'
+      fullPath: '/projects/backgrad/gallery'
+      preLoaderRoute: typeof ProjectsBackgradGalleryRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -241,11 +241,11 @@ const rootRouteChildren: RootRouteChildren = {
   ApiBlogsRoute: ApiBlogsRoute,
   ApiProjectsRoute: ApiProjectsRoute,
   BlogsIdRoute: BlogsIdRoute,
-  LabBackgradRoute: LabBackgradRoute,
-  LabBackgradGalleryRoute: LabBackgradGalleryRoute,
   LabBackrand6Route: LabBackrand6Route,
   ProjectsDyplinkAiRoute: ProjectsDyplinkAiRoute,
+  ProjectsBackgradGalleryRoute: ProjectsBackgradGalleryRoute,
   ProjectsBackrandPlaygroundRoute: ProjectsBackrandPlaygroundRoute,
+  ProjectsBackgradIndexRoute: ProjectsBackgradIndexRoute,
   ProjectsBackrandIndexRoute: ProjectsBackrandIndexRoute,
 }
 export const routeTree = rootRouteImport

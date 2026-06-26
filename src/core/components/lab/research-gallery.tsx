@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import { backrandProject } from "@/data/backrand/backrand";
+import { backgradProject } from "@/data/backrand/backrand";
 
 export const ResearchGallery = () => {
-  const images = backrandProject.gallery?.images ?? [];
+  const images = backgradProject.gallery?.images ?? [];
 
   return (
     <section className="w-full py-28 border-t border-border/30">

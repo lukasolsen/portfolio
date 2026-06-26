@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { backrandProject } from "@/data/backrand/backrand";
+import { backgradProject } from "@/data/backrand/backrand";
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import {
 import { ChevronLeft, ChevronRight, ImageOff, ArrowLeft } from "lucide-react";
 import { Header4, LeadText, SmallText } from "@/components/typography/typography";
 
-export const Route = createFileRoute("/lab/backgrad-gallery")({
+export const Route = createFileRoute("/projects/backgrad/gallery")({
   component: GalleryPage,
 });
 
@@ -86,7 +86,7 @@ function GalleryImage({
 }
 
 function GalleryPage() {
-  const images = backrandProject.gallery?.images ?? [];
+  const images = backgradProject.gallery?.images ?? [];
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const goNext = useCallback(() => {

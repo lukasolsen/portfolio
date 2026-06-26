@@ -12,7 +12,7 @@ import { BackgradUpdates } from "@/core/components/lab/backgrad-updates";
 import { BackgradFooter } from "@/core/components/lab/backgrad-footer";
 import { SpeechReaderButton } from "@/core/components/lab/speech-reader-button";
 
-export const Route = createFileRoute("/lab/backgrad")({
+export const Route = createFileRoute("/projects/backgrad/")({
   component: RouteComponent,
 });
 
