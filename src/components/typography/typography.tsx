@@ -4,10 +4,12 @@ import clsx from "clsx";
 interface TypographyProps {
   children: React.ReactNode;
   className?: string;
+  id?: string;
 }
 
-export const Header1: FC<TypographyProps> = ({ children, className }) => (
+export const Header1: FC<TypographyProps> = ({ children, className, id }) => (
   <h1
+    id={id}
     className={clsx(
       "text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-tight",
       className

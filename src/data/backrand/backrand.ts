@@ -93,4 +93,14 @@ export const backgradProject: Project = {
       },
     ],
   },
+  resources: [
+    {
+      id: "backgrad-generative-gradient-system",
+      type: "blog",
+      title: "Building a generative gradient system",
+      description:
+        "How Backgrad turns palettes, layout fields, and export rules into repeatable visual assets.",
+      tags: ["Backgrad", "Generative design", "Rendering"],
+    },
+  ],
 };

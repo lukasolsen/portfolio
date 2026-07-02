@@ -5,6 +5,8 @@ import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { nitro } from "nitro/vite";
 import { paraglideVitePlugin } from "@inlang/paraglide-js";
+import mdx from "@mdx-js/rollup";
+import remarkGfm from "remark-gfm";
 
 export default defineConfig({
   server: {
@@ -41,6 +43,10 @@ export default defineConfig({
     }),
     tsConfigPaths({
       projects: ["./tsconfig.json"],
+    }),
+    mdx({
+      include: /\.mdx$/,
+      remarkPlugins: [remarkGfm],
     }),
     tanstackStart({
       srcDirectory: "src",

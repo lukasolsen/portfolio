@@ -19,9 +19,10 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       ...seo({
-        title: "Lukas Olsen | Full-Stack Developer",
-        description: `Lukas Olsen is a full-stack developer with a focus on creating high-quality, type-safe, and client-first applications.`,
-        keywords: "technology, programmer, developer, full-stack",
+        title: "Lukas Olsen | Full-stack developer",
+        description:
+          "Lukas Olsen is a Norwegian full-stack developer building projects, tools, and practical AI experiments.",
+        keywords: "Lukas Olsen, developer, full-stack, React, projects",
       }),
     ],
     links: [
@@ -42,8 +43,14 @@ export const Route = createRootRoute({
         sizes: "16x16",
         href: "/favicon-16x16.png",
       },
-      { rel: "manifest", href: "/site.webmanifest", color: "#fffff" },
+      { rel: "manifest", href: "/site.webmanifest" },
       { rel: "icon", href: "/favicon.ico" },
+      {
+        rel: "alternate",
+        type: "application/rss+xml",
+        title: "Lukas Olsen blog feed",
+        href: "/blogs.xml",
+      },
       {
         rel: "preload",
         href: "/fonts/Inter.woff2",

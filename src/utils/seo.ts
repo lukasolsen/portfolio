@@ -3,49 +3,49 @@ export const seo = ({
   description,
   keywords,
   image,
+  path = "/",
 }: {
   title: string;
   description?: string;
   image?: string;
   keywords?: string;
+  path?: string;
 }) => {
-  const tags = [
+  const siteUrl = "https://lukasolsen.no";
+  const canonicalUrl = new URL(path, siteUrl).toString();
+  const imageUrl = image ? new URL(image, siteUrl).toString() : undefined;
+
+  return [
     { title },
     { name: "description", content: description },
     { name: "keywords", content: keywords },
-    { name: "og:type", content: "website" },
-    { name: "og:title", content: title },
-    { name: "og:description", content: description },
-    ...(image
-      ? [
-          { name: "twitter:image", content: image },
-          { name: "twitter:card", content: "summary_large_image" },
-          { name: "og:image", content: image },
-        ]
-      : []),
 
     // Open Graph
-    { name: "og:url", content: "https://lukasolsen.com" },
-    { name: "og:site_name", content: "Lukas Olsen" },
-    { name: "og:description", content: description },
-    { name: "og:type", content: "website" },
-    { name: "og:image", content: image },
+    { property: "og:type", content: "website" },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:url", content: canonicalUrl },
+    { property: "og:site_name", content: "Lukas Olsen" },
+    { property: "og:image", content: imageUrl },
 
     // Twitter
     { name: "twitter:title", content: title },
     { name: "twitter:description", content: description },
     { name: "twitter:creator", content: "@lukasolsen" },
     { name: "twitter:site", content: "@lukasolsen" },
-    { name: "twitter:card", content: "summary_large_image" },
-    { name: "twitter:image", content: image },
+    { name: "twitter:card", content: imageUrl ? "summary_large_image" : "summary" },
+    { name: "twitter:image", content: imageUrl },
 
     // Schema.org
     { name: "schema:author", content: "Lukas Olsen" },
     { name: "schema:description", content: description },
-    { name: "schema:image", content: image },
+    { name: "schema:image", content: imageUrl },
     { name: "schema:name", content: title },
-    { name: "schema:url", content: "https://lukasolsen.com" },
-  ];
-
-  return tags;
+    { name: "schema:url", content: canonicalUrl },
+  ].filter((tag) => !("content" in tag) || Boolean(tag.content));
 };
+
+export const canonicalLink = (path = "/") => ({
+  rel: "canonical",
+  href: new URL(path, "https://lukasolsen.no").toString(),
+});

@@ -1,0 +1,121 @@
+## What changed
+
+The first planning pass for Dyplink AI was about making the system useful before making it broad. The project needed to support summaries and text-to-speech, but the deeper requirement was operational: editors should know what was generated, when it was generated, which model produced it, and whether it was approved.
+
+That planning work turned the integration from a model call into a tracked workflow.
+
+## Planning principles
+
+The system is designed around a few constraints:
+
+- Editorial teams need fast tools that do not hide risk.
+- Generated content should have a clear review state.
+- Model providers can change, so provider details should stay isolated.
+- Billing and token metadata matter once a feature is used repeatedly.
+- Article updates should not leave stale generated content behind.
+
+These constraints are more useful than a long feature list because they define how the system should behave when something changes.
+
+## Core data model
+
+The original shape was too focused on the generated text itself. The improved shape stores generation context alongside the result.
+
+```ts
+interface GenerationRecord {
+  id: string;
+  articleId: string;
+  task: "summary" | "text_to_speech" | string;
+  model: string;
+  promptVersion: string;
+  tokenUsage: {
+    input: number;
+    output: number;
+  };
+  reviewStatus: "pending" | "accepted" | "edited" | "rejected" | "stale";
+  output: string;
+  outputFormat: "text" | "audio";
+  metadata: {
+    locale: "no" | "en";
+    costUsd: number;
+    latencyMs: number;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+```
+
+| Field | Reason |
+| --- | --- |
+| `articleId` | Connects output to the source article |
+| `task` | Separates summary, audio, and future generation types |
+| `model` | Makes output traceable across providers |
+| `promptVersion` | Explains why output changed after prompt edits |
+| `tokenUsage` | Supports billing and performance review |
+| `reviewStatus` | Keeps publishing control with editors |
+
+This also makes debugging easier. If quality drops, the team can compare model, prompt, article type, and review history instead of guessing.
+
+## Integration flow
+
+The integration flow is deliberately simple. Each step has a single responsibility and a clear failure mode.
+
+```ts
+async function generateForArticle(request: GenerationRequest) {
+  const article = await fetchArticle(request.articleId);
+  const normalized = normalizeInput(article, request);
+  const result = await modelProvider.generate(normalized, request.model);
+  const record = await storeGeneration({
+    ...request,
+    output: result.output,
+    reviewStatus: "pending",
+  });
+  await notifyEditor(record);
+  return record;
+}
+```
+
+1. Fetch article content from the publishing system.
+2. Normalize the input into a provider-independent request.
+3. Generate the result with the selected model.
+4. Store output, metadata, and review status.
+5. Show the result to an editor before it becomes visible.
+
+The system can add more tasks later, but each task should follow the same traceable path.
+
+## Prompt versioning
+
+Prompts change often during early development. Without versioning, it is impossible to know whether a quality shift came from the prompt, the model, or the input.
+
+A prompt version is stored as a small immutable record:
+
+```json
+{
+  "id": "summary-v1.4",
+  "task": "summary",
+  "template": "Write a 2-sentence summary of the article in {{locale}}. Preserve all numeric claims. Do not add interpretation.",
+  "model": "gemini-2.5-flash",
+  "createdAt": "2026-01-10T14:00:00Z"
+}
+```
+
+Every generation stores the prompt version ID, so the team can re-run old versions on new articles when evaluating changes.
+
+## Risk register
+
+| Risk | Impact | Mitigation |
+| --- | --- | --- |
+| Generated facts drift from the article | High | Human review state and `stale` detection on article updates |
+| Prompt changes hurt quality silently | Medium | Version prompts and compare outputs on a fixed test set |
+| Provider price or availability changes | Medium | Keep provider logic behind an internal interface |
+| Token costs grow unexpectedly | Medium | Store usage per generation and alert on anomalies |
+| Editors skip review because the UI is slow | High | Show generated output inline with accept/edit/reject actions |
+
+## Risks
+
+The main risk is treating generation as a finished answer. For editorial work, generation is a draft. It can save time, but it can also introduce unsupported details or flatten the tone of an article.
+
+That is why review state, provenance, and prompt versioning are part of the core system rather than later polish.
+
+## What comes next
+
+The next planning step is to make evaluation visible inside the workflow. Editors should be able to mark generated summaries as accepted, edited, rejected, or stale. Those signals can guide prompt changes and show where the tool is actually useful.

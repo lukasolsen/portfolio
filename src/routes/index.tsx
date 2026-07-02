@@ -7,8 +7,18 @@ import { createFileRoute, useLoaderData } from "@tanstack/react-router";
 import { Header1, Paragraph, SmallText } from "@/components/typography/typography";
 import { m } from "@/paraglide/messages";
 import { getWorkExperience } from "@/data/work-experience.server";
+import { canonicalLink, seo } from "@/utils/seo";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: seo({
+      title: "Lukas Olsen | Norwegian full-stack developer",
+      description:
+        "Lukas Olsen builds full-stack projects, developer tools, and practical AI experiments from Norway.",
+      keywords: "Lukas Olsen, norsk utvikler, full-stack, React, projects",
+    }),
+    links: [canonicalLink("/")],
+  }),
   loader: async () => {
     const workExperiences = await getWorkExperience();
     return { workExperiences };

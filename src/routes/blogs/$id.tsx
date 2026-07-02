@@ -1,32 +1,67 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { LeadText, SmallText, Title } from "@/components/typography/typography";
+import type { ReactNode } from "react";
+import { useState } from "react";
+import {
+  Header1,
+  Header6,
+  Paragraph,
+  SmallText,
+} from "@/components/typography/typography";
 import { Button } from "@/components/ui/button";
-import { blogs } from "@/data";
-import { createFileRoute, useParams } from "@tanstack/react-router";
-import { Share, BookOpen, Briefcase } from "lucide-react";
 import { Relations } from "@/components/relations";
 import { WorkDisclaimer } from "@/components/work-disclaimer";
-import { Markdown } from "@/core/components/markdown/markdown";
-import "@/styles/markdown.css";
+import { blogs } from "@/data";
+import { getAbsoluteBlogUrl, getReadingTime } from "@/lib/blogs";
+import { seo } from "@/utils/seo";
+import { Link, createFileRoute, useParams } from "@tanstack/react-router";
+import { motion } from "framer-motion";
 import {
-  TableOfContents,
-  type HeadingItem,
-} from "@/core/components/markdown/table-of-contents";
-import { markdownToText } from "@/lib/markdown";
+  BookOpen,
+  Briefcase,
+  Check,
+  Link2,
+  Linkedin,
+  Share2,
+} from "lucide-react";
+import "@/styles/markdown.css";
 
-const slugify = (s: string) =>
-  s
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "")
-    .replace(/-+/g, "-");
+const formatDate = (date: string) =>
+  new Intl.DateTimeFormat("en", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(date));
 
-/* Slight offset (in pixels) to account for sticky headers */
-const SCROLL_OFFSET = 84; // adjust to match header height
+const fadeIn = {
+  initial: { opacity: 0, y: 18 },
+  whileInView: { opacity: 1, y: 0 },
+  transition: { duration: 0.55, ease: "easeOut" },
+  viewport: { once: true, margin: "-80px" },
+} as const;
 
-/* --- Route definition --- */
 export const Route = createFileRoute("/blogs/$id")({
+  head: ({ params }) => {
+    const blog = blogs.find((item) => item.id === params.id);
+
+    if (!blog) return {};
+
+    return {
+      meta: [
+        ...seo({
+          title: `${blog.title} | Lukas Olsen`,
+          description: blog.summary,
+          image: blog.heroImage?.src,
+          keywords: blog.tags.join(", "),
+          path: `/blogs/${blog.id}`,
+        }),
+      ],
+      links: [
+        {
+          rel: "canonical",
+          href: getAbsoluteBlogUrl(blog),
+        },
+      ],
+    };
+  },
   component: RouteComponent,
 });
 
@@ -34,221 +69,260 @@ export function RouteComponent() {
   const params = useParams({ from: "/blogs/$id" });
   const blog = blogs.find((b) => b.id === params.id);
 
-  const articleRef = useRef<HTMLElement | null>(null);
-  const [headings, setHeadings] = useState<HeadingItem[]>([]);
-  const [activeHeading, setActiveHeading] = useState<string>("");
-  const [contentMounted, setContentMounted] = useState(false);
-
-  const words =
-    typeof blog?.content === "string" ? blog.content.split(/\s+/).length : 0;
-  const calculatedReadingTime = words > 0 ? Math.ceil(words / 200) : 5;
-
-  console.log(markdownToText(blog?.rawContent));
-
-  useLayoutEffect(() => {
-    setHeadings([]);
-    setActiveHeading("");
-    setContentMounted(false);
-
-    let rafId: number | null = null;
-    rafId = requestAnimationFrame(() => {
-      const container = articleRef.current;
-      if (!container) {
-        setContentMounted(true);
-        return;
-      }
-
-      const headingNodes = Array.from(
-        container.querySelectorAll<HTMLElement>("h1, h2, h3"),
-      );
-
-      const built: HeadingItem[] = headingNodes.map((node) => {
-        const text = node.textContent?.trim() || "heading";
-        let id = node.id || slugify(text);
-        let suffix = 1;
-
-        while (document.getElementById(id)) {
-          const existing = document.getElementById(id);
-          if (existing === node) break;
-          id = `${slugify(text)}-${suffix++}`;
-        }
-
-        if (!node.id) node.id = id;
-
-        node.style.scrollMarginTop = `${SCROLL_OFFSET + 8}px`;
-
-        return {
-          id,
-          text,
-          level: parseInt(node.tagName.replace("H", ""), 10) || 2,
-        };
-      });
-
-      setHeadings(built);
-      setContentMounted(true);
-    });
-
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId);
-    };
-  }, [blog?.id, blog?.content]);
-
-  useEffect(() => {
-    if (!contentMounted || headings.length === 0) return;
-
-    const observerOptions: IntersectionObserverInit = {
-      root: null,
-      rootMargin: "-40% 0px -50% 0px",
-      threshold: [0, 0.25, 0.6, 1],
-    };
-
-    let activeId = "";
-
-    const observer = new IntersectionObserver((entries) => {
-      let best: IntersectionObserverEntry | null = null;
-      entries.forEach((entry) => {
-        if (!best) {
-          best = entry;
-        } else {
-          if ((entry.intersectionRatio || 0) > (best.intersectionRatio || 0)) {
-            best = entry;
-          }
-        }
-      });
-
-      if (best && best.target && (best.target as HTMLElement).id) {
-        const id = (best.target as HTMLElement).id;
-        if (id !== activeId) {
-          activeId = id;
-          setActiveHeading(id);
-        }
-      }
-    }, observerOptions);
-
-    headings.forEach((h) => {
-      const el = document.getElementById(h.id);
-      if (el) observer.observe(el);
-    });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [contentMounted, headings]);
-
-  const [showContent, setShowContent] = useState(false);
-  useEffect(() => {
-    if (contentMounted) {
-      const t = setTimeout(() => setShowContent(true), 40);
-      return () => clearTimeout(t);
-    }
-    setShowContent(false);
-  }, [contentMounted, blog?.id]);
-
   if (!blog) {
     return (
-      <div className="min-h-screen w-full bg-background text-foreground flex items-center justify-center">
-        <SmallText>Blogg ikke funnet.</SmallText>
+      <div className="min-h-screen w-full bg-background text-foreground flex items-center justify-center px-4">
+        <div className="max-w-md space-y-4 text-center">
+          <Header6>Blog post not found</Header6>
+          <SmallText>The note may have moved or the URL is incorrect.</SmallText>
+          <Button asChild variant="outline">
+            <Link to="/blogs">Back to blog</Link>
+          </Button>
+        </div>
       </div>
     );
   }
 
+  const Content = blog.Content;
+  const readingTime = getReadingTime(blog);
+  const postUrl =
+    typeof window !== "undefined"
+      ? window.location.href
+      : getAbsoluteBlogUrl(blog);
+
   return (
     <div className="min-h-screen w-full bg-background text-foreground">
-      {/* Header */}
-      <section className="w-full pt-12 md:pt-16 pb-6 md:pb-10 border-b border-border/60 bg-linear-to-b from-background to-background/60">
-        <div className="max-w-5xl mx-auto px-4 md:px-8 flex flex-col items-start md:items-center gap-4 md:gap-6">
-          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 w-full">
-            <SmallText className="text-gray-50!">
-              {new Date(blog.created_at).toLocaleDateString("no-NB", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </SmallText>
+      <article className="w-full">
+        <header className="w-full px-4 md:px-8 pt-20 md:pt-28 pb-12 md:pb-16">
+          <div className="max-w-3xl mx-auto space-y-8 text-center">
+            <motion.div {...fadeIn} className="space-y-5">
+              <span className="inline-flex items-center text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                {blog.category}
+              </span>
+              <Header1
+                id="article-title"
+                className="text-center mx-auto max-w-4xl"
+              >
+                {blog.title}
+              </Header1>
+            </motion.div>
 
-            {blog.type === "work" && (
-              <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-amber-500/10 border border-amber-500/20">
-                <Briefcase className="h-3 w-3 text-amber-600" />
-                <SmallText className="text-amber-700 text-xs font-medium">
-                  Arbeid
-                </SmallText>
-              </div>
-            )}
-
-            {blog.tags.map((tag, index) => (
-              <SmallText key={index} className="text-gray-500">
-                {tag}
-              </SmallText>
-            ))}
+            <motion.div
+              {...fadeIn}
+              transition={{ duration: 0.55, delay: 0.05, ease: "easeOut" }}
+              className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm text-muted-foreground"
+            >
+              <time dateTime={blog.created_at}>
+                {formatDate(blog.created_at)}
+              </time>
+              <span aria-hidden="true">·</span>
+              <span className="inline-flex items-center gap-1.5">
+                <BookOpen className="h-3.5 w-3.5" aria-hidden="true" />
+                {readingTime} min read
+              </span>
+              {blog.updated_at && blog.updated_at !== blog.created_at && (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <span>Updated {formatDate(blog.updated_at)}</span>
+                </>
+              )}
+              {blog.type === "work" && (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <Briefcase className="h-3.5 w-3.5" aria-hidden="true" />
+                    Work
+                  </span>
+                </>
+              )}
+            </motion.div>
           </div>
+        </header>
 
-          <Title className="text-center w-full text-2xl md:text-4xl lg:text-5xl">
-            {blog.title}
-          </Title>
-          <LeadText className="text-center w-full max-w-3xl text-base md:text-lg">
-            {blog.subtitle}
-          </LeadText>
-        </div>
-      </section>
+        {blog.heroImage && (
+          <motion.figure
+            {...fadeIn}
+            transition={{ duration: 0.6, delay: 0.08, ease: "easeOut" }}
+            className="w-full px-4 md:px-8"
+          >
+            <div className="max-w-5xl mx-auto overflow-hidden rounded-lg border border-border/15 bg-muted/30">
+              <img
+                src={blog.heroImage.src}
+                alt={blog.heroImage.alt}
+                loading="eager"
+                decoding="async"
+                className="w-full aspect-video object-cover"
+              />
+              {blog.heroImage.caption && (
+                <figcaption className="border-t border-border/20 px-4 py-3 text-sm text-muted-foreground">
+                  {blog.heroImage.caption}
+                </figcaption>
+              )}
+            </div>
+          </motion.figure>
+        )}
 
-      {/* Actions */}
-      <section className="max-w-6xl mx-auto px-4 md:px-8 py-4 md:py-6 flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center justify-between">
-        <SmallText className="flex items-center gap-2 text-gray-50">
-          <BookOpen className="h-4 w-4 shrink-0" />
-          <span className="text-sm md:text-base text-gray-50">
-            Estimer lesetid: {calculatedReadingTime} minutter
-          </span>
-        </SmallText>
-
-        <Button
-          variant="ghost"
-          size="sm"
-          className="flex items-center gap-2 text-gray-50 shrink-0"
-          onClick={() => navigator.clipboard.writeText(window.location.href)}
-        >
-          <Share className="h-4 w-4" /> Del
-        </Button>
-      </section>
-
-      {/* Work Disclaimer */}
-      {blog.type === "work" && (
-        <section className="max-w-6xl mx-auto px-4 md:px-8 py-4">
-          <WorkDisclaimer />
+        <section className="w-full px-4 md:px-8 py-16 md:py-24">
+          <div className="max-w-3xl mx-auto">
+            <motion.main
+              {...fadeIn}
+              className="markdown-content"
+              aria-labelledby="article-title"
+            >
+              <Content />
+            </motion.main>
+          </div>
         </section>
-      )}
 
-      {/* Content layout */}
-      <section className="max-w-6xl mx-auto px-4 md:px-8 py-8 md:py-14 grid grid-cols-1 md:grid-cols-[1fr_260px] gap-8 md:gap-14">
-        {/* Main content */}
-        <main
-          ref={articleRef}
-          className={`markdown-content max-w-none prose prose-invert transition-all duration-300 ease-out
-            ${
-              showContent
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 -translate-y-2"
-            }`}
-          aria-labelledby="article-title"
-        >
-          <Markdown
-            content={
-              blog.rawContent
-                ? markdownToText(blog.rawContent)
-                : (blog.content as string)
-            }
-          />
-        </main>
+        {blog.type === "work" && (
+          <section className="w-full px-4 md:px-8 py-8 border-t border-border/30">
+            <div className="max-w-3xl mx-auto">
+              <WorkDisclaimer />
+            </div>
+          </section>
+        )}
 
-        {/* Table of contents */}
-        <TableOfContents headings={headings} activeHeading={activeHeading} />
-      </section>
-
-      {/* Relations */}
-      {blog.relations && blog.relations.length > 0 && (
-        <section className="max-w-6xl mx-auto px-4 md:px-8 py-6">
-          <Relations relations={blog.relations} />
-        </section>
-      )}
+        <footer className="w-full px-4 md:px-8 py-16 md:py-24 border-t border-border/30">
+          <div className="max-w-3xl mx-auto space-y-16">
+            <ShareSection title={blog.title} url={postUrl} />
+            {blog.relations && blog.relations.length > 0 && (
+              <Relations relations={blog.relations} />
+            )}
+          </div>
+        </footer>
+      </article>
     </div>
+  );
+}
+
+function ShareSection({ title, url }: { title: string; url: string }) {
+  const [copied, setCopied] = useState(false);
+  const encodedUrl = encodeURIComponent(url);
+  const encodedTitle = encodeURIComponent(title);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  };
+
+  const handleNativeShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, url });
+      } catch {
+        // User cancelled or share failed.
+      }
+    }
+  };
+
+  return (
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+      <div className="space-y-1">
+        <h2
+          className="text-muted-foreground/60 font-medium tracking-wide uppercase"
+          style={{ fontSize: "0.75rem", letterSpacing: "0.15em" }}
+        >
+          Share
+        </h2>
+        <Paragraph className="text-sm text-muted-foreground">
+          Found this useful? Pass it along.
+        </Paragraph>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <ShareButton
+          label="Copy link"
+          onClick={handleCopy}
+          aria-label="Copy link to clipboard"
+        >
+          {copied ? (
+            <Check className="h-4 w-4" aria-hidden="true" />
+          ) : (
+            <Link2 className="h-4 w-4" aria-hidden="true" />
+          )}
+        </ShareButton>
+
+        <ShareButton
+          href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
+          label="Share on X"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on X"
+        >
+          <XIcon className="h-4 w-4" />
+        </ShareButton>
+
+        <ShareButton
+          href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}`}
+          label="Share on LinkedIn"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on LinkedIn"
+        >
+          <Linkedin className="h-4 w-4" aria-hidden="true" />
+        </ShareButton>
+
+        {typeof navigator !== "undefined" && "share" in navigator && (
+          <ShareButton
+            label="More share options"
+            onClick={handleNativeShare}
+            aria-label="Open native share options"
+          >
+            <Share2 className="h-4 w-4" aria-hidden="true" />
+          </ShareButton>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ShareButton({
+  children,
+  label,
+  href,
+  ...props
+}: {
+  children: ReactNode;
+  label: string;
+  href?: string;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  const className =
+    "inline-flex items-center justify-center h-10 w-10 rounded-full border border-border/40 bg-background text-muted-foreground transition-colors hover:border-border/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary";
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        className={className}
+        title={label}
+        {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <button type="button" className={className} title={label} {...props}>
+      {children}
+    </button>
+  );
+}
+
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
   );
 }

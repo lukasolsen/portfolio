@@ -1,3 +1,10 @@
-export const markdownToText = (markdown: React.ReactNode): string => {
-  return markdown;
+export const markdownToText = (markdown = ""): string => {
+  return markdown
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/!\[[^\]]*]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]+)]\([^)]*\)/g, "$1")
+    .replace(/[#>*_`~|-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 };

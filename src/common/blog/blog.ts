@@ -1,4 +1,4 @@
-import React from "react";
+import type { ComponentType } from "react";
 
 export interface Relation {
   id: string;
@@ -18,15 +18,38 @@ export interface Relation {
   publishedAt?: string;
 }
 
+export type BlogCategory =
+  | "Engineering"
+  | "AI"
+  | "Design systems"
+  | "Research"
+  | "Operations";
+
+export type BlogStatus = "Published" | "Draft" | "Updated";
+
 export interface Blog {
   id: string;
   title: string;
   subtitle?: string;
+  tagline: string;
+  summary: string;
 
-  content: string | React.ReactElement; // markdown content or MDX component
-  rawContent?: string; // raw content for heading extraction when using MDX
+  Content: ComponentType;
+  rawContent?: string;
+  readingTime: number;
 
   tags: string[];
+  category: BlogCategory;
+  status?: BlogStatus;
+  featured?: boolean;
+  audience?: string;
+  projectId?: string;
+  heroImage?: {
+    src: string;
+    alt: string;
+    caption?: string;
+  };
+  keyTakeaways?: string[];
   type: "personal" | "work";
   relations?: Relation[]; // multiple relations instead of single related
 

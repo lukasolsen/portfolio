@@ -1,0 +1,126 @@
+## What changed
+
+Dyplink AI adds AI-assisted summaries and text-to-speech workflows for editorial teams. The important part is not only model access. The system has to fit into an existing publishing workflow where editors already have habits, deadlines, and review standards.
+
+The project is built around a review-first path: generate a draft, show useful context, keep metadata, and let a human decide what becomes visible to readers.
+
+## Project surface
+
+The first useful surfaces are intentionally narrow.
+
+| Surface | What it does | Editor value |
+| --- | --- | --- |
+| Summary | Creates a short article summary | Faster scanning and easier article previews |
+| Text-to-speech | Produces an audio version of an article | Adds an accessible reading mode |
+| Metadata | Stores model, cost, and generation details | Makes quality and billing easier to audit |
+
+The system avoids a broad assistant interface because that would be harder to review and harder to integrate. A narrow tool is easier to secure, measure, and improve.
+
+## Request schema
+
+All generation requests follow the same shape so the integration layer can route them without knowing the provider details.
+
+```ts
+type GenerationTask = "summary" | "text_to_speech";
+type GenerationLocale = "no" | "en";
+
+interface GenerationRequest {
+  articleId: string;
+  task: GenerationTask;
+  locale: GenerationLocale;
+  model: string;
+  promptVersion: string;
+}
+```
+
+A concrete request looks like this:
+
+```json
+{
+  "articleId": "article-48291",
+  "task": "summary",
+  "locale": "no",
+  "model": "gemini-2.5-flash",
+  "promptVersion": "summary-v1.4"
+}
+```
+
+The `promptVersion` field is what makes regression testing possible. When a prompt changes, old and new outputs can be compared side by side using the same article.
+
+## Metadata schema
+
+Generated output is stored with enough context to explain it later. This is the current metadata model:
+
+```json
+{
+  "generationId": "gen-9f3e2a1b",
+  "articleId": "article-48291",
+  "task": "summary",
+  "model": "gemini-2.5-flash",
+  "promptVersion": "summary-v1.4",
+  "locale": "no",
+  "tokenUsage": {
+    "input": 1240,
+    "output": 180,
+    "total": 1420
+  },
+  "costUsd": 0.0021,
+  "reviewStatus": "pending",
+  "createdAt": "2026-01-18T09:12:00Z",
+  "reviewedAt": null,
+  "reviewedBy": null
+}
+```
+
+Storing token usage and cost at generation time makes it easy to estimate spend and spot runaway prompts before they become expensive.
+
+## Review state machine
+
+Every generated artifact moves through a small set of states. The transitions are explicit so the UI can show the right action at the right time.
+
+| Status | Meaning | Allowed next states |
+| --- | --- | --- |
+| `pending` | Generated, awaiting editor review | `accepted`, `edited`, `rejected` |
+| `accepted` | Approved for publication | `stale` if the article changes |
+| `edited` | Editor made changes before publishing | `stale` if the article changes |
+| `rejected` | Discarded, not usable | regenerated into `pending` |
+| `stale` | Source article changed after approval | `pending` on regeneration |
+
+The `stale` state is particularly important. If an article is updated after a summary is accepted, the summary must be invalidated automatically so old generated text never sits next to new facts.
+
+## Sample test data
+
+This is a realistic input and the kind of output the system produces. It is useful for unit tests, prompt regression checks, and UI fixtures.
+
+**Article excerpt (Norwegian):**
+
+> Kommunen har vedtatt å bygge en ny skole på Vestlandet. Prosjektet skal etter planen stå ferdig i 2028 og vil koste rundt 450 millioner kroner. Målet er å erstatte de eldste skolebyggene i distriktet.
+
+**Generated summary:**
+
+> Vestlandet får ny skole til 450 millioner kroner, med planlagt ferdigstillelse i 2028. Den skal erstatte de eldste skolebyggene i distriktet.
+
+A good summary preserves the main claim, the cost figure, and the timeline without adding interpretation.
+
+## Quality checks
+
+For summaries, quality is not a single score. I look at four checks:
+
+- Does the summary preserve the article's main claim?
+- Does it avoid adding unsupported facts?
+- Is the length useful for the placement where it appears?
+- Can an editor understand why it needs changes?
+
+For text-to-speech, the useful checks are different: pronunciation, pacing, article structure, and whether the generated audio can be updated when the article changes.
+
+## Safety and review
+
+The project keeps human review in the critical path. That is the simplest reliable control for editorial work, especially when generated text can affect reader trust.
+
+The system should make review easier, not optional. That means generated content needs status labels, visible provenance, and a way to compare the generated result with the original article.
+
+## Rollout notes
+
+The best rollout path is gradual. Start with a small group of editors, measure corrections, inspect failure cases, and only then expand the workflow.
+
+The goal is not to make AI invisible. The goal is to make the generated step traceable enough that editors can use it without losing control of the article.

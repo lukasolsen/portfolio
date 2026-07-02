@@ -1,0 +1,108 @@
+## What changed
+
+Backgrad started as a fast way to create gradient backgrounds without opening a design tool. The current version treats a background as a reproducible rendering pipeline: a preset selects color anchors, a layout model places gradients, and post-processing keeps the result usable behind text.
+
+The main change is that the project now has clearer boundaries between creative controls and rendering internals. A preset can describe intent, while the renderer handles normalization, aspect ratio, and export quality.
+
+<div className="not-prose my-8 grid gap-3 md:grid-cols-3">
+  <div className="rounded-lg border border-border/20 bg-muted/30 p-4">
+    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Input</p>
+    <p className="mt-2 text-sm text-foreground">Palette, layout, noise, blur, and aspect ratio.</p>
+  </div>
+  <div className="rounded-lg border border-border/20 bg-muted/30 p-4">
+    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Pipeline</p>
+    <p className="mt-2 text-sm text-foreground">Normalize colors, build fields, composite effects, and sample pixels.</p>
+  </div>
+  <div className="rounded-lg border border-border/20 bg-muted/30 p-4">
+    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Output</p>
+    <p className="mt-2 text-sm text-foreground">A background that can be regenerated, inspected, and reused.</p>
+  </div>
+</div>
+
+## Preset schema
+
+A preset is a JSON recipe that the renderer can execute deterministically. Keeping the schema small makes it easy to version, diff, and test.
+
+```json
+{
+  "id": "organic-warm-v2",
+  "palette": {
+    "mode": "oklch",
+    "anchors": [
+      { "color": "#d97757", "position": 0.0 },
+      { "color": "#eda100", "position": 0.35 },
+      { "color": "#f5f4ed", "position": 0.75 },
+      { "color": "#b4a88a", "position": 1.0 }
+    ]
+  },
+  "layout": {
+    "type": "diagonal",
+    "density": 3,
+    "flow": "bottom-left",
+    "focalPoint": { "x": 0.35, "y": 0.65 }
+  },
+  "effects": {
+    "noise": 0.04,
+    "blur": 24,
+    "grain": "fine",
+    "vignette": 0.12
+  },
+  "export": {
+    "width": 2880,
+    "height": 1620,
+    "format": "png",
+    "quality": 95,
+    "colorSpace": "srgb"
+  }
+}
+```
+
+The renderer reads the preset and produces the same family of output every time the same seed and dimensions are used. Changing one field, such as `layout.density`, does not require editing color values or export settings.
+
+## System shape
+
+Backgrad is organized around small render decisions rather than one large style prompt. The renderer can change one dimension without breaking the rest of the image.
+
+| Layer | Responsibility | Failure mode it avoids |
+| --- | --- | --- |
+| Preset | Names the visual direction | Repeating manual values across examples |
+| Palette | Defines color anchors | Cold or muddy output from random mixing |
+| Layout | Places fields and flow | Center-heavy gradients that feel generic |
+| Effects | Adds texture and depth | Flat output that only works as a thumbnail |
+| Export | Controls size and quality | Inconsistent results across surfaces |
+
+## Test fixtures
+
+Because the output is visual, regression tests use reference crops and pass-or-fail checks rather than pixel-perfect comparisons. The fixtures below are representative inputs used during development.
+
+| Preset | Dimensions | Expected crop pass | Expected text overlay pass | Notes |
+| --- | --- | --- | --- | --- |
+| `organic-warm-v2` | 2880x1620 | Yes | Yes | Golden reference for hero backgrounds |
+| `sky-and-sand` | 1920x1080 | Yes | Yes | Light UI friendly, low contrast shift |
+| `diagonal-cool` | 1200x800 | Yes | No | Fails because focal point overlaps text zone |
+| `max-organic` | 2880x1620 | No | Yes | Too busy at card crop; kept for fullscreen use |
+| `subtile-mountains` | 1600x900 | Yes | Yes | Safe default for landing pages |
+
+A crop passes when at least one quadrant stays visually calm enough to host a card image. A text overlay passes when a centered headline on both light and dark text remains readable across the top and bottom thirds.
+
+## Evaluation notes
+
+I evaluate each output in three contexts:
+
+- As a full-width hero background with text placed on top.
+- As a cropped card image where the focal area may shift.
+- As a repeatable preset where the same values should produce the same family of output.
+
+The most useful tests are visual rather than numeric. I keep examples that survive resizing, text overlays, and dark or light UI usage. I remove examples that only work in one crop.
+
+## Tradeoffs
+
+Backgrad does not try to solve general image generation. It is narrower by design. The project focuses on gradients, texture, and composition because those are the pieces I can make deterministic enough to edit.
+
+That constraint makes the project easier to reason about. It also means it should not pretend to replace illustration, photography, or brand systems. The strongest use case is fast background exploration with enough control to keep the result usable.
+
+## Rollout notes
+
+The next useful work is less about adding more styles and more about making the current styles easier to inspect. A good preset browser should show inputs, generated output, and export settings together.
+
+That would make Backgrad easier to use as a project tool: pick a direction, adjust the variables, export the result, and keep the recipe.

@@ -78,7 +78,7 @@ export function Resources({ resources, title = "Ressurser" }: ResourcesProps) {
             const content = (
               <div
                 className={`
-                group relative p-3 md:p-4 rounded-xl border transition-all duration-200 hover:shadow-lg
+                group relative p-3 md:p-4 rounded-lg border border-border/20 bg-background transition-colors duration-200 hover:border-border/40
                 ${getResourceColor(resource.type)}
                 ${isInternal ? "hover:scale-[1.02]" : ""}
               `}

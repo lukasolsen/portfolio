@@ -41,10 +41,18 @@ export const dyplinkAiProject: Project = {
     {
       id: "planning-your-ai-integration",
       type: "blog",
-      title: "Planlegging av AI-integrasjon: En trinnvis veiledning",
+      title: "Planning an AI integration",
       description:
-        "Hvordan planlegge en vellykket AI-integrasjon for din bedrift",
-      tags: ["AI", "Integrasjon", "Planlegging"],
+        "How Dyplink AI planning shaped the workflow, data model, and review state.",
+      tags: ["AI", "Planning", "Architecture"],
+    },
+    {
+      id: "dyplink-ai-editorial-workflows",
+      type: "blog",
+      title: "Designing AI workflows for editors",
+      description:
+        "How Dyplink AI keeps generated summaries and audio inside a reviewable editorial workflow.",
+      tags: ["AI", "Editorial tools", "LLM"],
     },
     {
       id: "gemini-api",

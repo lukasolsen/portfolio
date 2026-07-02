@@ -9,3 +9,8 @@ declare module "*.mdx" {
   const MDXComponent: React.FC<React.ComponentProps<"div">>;
   export default MDXComponent;
 }
+
+declare module "*.mdx?raw" {
+  const content: string;
+  export default content;
+}
