@@ -1,15 +1,7 @@
-import { BookIcon, Github, Globe, Menu, X } from "lucide-react";
+import { ChevronRight, Github, Globe, Menu, X } from "lucide-react";
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "../components/ui/button";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useRouterState } from "@tanstack/react-router";
@@ -19,9 +11,6 @@ import { setLocale, getLocale } from "@/paraglide/runtime";
 interface MenuItem {
   title: string;
   url: string;
-  description?: string;
-  icon?: React.ReactNode;
-  items?: MenuItem[];
 }
 
 export const InstanceHeader: FC = () => {
@@ -39,30 +28,10 @@ export const InstanceHeader: FC = () => {
     return location.pathname.includes("/playground");
   }, [location.pathname]);
 
-  const menu = useMemo(
-    () => [
-      {
-        title: m["common.resources"](),
-        url: "#",
-        items: [
-          {
-            title: m["common.blog"](),
-            url: "/blogs",
-            description: m["common.blogDescription"](),
-            icon: <BookIcon />,
-          },
-          {
-            title: m["common.docs"](),
-            url: "/docs",
-            description: m["common.docsDescription"](),
-            icon: <BookIcon />,
-          },
-        ],
-      },
-      { title: m["pages.contact.title"](), url: "/contact" },
-    ],
-    [],
-  );
+  const menu: MenuItem[] = [
+    { title: m["common.blog"](), url: "/blogs" },
+    { title: m["pages.contact.title"](), url: "/contact" },
+  ];
 
   return (
     <header
@@ -103,11 +72,24 @@ export const InstanceHeader: FC = () => {
         </span>
       </a>
 
-      <NavigationMenu className="hidden lg:flex flex-1 items-center justify-center relative">
-        <NavigationMenuList>
-          {menu.map((item) => renderMenuItem(item))}
-        </NavigationMenuList>
-      </NavigationMenu>
+      <nav
+        aria-label="Primary navigation"
+        className="hidden lg:flex flex-1 items-center justify-center"
+      >
+        <div className="inline-flex items-center gap-1 rounded-full border border-border/30 bg-background/70 p-1 backdrop-blur-sm">
+          {menu.map((item) => (
+            <NavLink
+              key={item.title}
+              item={item}
+              active={
+                item.url === "/"
+                  ? location.pathname === item.url
+                  : location.pathname.startsWith(item.url)
+              }
+            />
+          ))}
+        </div>
+      </nav>
 
       <div className="flex items-center gap-2">
         <div className="flex items-center rounded-md border border-border/40 p-0.5">
@@ -129,7 +111,12 @@ export const InstanceHeader: FC = () => {
           ))}
         </div>
 
-        <Button variant="ghost" size="sm" className="hidden sm:inline-flex" asChild>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="hidden sm:inline-flex text-muted-foreground hover:bg-muted/60 hover:text-foreground focus-visible:ring-ring/40"
+          asChild
+        >
           <a
             href="https://github.com/lukasolsen"
             target="_blank"
@@ -145,7 +132,7 @@ export const InstanceHeader: FC = () => {
         <Button
           variant="ghost"
           size="icon"
-          className="lg:hidden"
+          className="lg:hidden text-muted-foreground hover:bg-muted/60 hover:text-foreground focus-visible:ring-ring/40"
           onClick={() => setMobileOpen((prev) => !prev)}
           aria-label="Toggle menu"
         >
@@ -165,39 +152,28 @@ export const InstanceHeader: FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 w-full bg-background/90 backdrop-blur-lg border-b border-border shadow-sm lg:hidden"
+            className="absolute top-full left-0 w-full border-y border-border/30 bg-background/95 backdrop-blur-lg lg:hidden"
           >
-            <ul className="flex flex-col space-y-2 p-4">
-              {menu.map((item) =>
-                item.items ? (
-                  <li key={item.title}>
-                    <p className="font-medium text-foreground">{item.title}</p>
-                    <ul className="pl-4 mt-2 space-y-1">
-                      {item.items.map((sub) => (
-                        <li key={sub.title}>
-                          <a
-                            href={sub.url}
-                            className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-                            onClick={() => setMobileOpen(false)}
-                          >
-                            {sub.title}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                ) : (
-                  <li key={item.title}>
-                    <a
-                      href={item.url}
-                      className="text-foreground hover:underline"
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      {item.title}
-                    </a>
-                  </li>
-                ),
-              )}
+            <ul className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-3 md:px-8">
+              {menu.map((item) => (
+                <li key={item.title}>
+                  <a
+                    href={item.url}
+                    className={cn(
+                      "flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
+                      location.pathname.startsWith(item.url) &&
+                        "bg-muted/40 text-foreground",
+                    )}
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {item.title}
+                    <ChevronRight
+                      className="h-4 w-4 text-muted-foreground/40"
+                      aria-hidden="true"
+                    />
+                  </a>
+                </li>
+              ))}
             </ul>
           </motion.nav>
         )}
@@ -208,47 +184,20 @@ export const InstanceHeader: FC = () => {
 
 /* ---------------------------------- Helpers ---------------------------------- */
 
-const renderMenuItem = (item: MenuItem) => {
-  if (item.items) {
-    return (
-      <NavigationMenuItem key={item.title}>
-        <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
-        <NavigationMenuContent className="bg-popover text-popover-foreground">
-          {item.items.map((subItem) => (
-            <NavigationMenuLink asChild key={subItem.title} className="w-80">
-              <SubMenuLink item={subItem} />
-            </NavigationMenuLink>
-          ))}
-        </NavigationMenuContent>
-      </NavigationMenuItem>
-    );
-  }
-
-  return (
-    <NavigationMenuItem key={item.title}>
-      <NavigationMenuLink
-        href={item.url}
-        className="bg-background hover:bg-muted hover:text-accent-foreground inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
-      >
-        {item.title}
-      </NavigationMenuLink>
-    </NavigationMenuItem>
-  );
-};
-
-const SubMenuLink = ({ item }: { item: MenuItem }) => (
+const NavLink = ({
+  item,
+  active,
+}: {
+  item: MenuItem;
+  active: boolean;
+}) => (
   <a
-    className="hover:bg-muted hover:text-accent-foreground flex min-w-80 select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors"
     href={item.url}
+    className={cn(
+      "inline-flex h-8 items-center rounded-full px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted/55 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
+      active && "bg-muted/45 text-foreground",
+    )}
   >
-    <div className="text-foreground">{item.icon}</div>
-    <div>
-      <div className="text-sm font-semibold">{item.title}</div>
-      {item.description && (
-        <p className="text-muted-foreground text-sm leading-snug">
-          {item.description}
-        </p>
-      )}
-    </div>
+    {item.title}
   </a>
 );
